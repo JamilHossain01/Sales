@@ -55,21 +55,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
             borderSide: BorderSide(
-              color: widget.borderColor ?? AppColors.mainColor,
+              color: widget.borderColor ?? AppColors.borderColor,
               width: 1,
             ),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
             borderSide: BorderSide(
-              color: widget.borderColor ?? AppColors.mainColor,
+              color: widget.borderColor ?? AppColors.borderColor,
               width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
             borderSide: BorderSide(
-              color: widget.borderColor ?? AppColors.mainColor,
+              color: widget.borderColor ??AppColors.borderColor,
               width: 1,
             ),
           ),
@@ -80,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ? IconButton(
             icon: Icon(
               _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.mainColor,
+              color: AppColors.borderColor,
             ),
             onPressed: () {
               setState(() {
