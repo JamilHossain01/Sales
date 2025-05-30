@@ -13,6 +13,12 @@ class AppImages {
   static const String mapPin = "assets/images/MapPin.png";
   static const String pin = "assets/images/MapPin.png";
   static const String arrow= "assets/images/aDown.png";
+  static const String pet1= "assets/images/pet1.jpg";
+  static const String pet2= "assets/images/pet2.jpg";
+  static const String pet3= "assets/images/pet3.jpg";
+  static const String pet4= "assets/images/pet4.jpg";
+  static const String heart= "assets/images/heart.png";
+  static const String setting= "assets/images/setting.png";
 
   static const String profile = "assets/images/profile.png";
   static const String service1 = "assets/images/service1.png";

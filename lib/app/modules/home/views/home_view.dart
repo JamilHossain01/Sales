@@ -26,16 +26,24 @@ class HomeView extends GetView<HomeController> {
     final tabs = ['All', 'Cats', 'Dogs'];
 
     final data = {
-      'All': ['Becon (Dog)', 'Mini (Cat)', 'Charlie (Dog)'],
-      'Cats': ['Mini (Cat)'],
-      'Dogs': ['Becon (Dog)', 'Charlie (Dog)'],
+      'All': [
+        {'name': 'Becon', 'gender': 'Female', 'age': '2 yrs'},
+        {'name': 'Mini', 'gender': 'Male', 'age': '1.5 yrs'},
+        {'name': 'Charlie', 'gender': 'Male', 'age': '3 yrs'},
+      ],
+      'Cats': [
+        {'name': 'Mini', 'gender': 'Male', 'age': '1.5 yrs'},
+      ],
+      'Dogs': [
+        {'name': 'Becon', 'gender': 'Female', 'age': '2 yrs'},
+        {'name': 'Charlie', 'gender': 'Male', 'age': '3 yrs'},
+      ],
     };
 
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
-      body:
-      Stack(
+      body: Stack(
         children: [
           GradientContainer(
             height: screenHeight * 0.2,
@@ -46,7 +54,8 @@ class HomeView extends GetView<HomeController> {
             child: Column(
               children: [
                 SizedBox(height: screenHeight * 0.1),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       child: Image.asset(
@@ -65,7 +74,6 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         Gap(4.w),
-
                         CustomText(
                           text: 'Enable Location',
                           fontWeight: FontWeight.w600,
@@ -84,11 +92,11 @@ class HomeView extends GetView<HomeController> {
                     ),
                     Container(
                       height: 40.h,
-                      width: 40.w,                      decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50.r),
-
-                    ),
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(50.r),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
@@ -100,31 +108,31 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ],
                 ),
-
-                // ... আপনার header কোড এখানে (Row, Images, Text etc.) ...
-                BannerCarousel(),
-                SizedBox(height: 10),
-                HeaderWidgets(title: 'Services', subTitle: 'See All'),
-                SizedBox(height: 10),
-                TrendingProvidersSection(),
-                SizedBox(height: 10),
-                HeaderWidgets(title: 'Categories', subTitle: 'See More'),
-                SizedBox(height: 10),
-
-                Expanded(   // <-- Expanded দিয়ে দিতে হবে
-                  child: CustomTabView(
-                    tabs: tabs,
-                    data: data,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        BannerCarousel(),
+                        SizedBox(height: 10),
+                        HeaderWidgets(title: 'Services', subTitle: 'See All'),
+                        SizedBox(height: 10),
+                        TrendingProvidersSection(),
+                        SizedBox(height: 10),
+                        HeaderWidgets(title: 'Categories', subTitle: 'See More'),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          height: 400, // Adjust height as needed
+                          child: AdoptionTabView()
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
 }
-
-

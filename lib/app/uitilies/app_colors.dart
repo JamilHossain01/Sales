@@ -8,5 +8,7 @@ class AppColors {
   static Color bgColor = Color(0xFFe6f0ff);
   static Color btnBorderColor = Color(0xFF050505);
   static Color textGray = Color(0xFF808080);
-  static Color borderColor = Color(0xFFE8E8E8);
+  static Color borderColor = Color(0xFFECEEF1);
+  static Color female = Color(0xFFFF90CC);
+  static Color male = Color(0xFFE2FFF5);
 }

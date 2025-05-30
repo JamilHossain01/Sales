@@ -1,71 +1,50 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+import 'package:pet_donation/app/common widget/custom text/custom_text_widget.dart';
+import 'package:pet_donation/app/common widget/heart_conatiner.dart';
+import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:pet_donation/app/uitilies/app_images.dart';
+
+class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final double? fontSize;
-  final VoidCallback? onTap;
-  final bool centerTitle;
-  final Color? backgroundColor;
-  final bool forceMaterialTransparency;
-  final bool? automaticallyImplyLeading;
-  final List<Widget>? actions;
-  final Widget? leading;
+  final VoidCallback? onBackPressed;
+  final Widget? trailing;
 
-  const CustomAppBar({
+  const CommonAppBar({
     Key? key,
     required this.title,
-    this.fontSize,
-    this.centerTitle = true,
-    this.backgroundColor = Colors.transparent,
-    this.forceMaterialTransparency = true,
-    this.actions,
-    this.leading,
-    this.automaticallyImplyLeading,
-    this.onTap,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+    this.onBackPressed,
+    this.trailing,
+  }) : super(key: key);
 
   @override
-  final Size preferredSize;
+  Size get preferredSize => Size.fromHeight(60.h);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      forceMaterialTransparency: true,
-      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
-      backgroundColor: backgroundColor,
-      title: Text(
-        title,
-        style: GoogleFonts.poppins(
-          fontSize: fontSize ?? 17.h,
-          fontWeight: FontWeight.w500,
-        ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: CustomText(
+        text: title,
+        fontWeight: FontWeight.w600,
+        fontSize: 20.sp,
+        color: Colors.black,
       ),
-      centerTitle: centerTitle,
-      actions: actions,
-      leading: leading ??
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: onTap ??
-                    () {
-                  if (Get.isSnackbarOpen) {
-                    Get.closeCurrentSnackbar();
-                  }
-                  if (Navigator.canPop(context)) {
-                   Navigator.pop(context);
-                  } else {
-                    if (kDebugMode) {
-                      print("No routes to pop");
-                    }
-                  }
-                },
-          ),
-
-      elevation: forceMaterialTransparency ? 0 : null,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+      ),
+      actions: trailing != null
+          ? [
+        Padding(
+          padding: EdgeInsets.only(right: 16.w),
+          child: trailing!,
+        ),
+      ]
+          : null,
     );
   }
 }

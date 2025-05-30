@@ -1,29 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:pet_donation/app/modules/home/widgets/pet_card.dart';
+import 'package:pet_donation/app/uitilies/app_images.dart';
 
-class CustomTabView extends StatefulWidget {
-  final List<String> tabs;
-  final Map<String, List<String>> data;
-
-  const CustomTabView({
-    Key? key,
-    required this.tabs,
-    required this.data,
-  }) : super(key: key);
+class AdoptionTabView extends StatefulWidget {
+  const AdoptionTabView({super.key});
 
   @override
-  _CustomTabViewState createState() => _CustomTabViewState();
+  _AdoptionTabViewState createState() => _AdoptionTabViewState();
 }
 
-class _CustomTabViewState extends State<CustomTabView> with SingleTickerProviderStateMixin {
+class _AdoptionTabViewState extends State<AdoptionTabView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int selectedIndex = 0;
+
+  final List<String> tabs = ['All', 'Cats', 'Dogs'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: widget.tabs.length, vsync: this);
+    _tabController = TabController(length: tabs.length, vsync: this);
     _tabController.addListener(() {
-      setState(() {}); // UI আপডেটের জন্য
+      setState(() {
+        selectedIndex = _tabController.index;
+      });
     });
   }
 
@@ -33,32 +33,19 @@ class _CustomTabViewState extends State<CustomTabView> with SingleTickerProvider
     super.dispose();
   }
 
-  Widget _buildTab(String text, bool isSelected) {
+  Widget buildCustomTab(String text, bool selected) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.mainColor: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isSelected ? AppColors.mainColor : Colors.grey.shade300,
-          width: 1,
-        ),
-        boxShadow: isSelected
-            ? [
-          BoxShadow(
-            color:AppColors.mainColor.withOpacity(0.3),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          )
-        ]
-            : [],
+        color: selected ? Colors.teal.shade400 : Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: selected ? Colors.teal.shade400 : Colors.grey.shade300),
       ),
       child: Text(
         text,
         style: TextStyle(
-          color: isSelected ? Colors.white : Colors.black87,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-          fontSize: 16,
+          color: selected ? Colors.white : Colors.black87,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -66,45 +53,42 @@ class _CustomTabViewState extends State<CustomTabView> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    final allPets = [
+      AdoptionCard(type: 'Adoption', name: 'Becon', gender: 'Female', age: 2, imagePath: AppImages.pet1),
+      AdoptionCard(type: 'Adoption', name: 'Mini', gender: 'Male', age: 2, imagePath:  AppImages.pet2),
+      AdoptionCard(type: 'Adoption', name: 'Miki', gender: 'Female', age: 2, imagePath:  AppImages.pet3),
+      AdoptionCard(type: 'Adoption', name: 'Charlie', gender: 'Male', age: 1, imagePath:  AppImages.pet4),
+    ];
+
+    final catPets = allPets.where((p) => p.gender.toLowerCase() == 'male' && p.name == 'Mini' || p.name == 'Miki').toList();
+    final dogPets = allPets.where((p) => p.gender.toLowerCase() == 'female' && p.name == 'Becon' || p.name == 'Charlie').toList();
+
+    List<AdoptionCard> getPetsForTab(int index) {
+      if (index == 1) return catPets;
+      if (index == 2) return dogPets;
+      return allPets;
+    }
+
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(color: Colors.grey.shade300),
-          ),
-          child: TabBar(
-            controller: _tabController,
-            indicator: BoxDecoration(), // আন্ডারলাইন রিমুভ
-            labelPadding: EdgeInsets.zero,
-            tabs: List.generate(widget.tabs.length, (index) {
-              final isSelected = _tabController.index == index;
-              return Tab(
-                child: _buildTab(widget.tabs[index], isSelected),
-              );
-            }),
-          ),
-
+        TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.transparent,
+          tabs: List.generate(tabs.length, (index) {
+            return Tab(child: buildCustomTab(tabs[index], selectedIndex == index));
+          }),
         ),
         Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: widget.tabs.map((tab) {
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ListView(
-                  children: widget.data[tab]!
-                      .map((item) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(item, style: TextStyle(fontSize: 18)),
-                  ))
-                      .toList(),
-                ),
-              );
-            }).toList(),
-          ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            // padding: const EdgeInsets.all(),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.7, // width/height, 0.7 হলে উচ্চতা বাড়বে
+            children: getPetsForTab(selectedIndex),
+          )
+
+
         ),
       ],
     );

@@ -30,20 +30,18 @@ class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColors.bgColor),
       ),
       child: DropdownButton<String>(
-
         value: dropdownValue,
-        icon: Icon(Icons.arrow_drop_down),
+        icon: const Icon(Icons.arrow_drop_down),
         iconSize: 24,
         elevation: 16,
-        underline: Container(
-          height: 2,
-        ),
+        isExpanded: true, // Ensures the dropdown takes full width
+        underline: const SizedBox(), // Removes default underline
         onChanged: (String? newValue) {
           setState(() {
             dropdownValue = newValue!;
@@ -52,8 +50,14 @@ class _CustomDropdownState extends State<CustomDropdown> {
         },
         items: widget.items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
-            value: value, // Ensure each value is unique
-            child: Text(value),
+            value: value,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(value), // Text on the left
+
+              ],
+            ),
           );
         }).toList(),
       ),
