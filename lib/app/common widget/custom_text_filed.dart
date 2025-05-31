@@ -9,13 +9,14 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final bool showObscure;
   final bool? readOnly;
-  final bool? enabled; // Add the enabled parameter
+  final bool? enabled;
   final IconData? prefixIcon;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final Color? fillColor;
   final Color? borderColor;
   final int? maxLines;
+  final String? Function(String?)? validator; // <-- Add this line
 
   const CustomTextField({
     Key? key,
@@ -28,11 +29,12 @@ class CustomTextField extends StatefulWidget {
     this.borderColor,
     this.maxLines,
     this.readOnly,
-    this.enabled = true, // Default to true if not provided
+    this.enabled = true,
+    this.validator, // <-- Add this line
   }) : super(key: key);
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
@@ -40,15 +42,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: Get.width,
       child: TextFormField(
         keyboardType: widget.keyboardType,
         controller: widget.controller,
         readOnly: widget.readOnly ?? false,
-        enabled: widget.enabled, // Control the enabled property
+        enabled: widget.enabled,
         obscureText: widget.showObscure ? _obscureText : false,
-        maxLines: widget.maxLines ?? 1, // Set maxLines
+        maxLines: widget.maxLines ?? 1,
+        validator: widget.validator, // <-- Forward validator here
         decoration: InputDecoration(
           filled: true,
           fillColor: widget.fillColor ?? Colors.white,
@@ -69,7 +72,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
             borderSide: BorderSide(
-              color: widget.borderColor ??AppColors.borderColor,
+              color: widget.borderColor ?? AppColors.borderColor,
               width: 1,
             ),
           ),
@@ -92,10 +95,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintText: widget.hintText,
           hintStyle: GoogleFonts.poppins(
             fontSize: 14.h,
+            color: Colors.grey.shade500,
           ),
         ),
       ),
     );
   }
 }
-

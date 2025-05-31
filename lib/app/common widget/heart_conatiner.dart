@@ -17,7 +17,7 @@ class RoundedHeartIconContainer extends StatelessWidget {
     required this.assetPath,
     this.backgroundColor = Colors.white,
     this.size = 20,
-    this.padding = 6,
+    this.padding = 8,
     this.borderRadius = 15,
     this.containerHeight,
     this.containerWidth,

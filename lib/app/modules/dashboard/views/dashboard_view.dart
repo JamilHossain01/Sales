@@ -5,6 +5,7 @@ import 'package:pet_donation/app/uitilies/app_images.dart';
 
 import '../../explore/views/explore_view.dart';
 import '../../home/views/home_view.dart';
+import '../../pet_profile/views/pet_profile_view.dart';
 import '../../profile/views/profile_view.dart';
 import '../../services/views/services_view.dart';
 import '../../forum/views/forum_view.dart';
@@ -21,7 +22,7 @@ class DashboardView extends StatelessWidget {
     ExploreView(),
     ServicesView(),
     ForumView(),
-    ProfileView(),
+    PetProfileView (),
   ];
 
   @override

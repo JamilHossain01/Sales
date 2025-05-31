@@ -1,66 +1,69 @@
 import 'package:flutter/material.dart';
-
-import '../uitilies/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 
 class CustomDropdown extends StatefulWidget {
-  final String initialValue;
+  final String? value;
+  final String hint;
   final List<String> items;
-  final Function(String?) onChanged;
+  final ValueChanged<String?> onChanged;
+  final Color? borderColor;
+  final Color? focusedBorderColor;
 
   const CustomDropdown({
-    required this.initialValue,
+    super.key,
+    this.value,
+    this.hint = 'Select an option',
     required this.items,
     required this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    this.borderColor,
+    this.focusedBorderColor,
+  });
 
   @override
-  _CustomDropdownState createState() => _CustomDropdownState();
+  State<CustomDropdown> createState() => _CustomDropdownState();
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  late String dropdownValue;
-
-  @override
-  void initState() {
-    super.initState();
-    dropdownValue = widget.initialValue;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.bgColor),
+    return DropdownButtonFormField<String>(
+      value: widget.value,
+      hint: CustomText(
+        text: widget.hint,
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.black.withOpacity(0.6), // lighter color for hint
       ),
-      child: DropdownButton<String>(
-        value: dropdownValue,
-        icon: const Icon(Icons.arrow_drop_down),
-        iconSize: 24,
-        elevation: 16,
-        isExpanded: true, // Ensures the dropdown takes full width
-        underline: const SizedBox(), // Removes default underline
-        onChanged: (String? newValue) {
-          setState(() {
-            dropdownValue = newValue!;
-          });
-          widget.onChanged(newValue);
-        },
-        items: widget.items.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(value), // Text on the left
-
-              ],
-            ),
-          );
-        }).toList(),
+      items: widget.items.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: CustomText(
+            text: value,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        );
+      }).toList(),
+      onChanged: widget.onChanged,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: widget.focusedBorderColor ?? Theme.of(context).primaryColor),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
       ),
+      dropdownColor: Colors.white,
+      style: TextStyle(color: Colors.black), // text style when selected
     );
   }
 }

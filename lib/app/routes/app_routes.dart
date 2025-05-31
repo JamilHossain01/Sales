@@ -15,6 +15,7 @@ abstract class Routes {
   static const SERVICES = _Paths.SERVICES;
   static const FORUM = _Paths.FORUM;
   static const PROFILE = _Paths.PROFILE;
+  static const PET_PROFILE = _Paths.PET_PROFILE;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const SERVICES = '/services';
   static const FORUM = '/forum';
   static const PROFILE = '/profile';
+  static const PET_PROFILE = '/pet-profile';
 }

@@ -19,6 +19,9 @@ class AppImages {
   static const String pet4= "assets/images/pet4.jpg";
   static const String heart= "assets/images/heart.png";
   static const String setting= "assets/images/setting.png";
+  static const String setting1= "assets/images/setting1.png";
+  static const String delete= "assets/images/delete.png";
+  static const String pet= "assets/images/petImage.png";
 
   static const String profile = "assets/images/profile.png";
   static const String service1 = "assets/images/service1.png";
@@ -40,4 +43,11 @@ class AppImages {
 
   static const String profileActive = "assets/images/profiles1.png";  // active profile icon
   static const String profileInactive = "assets/images/profile2.png"; // inactive profile icon
+  static const String messages = "assets/images/messages.png"; // inactive profile icon
+  static const String male = "assets/images/male.png"; // inactive profile icon
+  static const String peTlage = "assets/images/pet_leg.png"; // inactive profile icon
+  static const String chips = "assets/images/chip.png"; // inactive profile icon
+  static const String breed = "assets/images/breed.png"; // inactive profile icon
+  static const String ages = "assets/images/ages.png"; // inactive profile icon
+  static const String genders = "assets/images/genders.png"; // inactive profile icon
 }

@@ -48,15 +48,20 @@ class _PetTypeSelectorState extends State<PetTypeSelector> {
         SizedBox(height: 8.h),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.borderColor,
+            color: Color(0XFFF5F6F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
-          child: Row(
-            children: [
-              _buildPetTypeOption(widget.text1), // Fixed typo 'texct1' to 'widget.text1'
-              _buildPetTypeOption(widget.text2),
-              _buildPetTypeOption(widget.text3),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4,top: 4,bottom: 4,),
+            child: Row(
+
+              children: [
+
+                _buildPetTypeOption(widget.text1), // Fixed typo 'texct1' to 'widget.text1'
+                _buildPetTypeOption(widget.text2),
+                _buildPetTypeOption(widget.text3),
+              ],
+            ),
           ),
         ),
       ],
@@ -73,7 +78,7 @@ class _PetTypeSelectorState extends State<PetTypeSelector> {
           widget.onSelectionChanged?.call(type);
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 6.h),
           decoration: BoxDecoration(
             color: selectedPetType == type ? Colors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(12.r),
@@ -83,7 +88,7 @@ class _PetTypeSelectorState extends State<PetTypeSelector> {
               text: type,
               fontWeight: FontWeight.w500,
               color: selectedPetType == type
-                  ? Colors.black
+                  ? AppColors.mainColor
                   : Colors.black.withOpacity(0.6),
               fontSize: 16.sp,
             ),
