@@ -7,10 +7,9 @@ class RoundedHeartIconContainer extends StatelessWidget {
   final Color? borderColor;
   final double size; // image size
   final double padding;
-  final double borderRadius;
   final VoidCallback? onTap;
-  final double? containerHeight; // optional container height
-  final double? containerWidth;  // optional container width
+  final double? containerHeight;
+  final double? containerWidth;
 
   const RoundedHeartIconContainer({
     Key? key,
@@ -18,22 +17,24 @@ class RoundedHeartIconContainer extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.size = 20,
     this.padding = 8,
-    this.borderRadius = 15,
     this.containerHeight,
     this.containerWidth,
-    this.borderColor, this.onTap,
+    this.borderColor,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final double diameter = (containerHeight ?? 40).h;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: containerHeight?.h,
-        width: containerWidth?.w,
+        height: diameter,
+        width: diameter,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(borderRadius.r),
+          shape: BoxShape.circle,
           border: borderColor != null ? Border.all(color: borderColor!) : null,
         ),
         padding: EdgeInsets.all(padding.w),

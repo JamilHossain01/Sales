@@ -170,7 +170,7 @@ class SignInView extends GetView<SignInController> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Image.asset(AppImages.group,height: 18.h,width: 18.w,),
+                        child: Image.asset(AppImages.x,height: 18.h,width: 18.w,),
                       ),
                     ),
                   ],),

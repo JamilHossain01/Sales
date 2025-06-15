@@ -16,6 +16,8 @@ abstract class Routes {
   static const FORUM = _Paths.FORUM;
   static const PROFILE = _Paths.PROFILE;
   static const PET_PROFILE = _Paths.PET_PROFILE;
+  static const PET_PROFILE_DETAILS = _Paths.PET_PROFILE_DETAILS;
+  static const PET_SURVEY = _Paths.PET_SURVEY;
 }
 
 abstract class _Paths {
@@ -33,4 +35,6 @@ abstract class _Paths {
   static const FORUM = '/forum';
   static const PROFILE = '/profile';
   static const PET_PROFILE = '/pet-profile';
+  static const PET_PROFILE_DETAILS = '/pet-profile-details';
+  static const PET_SURVEY = '/pet-survey';
 }

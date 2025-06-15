@@ -1,9 +1,13 @@
 class AppImages {
-  static const String image = "assets/images/Image.png";
-  static const String image1 = "assets/images/Image-1.png";
-  static const String image2 = "assets/images/Image-2.png";
+  static const String image = "assets/images/small_dog.png";
+  static const String baltukas= "assets/images/Baltukas.png";
+  static const String cat1 = "assets/images/cat1.png";
+  static const String cat2 = "assets/images/cat2.png";
+  static const String image1 = "assets/images/dog.png";
+  static const String image2 = "assets/images/cat_dog.png";
   static const String logo = "assets/images/Logo.png";
   static const String group = "assets/images/Group.png";
+  static const String x = "assets/images/x.png";
   static const String google = "assets/images/google.png";
   static const String apple = "assets/images/apple.png";
   static const String chat = "assets/images/chat.png";
@@ -12,6 +16,12 @@ class AppImages {
   static const String map = "assets/images/illustration.png";
   static const String mapPin = "assets/images/MapPin.png";
   static const String pin = "assets/images/MapPin.png";
+  static const String others = "assets/images/others.png";
+  static const String grooming = "assets/images/grooming.png";
+  static const String petHotels = "assets/images/pet_hotels.png";
+  static const String petStories = "assets/images/pet_stories.png";
+  static const String veterinary = "assets/images/veterinary.png";
+  static const String pLegs = "assets/images/pet_legs.png";
   static const String arrow= "assets/images/aDown.png";
   static const String pet1= "assets/images/pet1.jpg";
   static const String pet2= "assets/images/pet2.jpg";
@@ -22,6 +32,11 @@ class AppImages {
   static const String setting1= "assets/images/setting1.png";
   static const String delete= "assets/images/delete.png";
   static const String pet= "assets/images/petImage.png";
+  static const String neutered = "assets/images/Neutered.png";
+  static const String calendars = "assets/images/calenders.png";
+  static const String kg = "assets/images/kg.png";
+  static const String vaccinated = "assets/images/Vaccinated.png";
+  static const String maineCoon = "assets/images/Maine_Coon.png";
 
   static const String profile = "assets/images/profile.png";
   static const String service1 = "assets/images/service1.png";

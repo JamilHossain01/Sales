@@ -11,10 +11,17 @@ class TrendingProvidersSection extends StatelessWidget {
     AppImages.service1,
     AppImages.service,
     AppImages.service2,
+    AppImages.service3,AppImages.service1,
+    AppImages.service,
+    AppImages.service2,
     AppImages.service3,
   ];
 
   static const List<String> serviceNames = [
+    "Veterinary",
+    "Grooming",
+    "Pet stores",
+    "Pet Hotels",
     "Veterinary",
     "Grooming",
     "Pet stores",
@@ -24,7 +31,7 @@ class TrendingProvidersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 110.h, // increased height to fit text below image
+      height: 90.h, // increased height to fit text below image
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: serviceImages.length,
@@ -33,12 +40,12 @@ class TrendingProvidersSection extends StatelessWidget {
           final name = serviceNames[index];
 
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
             child: Column(
               children: [
                 Container(
-                  width: 75.w,
-                  height: 65.h,
+                  width: 60.w,
+                  height: 55.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100.r),
@@ -52,7 +59,7 @@ class TrendingProvidersSection extends StatelessWidget {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Image.asset(
                       image,
                       width: 24.w,
@@ -64,7 +71,7 @@ class TrendingProvidersSection extends StatelessWidget {
                 SizedBox(height: 6.h),
                 CustomText(
                   text: name,
-                  fontSize: 12.sp,
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.w400,
                   color: Colors.black87,
                 ),

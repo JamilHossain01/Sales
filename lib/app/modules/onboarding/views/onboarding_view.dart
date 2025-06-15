@@ -15,6 +15,7 @@ class OnboardingView extends GetView<OnboardingController> {
     final controller = this.controller;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -34,7 +35,7 @@ class OnboardingView extends GetView<OnboardingController> {
                 child: CustomText(
                   text: 'Skip',
                   fontWeight: FontWeight.w600,
-                  fontSize: 24.sp,
+                  fontSize: 20.sp,
                 ),
               ),
 
@@ -69,6 +70,7 @@ class OnboardingView extends GetView<OnboardingController> {
                         ),
                         const SizedBox(height: 12),
                         CustomText(
+                          textAlign: TextAlign.start,
                           text: page.subtitle,
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,

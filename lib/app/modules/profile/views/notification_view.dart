@@ -53,12 +53,12 @@ class _NotificationViewState extends State<NotificationView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.2),
+                SizedBox(height: screenHeight * 0.1),
                 CustomText(text: 'Today',fontWeight: FontWeight.w500,fontSize: 16.sp,),
                 Gap(4.h),
                 NotificationItem(
                   title: 'Today',
-                  message: 'SOS Gyvūnai Shelter sent you a new message ',
+                  message: 'SOS Gyvūnai Shelter sent you a new message regarding your adoption application ',
                   time: '11.00 AM',
                   message1: 'regarding your adoption application',
                 ),

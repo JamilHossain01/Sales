@@ -8,6 +8,7 @@ import 'package:pet_donation/app/common%20widget/custom_button.dart';
 import 'package:pet_donation/app/common%20widget/custom_tab_bar_view.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/modules/home/widgets/carosele_slider.dart';
+import 'package:pet_donation/app/modules/profile/views/profile_view.dart';
 import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
@@ -53,15 +54,20 @@ class HomeView extends GetView<HomeController> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                SizedBox(height: screenHeight * 0.1),
+                SizedBox(height: screenHeight * 0.05),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      child: Image.asset(
-                        AppImages.profile,
-                        height: 40.h,
-                        width: 40,
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(()=> ProfileView());
+                      },
+                      child: SizedBox(
+                        child: Image.asset(
+                          AppImages.profile,
+                          height: 40.h,
+                          width: 40,
+                        ),
                       ),
                     ),
                     Row(
@@ -75,10 +81,10 @@ class HomeView extends GetView<HomeController> {
                         ),
                         Gap(4.w),
                         CustomText(
-                          text: 'Enable Location',
+                          text: 'Dhaka',
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
-                          fontSize: 20.sp,
+                          fontSize: 16.sp,
                         ),
                         Gap(4.w),
                         SizedBox(
@@ -110,20 +116,19 @@ class HomeView extends GetView<HomeController> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       children: [
                         BannerCarousel(),
-                        SizedBox(height: 10),
+                        SizedBox(height: 4),
                         HeaderWidgets(title: 'Services', subTitle: 'See All'),
-                        SizedBox(height: 10),
+                        SizedBox(height: 4),
                         TrendingProvidersSection(),
-                        SizedBox(height: 10),
-                        HeaderWidgets(title: 'Categories', subTitle: 'See More'),
-                        SizedBox(height: 10),
-                        SizedBox(
-                          height: 400, // Adjust height as needed
-                          child: AdoptionTabView()
-                        ),
+                        SizedBox(height: 4),
+                        HeaderWidgets(
+                            title: 'Categories', subTitle: 'See More'),
+                        SizedBox(height: 4),
+                        SizedBox(height: 600, child: AdoptionTabView()),
                       ],
                     ),
                   ),

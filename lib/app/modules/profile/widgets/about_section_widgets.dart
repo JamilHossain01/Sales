@@ -25,8 +25,9 @@ class AboutUsSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         CustomText(
+          textAlign: TextAlign.start,
           text: content,
-          fontSize: 12.sp,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w400,
           color: Colors.black87,
         ),

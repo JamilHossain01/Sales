@@ -10,7 +10,8 @@ class AdoptionTabView extends StatefulWidget {
   _AdoptionTabViewState createState() => _AdoptionTabViewState();
 }
 
-class _AdoptionTabViewState extends State<AdoptionTabView> with SingleTickerProviderStateMixin {
+class _AdoptionTabViewState extends State<AdoptionTabView>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int selectedIndex = 0;
 
@@ -39,7 +40,8 @@ class _AdoptionTabViewState extends State<AdoptionTabView> with SingleTickerProv
       decoration: BoxDecoration(
         color: selected ? Colors.teal.shade400 : Colors.white,
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: selected ? Colors.teal.shade400 : Colors.grey.shade300),
+        border: Border.all(
+            color: selected ? Colors.teal.shade400 : Colors.grey.shade300),
       ),
       child: Text(
         text,
@@ -54,14 +56,42 @@ class _AdoptionTabViewState extends State<AdoptionTabView> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     final allPets = [
-      AdoptionCard(type: 'Adoption', name: 'Becon', gender: 'Female', age: 2, imagePath: AppImages.pet1),
-      AdoptionCard(type: 'Adoption', name: 'Mini', gender: 'Male', age: 2, imagePath:  AppImages.pet2),
-      AdoptionCard(type: 'Adoption', name: 'Miki', gender: 'Female', age: 2, imagePath:  AppImages.pet3),
-      AdoptionCard(type: 'Adoption', name: 'Charlie', gender: 'Male', age: 1, imagePath:  AppImages.pet4),
+      AdoptionCard(
+          type: 'Adoption',
+          name: 'Becon',
+          gender: 'Female',
+          age: 2,
+          imagePath: AppImages.pet1),
+      AdoptionCard(
+          type: 'Adoption',
+          name: 'Mini',
+          gender: 'Male',
+          age: 2,
+          imagePath: AppImages.pet2),
+      AdoptionCard(
+          type: 'Adoption',
+          name: 'Miki',
+          gender: 'Female',
+          age: 2,
+          imagePath: AppImages.pet3),
+      AdoptionCard(
+          type: 'Adoption',
+          name: 'Charlie',
+          gender: 'Male',
+          age: 1,
+          imagePath: AppImages.pet4),
     ];
 
-    final catPets = allPets.where((p) => p.gender.toLowerCase() == 'male' && p.name == 'Mini' || p.name == 'Miki').toList();
-    final dogPets = allPets.where((p) => p.gender.toLowerCase() == 'female' && p.name == 'Becon' || p.name == 'Charlie').toList();
+    final catPets = allPets
+        .where((p) =>
+            p.gender.toLowerCase() == 'male' && p.name == 'Mini' ||
+            p.name == 'Miki')
+        .toList();
+    final dogPets = allPets
+        .where((p) =>
+            p.gender.toLowerCase() == 'female' && p.name == 'Becon' ||
+            p.name == 'Charlie')
+        .toList();
 
     List<AdoptionCard> getPetsForTab(int index) {
       if (index == 1) return catPets;
@@ -75,21 +105,22 @@ class _AdoptionTabViewState extends State<AdoptionTabView> with SingleTickerProv
           controller: _tabController,
           indicatorColor: Colors.transparent,
           tabs: List.generate(tabs.length, (index) {
-            return Tab(child: buildCustomTab(tabs[index], selectedIndex == index));
+            return Tab(
+                child: buildCustomTab(tabs[index], selectedIndex == index));
           }),
         ),
         Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            // padding: const EdgeInsets.all(),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.7, // width/height, 0.7 হলে উচ্চতা বাড়বে
-            children: getPetsForTab(selectedIndex),
-          )
+            child: GridView.count(
+          shrinkWrap: true,
 
-
-        ),
+          physics: NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          // padding: const EdgeInsets.all(),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.7,
+          children: getPetsForTab(selectedIndex),
+        )),
       ],
     );
   }

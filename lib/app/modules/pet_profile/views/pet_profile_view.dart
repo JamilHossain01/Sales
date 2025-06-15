@@ -46,7 +46,6 @@ class PetProfileView extends GetView<PetProfileController> {
               children: [
                 SizedBox(height: screenHeight * 0.1),
 
-                CustomText(text: 'Enable Location',fontWeight: FontWeight.w600,color: Colors.black,fontSize: 20.sp,),
                 const SizedBox(height: 50),
                 // Placeholder logo
                 ClipOval(

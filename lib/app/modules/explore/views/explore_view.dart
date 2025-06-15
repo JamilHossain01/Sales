@@ -7,8 +7,10 @@ import 'package:pet_donation/app/common widget/common_search_bar.dart';
 import 'package:pet_donation/app/common widget/custom text/custom_text_widget.dart';
 import 'package:pet_donation/app/common widget/gradient.dart';
 import 'package:pet_donation/app/common widget/heart_conatiner.dart';
+import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:pet_donation/app/modules/explore/controllers/explore_controller.dart';
 import 'package:pet_donation/app/modules/explore/views/filter_view.dart';
+import 'package:pet_donation/app/modules/pet_profile_details/views/pet_profile_details_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
@@ -22,9 +24,11 @@ class ExploreView extends GetView<ExploreController> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final items = [
-      ItemCard(gender: 'Male', name: 'Mini', age: 2),
-      ItemCard(gender: 'Female', name: 'Bella', age: 3),
-      ItemCard(gender: 'Male', name: 'Charlie', age: 1),
+      ItemCard(gender: 'Male', name: 'Mini', age: 2, onTap: () {
+        Get.to(()=>PetProfileDetailsView());
+      },),
+      ItemCard(gender: 'Female', name: 'Bella', age: 3, onTap: () {  },),
+      ItemCard(gender: 'Male', name: 'Charlie', age: 1, onTap: () {  },),
       ItemCard(gender: 'Female', name: 'Luna', age: 4),
       ItemCard(gender: 'Male', name: 'Max', age: 2),
       ItemCard(gender: 'Female', name: 'Lucy', age: 5),
@@ -33,21 +37,14 @@ class ExploreView extends GetView<ExploreController> {
     ];
 
     return Scaffold(
+
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar:
       CommonAppBar(
         title: 'Explore',
-        // trailing: RoundedHeartIconContainer(
-        //   assetPath: AppImages.setting,
-        //   containerHeight: 36,
-        //   containerWidth: 36,
-        //   backgroundColor: const Color(0xFFF3FFFA),
-        //   size: 24,
-        //   padding: 8,
-        //   borderRadius: 12,
-        //   borderColor: AppColors.borderColor,
-        // ),
+        onBackPressed: () => Get.to(DashboardView()), // Correct back behavior
+
       ),
       body: Stack(
         children: [
@@ -62,14 +59,14 @@ class ExploreView extends GetView<ExploreController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.1),
+                SizedBox(height: screenHeight * 0.05),
                 // CustomText(
                 //   text: 'Enable Location',
                 //   fontWeight: FontWeight.w600,
                 //   color: Colors.black,
                 //   fontSize: 20.sp,
                 // ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Expanded(child: CommonSearchbar()),
@@ -80,7 +77,6 @@ class ExploreView extends GetView<ExploreController> {
                       containerWidth: 50,
                       size: 50,
                       padding: 15,
-                      borderRadius: 15,
                       borderColor: AppColors.borderColor,
                     ),
                     Gap(5.w),
@@ -95,13 +91,14 @@ class ExploreView extends GetView<ExploreController> {
                       backgroundColor: const Color(0xFFF3FFFA),
                       size: 40,
                       padding: 12,
-                      borderRadius: 15,
                       borderColor: AppColors.borderColor,
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Expanded(
                   child: GridView.count(
+                    padding: EdgeInsets.zero,
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,

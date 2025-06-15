@@ -18,6 +18,10 @@ import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/pet_profile/bindings/pet_profile_binding.dart';
 import '../modules/pet_profile/views/pet_profile_view.dart';
+import '../modules/pet_profile_details/bindings/pet_profile_details_binding.dart';
+import '../modules/pet_profile_details/views/pet_profile_details_view.dart';
+import '../modules/pet_survey/bindings/pet_survey_binding.dart';
+import '../modules/pet_survey/views/pet_survey_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/services/bindings/services_binding.dart';
@@ -108,6 +112,16 @@ class AppPages {
       name: _Paths.PET_PROFILE,
       page: () => const PetProfileView(),
       binding: PetProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.PET_PROFILE_DETAILS,
+      page: () => PetProfileDetailsView(),
+      binding: PetProfileDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PET_SURVEY,
+      page: () => const PetSurveyView(),
+      binding: PetSurveyBinding(),
     ),
   ];
 }

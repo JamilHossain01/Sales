@@ -17,8 +17,8 @@ class GradientContainer extends StatelessWidget {
       Color(0xFF19A2A5),
       Color(0x0019A2A5),
     ],
-    this.stops = const [0.03, 0.85],
-    this.center = Alignment.topCenter,
+    this.stops = const [0.01, 0.85],
+    this.center = Alignment.topRight,
     this.radius = 1.0,
     this.child,
   }) : super(key: key);

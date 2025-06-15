@@ -25,7 +25,7 @@ class AdoptionCard extends StatelessWidget {
     Color genderColor = gender.toLowerCase() == 'female' ? Colors.pink.shade200 : Colors.teal.shade300;
 
     return Container(
-      height: 280.h,
+      height: 250.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15.r),
@@ -57,7 +57,6 @@ class AdoptionCard extends StatelessWidget {
                   backgroundColor: Colors.white,
                   size: 20,
                   padding: 6,
-                  borderRadius: 15,
                 ),
 
 
@@ -66,7 +65,7 @@ class AdoptionCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 16.h),
+              padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 10.h),
               child: SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
                 child: Column(

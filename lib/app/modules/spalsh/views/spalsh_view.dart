@@ -19,10 +19,7 @@ class SpalshView extends GetView<SpalshController> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash View'),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
       body: Center(
         child: SizedBox(
           child: Image.asset(

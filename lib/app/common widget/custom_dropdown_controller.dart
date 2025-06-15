@@ -31,39 +31,44 @@ class _CustomDropdownState extends State<CustomDropdown> {
       value: widget.value,
       hint: CustomText(
         text: widget.hint,
-        fontSize: 12.sp,
-        fontWeight: FontWeight.w500,
-        color: Colors.black.withOpacity(0.6), // lighter color for hint
+        fontSize: 14.sp, // Adjusted to match the image's text size
+        fontWeight: FontWeight.w400, // Slightly lighter for hint
+        color: Colors.black.withOpacity(0.6), // Matches the lighter hint color
       ),
       items: widget.items.map((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: CustomText(
             text: value,
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
+            fontSize: 14.sp, // Consistent with hint size
+            fontWeight: FontWeight.w400, // Consistent weight
+            color: Colors.black, // Matches the image's text color
           ),
         );
       }).toList(),
       onChanged: widget.onChanged,
       decoration: InputDecoration(
+        filled: true, // Adds the light gray background
+        fillColor: Colors.grey[200], // Light gray background from the image
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey),
+          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey[400]!), // Subtle border
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey),
+          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey[400]!),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.focusedBorderColor ?? Theme.of(context).primaryColor),
+          borderSide: BorderSide(color: widget.focusedBorderColor ?? Colors.grey[400]!), // Subtle focused border
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h), // Adjusted padding
+         // Matches the arrow style
       ),
       dropdownColor: Colors.white,
-      style: TextStyle(color: Colors.black), // text style when selected
+      style: TextStyle(color: Colors.black), // Ensures text color consistency
+      iconEnabledColor: Colors.black, // Matches the arrow color
+      iconDisabledColor: Colors.black, // Ensures consistency when disabled
     );
   }
 }

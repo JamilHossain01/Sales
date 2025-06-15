@@ -132,10 +132,8 @@ class ProfileView extends GetView<ProfileController> {
                       _buildMenuItem(Icons.rule, 'Terms of Services', () {
                         Get.to(TermsOfUseView ());
 
-                      }), _buildMenuItem(Icons.rule, 'PEt', () {
-                        Get.toNamed(Routes.PET_PROFILE);
-
                       }),
+
                       _buildMenuItem(Icons.logout, 'Sign Out', () {
                         showDialog(
 
@@ -167,10 +165,10 @@ class ProfileView extends GetView<ProfileController> {
 
   Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap, {Color? textColor}) {
     return ListTile(
-      leading: Icon(icon, color: textColor ?? Colors.black),
+      leading: Icon(icon, color: textColor ?? Color(0xFF666666)),
       title: Text(
         title,
-        style: TextStyle(color: textColor ?? Colors.black, fontWeight: FontWeight.w500),
+        style: TextStyle(color: textColor ??  Color(0xFF484848), fontWeight: FontWeight.w500),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,

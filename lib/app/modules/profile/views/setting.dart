@@ -49,7 +49,7 @@ class _SettingViewState extends State<SettingView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.2),
+                SizedBox(height: screenHeight * 0.1),
                 MenuItem(
                   assetImagePath: AppImages.setting1,
                   backgroundColor: Color(0XFFF8F8F8),

@@ -9,7 +9,7 @@ class CustomButton extends StatelessWidget {
   final bool isLoading;
   final double width;
   final double? height;
-  final FontWeight? fontWeight;  // Corrected type
+  final FontWeight? fontWeight;
 
   final double padding_vertical;
   final double borderRadius;
@@ -20,6 +20,9 @@ class CustomButton extends StatelessWidget {
   final Widget? widget;
   final bool? isGradient;
   final Gradient? gradient;
+
+  /// 🔹 NEW: Optional image to display beside title
+  final String? imagePath;
 
   const CustomButton({
     super.key,
@@ -37,7 +40,8 @@ class CustomButton extends StatelessWidget {
     this.gradient,
     this.height,
     this.buttonColor,
-    this.fontWeight = FontWeight.w700, // Default font weight
+    this.fontWeight = FontWeight.w700,
+    this.imagePath, // ✅ added
   });
 
   @override
@@ -78,13 +82,22 @@ class CustomButton extends StatelessWidget {
         )
             : Center(
           child: widget ??
-              Text(
-                title,
-                style: GoogleFonts.urbanist(
-                  fontSize: fontSize,
-                  fontWeight: fontWeight,
-                  color: titleColor,
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (imagePath != null) ...[
+                    Image.asset(imagePath!, width: 24, height: 24),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(
+                    title,
+                    style: GoogleFonts.urbanist(
+                      fontSize: fontSize,
+                      fontWeight: fontWeight,
+                      color: titleColor,
+                    ),
+                  ),
+                ],
               ),
         ),
       ),

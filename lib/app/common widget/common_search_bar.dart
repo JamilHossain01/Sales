@@ -15,7 +15,6 @@ class CommonSearchbar extends StatelessWidget {
           hintText: 'Search items...',
           hintStyle: TextStyle(
             fontSize: 12,
-            fontStyle: FontStyle.italic,
             color: AppColors.textGray,
           ),
           prefixIcon: Icon(

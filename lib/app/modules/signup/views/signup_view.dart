@@ -241,7 +241,7 @@ class SignupView extends GetView<SignupController> {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
-                            AppImages.group,
+                            AppImages.x,
                             height: 18.h,
                             width: 18.w,
                           ),

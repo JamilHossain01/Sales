@@ -54,7 +54,7 @@ class _PrivacyPolicyViewState extends State<PrivacyPolicyView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.2),
+                SizedBox(height: screenHeight * 0.1),
                 AboutUsSection(
                   title: 'Privacy Policy',
                   content: '''

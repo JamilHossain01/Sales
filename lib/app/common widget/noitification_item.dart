@@ -46,20 +46,16 @@ class NotificationItem extends StatelessWidget {
                   children: [
 
                     CustomText(
+                      textAlign: TextAlign.start,
                       text: message,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black87,
-                    ), CustomText(
-                      text: message1,
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.black87,
                     ),
                     SizedBox(width: 8.w),
                     CustomText(
                       text: time,
-                      fontSize: 10.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,
                     ),

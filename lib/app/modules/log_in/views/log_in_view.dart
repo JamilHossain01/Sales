@@ -22,6 +22,7 @@ class LogInView extends GetView<LogInController> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body:
@@ -75,7 +76,7 @@ class LogInView extends GetView<LogInController> {
                   Get.toNamed(Routes.SIGN_IN);
 
                 }),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 CustomButton( isGradient: false, titleColor: AppColors.mainColor,
                     border: Border.all(color: AppColors.mainColor),
                     title: 'Create an Account', onTap: (){

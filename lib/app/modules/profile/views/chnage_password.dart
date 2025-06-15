@@ -48,7 +48,7 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.2),
+                SizedBox(height: screenHeight * 0.1),
                 CustomText(
                   text: 'Current Password',
                   fontSize: 12.sp,

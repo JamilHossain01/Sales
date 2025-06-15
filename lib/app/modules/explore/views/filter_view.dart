@@ -74,6 +74,8 @@ class _FilterViewState extends State<FilterView> {
                   width: double.infinity,
                   height: 45.h,
                   child: CustomDropdown(
+                    focusedBorderColor: Colors.transparent,
+                    borderColor: Colors.transparent,
                     value: selectedBreed,
                     hint: 'Select Breed',
                     items: breedItems,
