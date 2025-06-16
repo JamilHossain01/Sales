@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:pet_donation/app/uitilies/container_icon.dart';
 
 import '../../../common widget/heart_conatiner.dart';
 
@@ -52,11 +53,11 @@ class AdoptionCard extends StatelessWidget {
               Positioned(
                 top: 8.h,
                 right: 8.w,
-                child: RoundedHeartIconContainer(
+                child:ContainerIcon(
                   assetPath: AppImages.heart,
                   backgroundColor: Colors.white,
                   size: 20,
-                  padding: 12,
+                  padding: 9, tappedAssetPath:  AppImages.love,
                 ),
 
 

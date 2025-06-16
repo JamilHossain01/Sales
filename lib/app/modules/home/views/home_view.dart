@@ -8,6 +8,7 @@ import 'package:pet_donation/app/common%20widget/custom_button.dart';
 import 'package:pet_donation/app/common%20widget/custom_tab_bar_view.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/modules/home/widgets/carosele_slider.dart';
+import 'package:pet_donation/app/modules/pet_profile_details/views/pet_profile_details_view.dart';
 import 'package:pet_donation/app/modules/profile/views/profile_view.dart';
 import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -15,6 +16,7 @@ import 'package:pet_donation/app/uitilies/app_images.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_header_widgets.dart';
 import '../../../uitilies/app_colors.dart';
+import '../../profile/views/notification_view.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/trending_servoces.dart';
 
@@ -96,19 +98,24 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                    Container(
-                      height: 40.h,
-                      width: 40.w,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50.r),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          AppImages.bell,
-                          height: 24.h,
-                          width: 24.w,
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(()=>NotificationView());
+                      },
+                      child: Container(
+                        height: 40.h,
+                        width: 40.w,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50.r),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(11.0),
+                          child: Image.asset(
+                            AppImages.bell,
+                            height: 24.h,
+                            width: 24.w,
+                          ),
                         ),
                       ),
                     ),
@@ -122,13 +129,16 @@ class HomeView extends GetView<HomeController> {
                         BannerCarousel(),
                         SizedBox(height: 4),
                         HeaderWidgets(title: 'Services', subTitle: 'See All'),
-                        SizedBox(height: 8),
+                        SizedBox(height: 12.h),
                         TrendingProvidersSection(),
-                        SizedBox(height: 4),
+                        SizedBox(height: 12),
                         HeaderWidgets(
                             title: 'Categories', subTitle: 'See More'),
-                        SizedBox(height: 4),
-                        SizedBox(height: 600, child: AdoptionTabView()),
+                        SizedBox(height: 12.h,),
+                        SizedBox(height: 600, child: GestureDetector( onTap: (){
+                          Get.to(()=> PetProfileDetailsView());
+                        },
+                            child: AdoptionTabView())),
                       ],
                     ),
                   ),

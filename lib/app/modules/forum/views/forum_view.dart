@@ -12,6 +12,7 @@ import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
 import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../common widget/custom_app_bar_widget.dart';
 import '../../../uitilies/app_colors.dart';
 
 class ForumView extends GetView<ForumController> {
@@ -21,6 +22,12 @@ class ForumView extends GetView<ForumController> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar:   CommonAppBar(
+        title: 'Forum',
+        showBackButton: false,
+
+
+      ),
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body:
@@ -41,7 +48,7 @@ class ForumView extends GetView<ForumController> {
               children: [
                 SizedBox(height: screenHeight * 0.1),
 
-                CustomText(text: 'Enable Location',fontWeight: FontWeight.w600,color: Colors.black,fontSize: 20.sp,),
+                Center(child: CustomText(text: 'Up coming',fontWeight: FontWeight.w600,color: Colors.black,fontSize: 20.sp,)),
                 const SizedBox(height: 50),
                 // Placeholder logo
 

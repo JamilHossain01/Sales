@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
+import '../uitilies/container_icon.dart';
+
 class ItemCard extends StatelessWidget {
   final String gender;
   final String name;
@@ -51,17 +53,11 @@ class ItemCard extends StatelessWidget {
                 Positioned(
                   top: 8.h,
                   right: 8.w,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
-                    padding: EdgeInsets.all(6.w),
-                    child: Icon(
-                      Icons.favorite,
-                      color: Colors.teal,
-                      size: 20.sp,
-                    ),
+                  child: ContainerIcon(
+                    assetPath: AppImages.heart,
+                    backgroundColor: Colors.white,
+                    size: 20,
+                    padding: 9, tappedAssetPath:  AppImages.love,
                   ),
                 ),
               ],

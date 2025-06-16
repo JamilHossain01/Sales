@@ -41,7 +41,7 @@ class TrendingProvidersSection extends StatelessWidget {
           final name = serviceNames[index];
 
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Column(
               children: [
                 Container(

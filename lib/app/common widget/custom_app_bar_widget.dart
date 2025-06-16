@@ -1,21 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:pet_donation/app/common widget/custom text/custom_text_widget.dart';
-import 'package:pet_donation/app/common widget/heart_conatiner.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'custom text/custom_text_widget.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onBackPressed;
   final Widget? trailing;
+  final bool showBackButton; // ✅ new flag
 
   const CommonAppBar({
     Key? key,
     required this.title,
     this.onBackPressed,
     this.trailing,
+    this.showBackButton = true, // ✅ default true
   }) : super(key: key);
 
   @override
@@ -34,10 +34,12 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 20.sp,
         color: Colors.black,
       ),
-      leading: IconButton(
+      leading: showBackButton
+          ? IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.black),
         onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
-      ),
+      )
+          : const SizedBox.shrink(), // ✅ hide if false
       actions: trailing != null
           ? [
         Padding(

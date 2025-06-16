@@ -24,27 +24,53 @@ class ExploreView extends GetView<ExploreController> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final items = [
-      ItemCard(gender: 'Male', name: 'Mini', age: 2, onTap: () {
-        Get.to(()=>PetProfileDetailsView());
+      ItemCard(
+        gender: 'Male',
+        name: 'Mini',
+        age: 2,
+        onTap: () {
+          Get.to(() => PetProfileDetailsView());
+        },
+      ),
+      ItemCard(
+        gender: 'Female',
+        name: 'Bella',
+        age: 3,
+        onTap: () {
+          Get.to(() => PetProfileDetailsView());
+        },
+      ),
+      ItemCard(
+        gender: 'Male',
+        name: 'Charlie',
+        age: 1,
+        onTap: () {
+          Get.to(() => PetProfileDetailsView());
+        },
+      ),
+      ItemCard(gender: 'Female', name: 'Luna', age: 4,onTap: () {
+        Get.to(() => PetProfileDetailsView());
       },),
-      ItemCard(gender: 'Female', name: 'Bella', age: 3, onTap: () {  },),
-      ItemCard(gender: 'Male', name: 'Charlie', age: 1, onTap: () {  },),
-      ItemCard(gender: 'Female', name: 'Luna', age: 4),
-      ItemCard(gender: 'Male', name: 'Max', age: 2),
-      ItemCard(gender: 'Female', name: 'Lucy', age: 5),
-      ItemCard(gender: 'Male', name: 'Rocky', age: 3),
-      ItemCard(gender: 'Female', name: 'Daisy', age: 2),
+      ItemCard(gender: 'Male', name: 'Max', age: 2,onTap: () {
+        Get.to(() => PetProfileDetailsView());
+      },),
+      ItemCard(gender: 'Female', name: 'Lucy', age: 5,onTap: () {
+        Get.to(() => PetProfileDetailsView());
+      },),
+      ItemCard(gender: 'Male', name: 'Rocky', age: 3,onTap: () {
+        Get.to(() => PetProfileDetailsView());
+      },),
+      ItemCard(gender: 'Female', name: 'Daisy', age: 2,onTap: () {
+        Get.to(() => PetProfileDetailsView());
+      },),
     ];
 
     return Scaffold(
-
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
-      appBar:
-      CommonAppBar(
+      appBar: CommonAppBar(
         title: 'Explore',
-        onBackPressed: () => Get.to(DashboardView()), // Correct back behavior
-
+        showBackButton: false,
       ),
       body: Stack(
         children: [
@@ -60,12 +86,6 @@ class ExploreView extends GetView<ExploreController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: screenHeight * 0.05),
-                // CustomText(
-                //   text: 'Enable Location',
-                //   fontWeight: FontWeight.w600,
-                //   color: Colors.black,
-                //   fontSize: 20.sp,
-                // ),
                 const SizedBox(height: 30),
                 Row(
                   children: [
@@ -80,7 +100,6 @@ class ExploreView extends GetView<ExploreController> {
                       borderColor: AppColors.borderColor,
                     ),
                     Gap(5.w),
-
                     RoundedHeartIconContainer(
                       onTap: () {
                         Get.to(FilterView());
@@ -93,7 +112,6 @@ class ExploreView extends GetView<ExploreController> {
                       padding: 10,
                       borderColor: AppColors.borderColor,
                     ),
-
                   ],
                 ),
                 SizedBox(height: 10),

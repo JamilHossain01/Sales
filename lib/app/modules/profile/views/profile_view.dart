@@ -123,10 +123,6 @@ class ProfileView extends GetView<ProfileController> {
                         Get.to(PrivacyPolicyView ());
 
                       }),
-                      _buildMenuItem(Icons.shield_outlined, 'Notification', () {
-                        Get.to(NotificationView());
-
-                      }),
                       _buildMenuItem(Icons.rule, 'Terms of Services', () {
                         Get.to(TermsOfUseView ());
 

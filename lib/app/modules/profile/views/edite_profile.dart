@@ -141,7 +141,7 @@ class _EditeProfileViewState extends State<EditeProfileView> {
                 const SizedBox(height: 12),
 
                 CustomText(
-                  text: 'Breed',
+                  text: 'Gender',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
@@ -156,7 +156,7 @@ class _EditeProfileViewState extends State<EditeProfileView> {
                     focusedBorderColor: AppColors.borderColor,
 
                     value: selectedBreed,
-                    hint: 'Select Breed',
+                    hint: 'Select Gender',
                     items: breedItems,
                     onChanged: (value) {
                       setState(() {

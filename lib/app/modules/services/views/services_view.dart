@@ -24,7 +24,9 @@ class ServicesView extends GetView<ServicesController> {
       extendBodyBehindAppBar: true,
       appBar:  CommonAppBar(
         title: 'Services',
-        onBackPressed: () => Get.to(DashboardView()), // Correct back behavior
+        showBackButton: false,
+
+
 
 
       ),

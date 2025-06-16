@@ -41,11 +41,13 @@ class PetProfileDetailsView extends GetView<PetProfileDetailsController> {
         final pet = controller.serviceDetail.value;
         final screenHeight = MediaQuery.of(context).size.height;
 
-        return Column(
-          children: [
-            Stack(
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  /// ✅ Gradient at the back
+                  // ✅ Background Gradient
                   Positioned.fill(
                     child: Column(
                       children: [
@@ -56,153 +58,168 @@ class PetProfileDetailsView extends GetView<PetProfileDetailsController> {
                       ],
                     ),
                   ),
+                  CommonAppBar(
+                    title: 'Details',
 
+                  ),
+
+                  // ✅ PageView (Image Carousel)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: SizedBox(
+                      height: 300.h,
+                      child: PageView.builder(
+                        controller: controller.pageController,
+                        onPageChanged: (i) => controller.currentPage.value = i,
+                        itemCount: pet.images.length,
+                        itemBuilder: (_, i) => Image.asset(
+                          pet.images[i],
+                          width: double.infinity,
+                          height: 310,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // ✅ Page indicator dots
+                  Positioned(
+                    bottom: 12.h,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(pet.images.length, (i) {
+                        return Obx(() {
+                          final isActive = controller.currentPage.value == i;
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            margin: const EdgeInsets.symmetric(horizontal: 4),
+                            width: isActive ? 16 : 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: isActive ? Colors.white : Colors.white54,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          );
+                        });
+                      }),
+                    ),
+                  ),
+                ],
+              ),
 
               Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: SizedBox(
-                  height: 300.h,
-                  child: PageView.builder(
-                    controller: controller.pageController,
-                    onPageChanged: (i) => controller.currentPage.value = i,
-                    itemCount: pet.images.length,
-                    itemBuilder: (_, i) => Image.asset(
-                      pet.images[i],
-                      width: double.infinity,
-                      height: 310,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 12.h,
-                left: 0,
-                right: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(pet.images.length, (i) {
-                    return Obx(() {
-                      final isActive = controller.currentPage.value == i;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 16 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: isActive ? Colors.white : Colors.white54,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      );
-                    });
-                  }),
-                ),
-              ),
-
-            ]),
-
-            // Content section
-            Expanded(
-              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  // Name & location
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: pet.title,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Image.asset(AppImages.pin, height: 20.h, width: 20.w),
-                          const SizedBox(width: 6),
-                          CustomText(
-                            text: pet.location,
-                            fontSize: 14.sp,
-                            color: Colors.grey[600]!,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Gap(16.h),
-
-                  // Attribute badges
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.r),
-                      color: const Color(0XFFF5F6F7),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Name & Location
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: 'Pet Attributes:',
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
+                          text: pet.title,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
                         ),
-                        Gap(8.h),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                        const SizedBox(height: 8),
+                        Row(
                           children: [
-                            _attributeBadge(AppImages.maineCoon, 'Maine Coon'),
-                            _attributeBadge(AppImages.pet4, 'Male'),
-                            _attributeBadge(AppImages.vaccinated, 'Vaccinated'),
-                            _attributeBadge(AppImages.chips, 'Chipped'),
-                            _attributeBadge(AppImages.neutered, 'Neutered'),
-                            _attributeBadge(AppImages.kg, '3.0 kg'),
-                            _attributeBadge(AppImages.kg, '3 y 5 mo'),
+                            Image.asset(AppImages.pin, height: 20.h, width: 20.w),
+                            const SizedBox(width: 6),
+                            CustomText(
+                              text: pet.location,
+                              fontSize: 14.sp,
+                              color: Colors.grey[600]!,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                  Gap(20.h),
 
-                  // Description
-                  CustomText(
+                    Gap(16.h),
+
+                    /// Attribute badges
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: const Color(0XFFF5F6F7),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: 'Pet Attributes:',
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          Gap(8.h),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              _attributeBadge(AppImages.maineCoon, 'Maine Coon'),
+                              _attributeBadge(AppImages.pet4, 'Male'),
+                              _attributeBadge(AppImages.vaccinated, 'Vaccinated'),
+                              _attributeBadge(AppImages.chips, 'Chipped'),
+                              _attributeBadge(AppImages.neutered, 'Neutered'),
+                              _attributeBadge(AppImages.kg, '3.0 kg'),
+                              _attributeBadge(AppImages.kg, '3 y 5 mo'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Gap(20.h),
+
+                    /// Description
+                    CustomText(
                       textAlign: TextAlign.start,
-                      text: 'Description', fontSize: 14.sp, fontWeight: FontWeight.w500),
-                  Gap(8.h),
-                  CustomText(
-                    textAlign: TextAlign.start,
-                    text: pet.description,
-                    fontSize: 12.sp,
-                    color: AppColors.textGray,
-                  ),
-                  Gap(20.h),
+                      text: 'Description',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    Gap(8.h),
+                    CustomText(
+                      textAlign: TextAlign.start,
+                      text: pet.description,
+                      fontSize: 12.sp,
+                      color: AppColors.textGray,
+                    ),
 
-                  // Shelter Info
-                  _shelterCard(
-                    name: "SOS Gyvūnai",
-                    location: "Vilnius, Lithuania",
-                    phone: "+370 83 398 26",
-                    email: "info@sos-gyvunai.lt",
-                    website: "sos-gyvunai.lt",
-                    imageLeftUrl: AppImages.pet4,
-                    imageRightUrl: AppImages.pet2,
-                  ),
+                    Gap(20.h),
 
-                  Gap(20.h),
-                  CustomButton(title: 'Take me home', onTap: (){
-                    Get.to(()=>PetSurveyView());
-                  },imagePath:  AppImages.pLegs,)
+                    /// Shelter info
+                    _shelterCard(
+                      name: "SOS Gyvūnai",
+                      location: "Vilnius, Lithuania",
+                      phone: "+370 83 398 26",
+                      email: "info@sos-gyvunai.lt",
+                      website: "sos-gyvunai.lt",
+                      imageLeftUrl: AppImages.pet4,
+                      imageRightUrl: AppImages.pet2,
+                    ),
 
+                    Gap(20.h),
 
-                ]),
+                    /// Button
+                    CustomButton(
+                      title: 'Take me home',
+                      onTap: () {
+                        Get.to(() => PetSurveyView());
+                      },
+                      imagePath: AppImages.pLegs,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // MapScreen(),
-
-          ],
+            ],
+          ),
         );
       }),
     );

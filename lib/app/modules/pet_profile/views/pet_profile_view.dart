@@ -28,7 +28,7 @@ class PetProfileView extends GetView<PetProfileController> {
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'My Pets',
-        onBackPressed: () => Get.to(DashboardView()), // Correct back behavior
+        showBackButton: false,
       ),
       body: Stack(
         children: [

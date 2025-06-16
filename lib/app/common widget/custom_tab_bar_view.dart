@@ -19,7 +19,8 @@ class _AdoptionTabViewState extends State<AdoptionTabView> {
   Widget buildCustomTab(String text, bool selected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child:
+      Container(
         width: 102, // ✅ Fixed width for all tabs
         margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -41,7 +42,7 @@ class _AdoptionTabViewState extends State<AdoptionTabView> {
               ? null
               : [
             BoxShadow(
-              color: Color(0XFF00000000).withOpacity(0.08),
+              color: Color(0Xff000000).withOpacity(0.08),
               offset: const Offset(0, 0),
               blurRadius: 1.r,
               spreadRadius: 0,
