@@ -56,7 +56,7 @@ class AdoptionCard extends StatelessWidget {
                   assetPath: AppImages.heart,
                   backgroundColor: Colors.white,
                   size: 20,
-                  padding: 6,
+                  padding: 12,
                 ),
 
 

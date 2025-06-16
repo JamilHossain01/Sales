@@ -9,6 +9,7 @@ import 'package:pet_donation/app/uitilies/app_images.dart';
 import '../../../common widget/common_search_bar.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_app_bar_widget.dart';
+import '../../dashboard/views/dashboard_view.dart';
 import 'grooming.dart';
 
 class ServicesView extends GetView<ServicesController> {
@@ -23,6 +24,8 @@ class ServicesView extends GetView<ServicesController> {
       extendBodyBehindAppBar: true,
       appBar:  CommonAppBar(
         title: 'Services',
+        onBackPressed: () => Get.to(DashboardView()), // Correct back behavior
+
 
       ),
       body: Stack(
@@ -88,7 +91,7 @@ class ServicesView extends GetView<ServicesController> {
               containerHeight: 40.h,
               containerWidth: 40.h,
               size: 24.w,
-              padding: 8,
+              padding: 10,
               backgroundColor: const Color(0xFFF2F2F2),
             ),
             SizedBox(width: 12.w),

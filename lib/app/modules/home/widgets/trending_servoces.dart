@@ -31,6 +31,7 @@ class TrendingProvidersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+
       height: 90.h, // increased height to fit text below image
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -40,26 +41,26 @@ class TrendingProvidersSection extends StatelessWidget {
           final name = serviceNames[index];
 
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
             child: Column(
               children: [
                 Container(
-                  width: 60.w,
+                  width: 58.w,
                   height: 55.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Color(0XFF00000000).withOpacity(0.08),
                         offset: const Offset(0, 0),
-                        blurRadius: 24.r,
+                        blurRadius: 1.r,
                         spreadRadius: 0,
                       ),
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(18.0),
                     child: Image.asset(
                       image,
                       width: 24.w,

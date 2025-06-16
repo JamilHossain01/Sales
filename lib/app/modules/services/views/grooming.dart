@@ -26,18 +26,19 @@ class GroomingView extends GetView<ServicesController> {
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'Grooming',
-        trailing: RoundedHeartIconContainer(
+        trailing:         RoundedHeartIconContainer(
           onTap: () {
             Get.to(FilterView2());
           },
           assetPath: AppImages.setting,
-          containerHeight: 50,
-          containerWidth: 50,
+          containerHeight: 35,
+          containerWidth: 35,
           backgroundColor: const Color(0xFFF3FFFA),
           size: 40,
-          padding: 12,
+          padding: 10,
           borderColor: AppColors.borderColor,
         ),
+
       ),
       body: Stack(
         children: [

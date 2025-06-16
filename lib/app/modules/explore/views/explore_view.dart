@@ -73,26 +73,27 @@ class ExploreView extends GetView<ExploreController> {
                     RoundedHeartIconContainer(
                       assetPath: AppImages.heart,
                       backgroundColor: Colors.white,
-                      containerHeight: 50,
-                      containerWidth: 50,
+                      containerHeight: 40,
+                      containerWidth: 40,
                       size: 50,
-                      padding: 15,
+                      padding: 10,
                       borderColor: AppColors.borderColor,
                     ),
                     Gap(5.w),
 
                     RoundedHeartIconContainer(
-                      onTap: (){
+                      onTap: () {
                         Get.to(FilterView());
                       },
                       assetPath: AppImages.setting,
-                      containerHeight: 50,
-                      containerWidth: 50,
+                      containerHeight: 40,
+                      containerWidth: 40,
                       backgroundColor: const Color(0xFFF3FFFA),
                       size: 40,
-                      padding: 12,
+                      padding: 10,
                       borderColor: AppColors.borderColor,
                     ),
+
                   ],
                 ),
                 SizedBox(height: 10),

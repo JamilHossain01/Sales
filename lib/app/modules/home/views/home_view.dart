@@ -122,7 +122,7 @@ class HomeView extends GetView<HomeController> {
                         BannerCarousel(),
                         SizedBox(height: 4),
                         HeaderWidgets(title: 'Services', subTitle: 'See All'),
-                        SizedBox(height: 4),
+                        SizedBox(height: 8),
                         TrendingProvidersSection(),
                         SizedBox(height: 4),
                         HeaderWidgets(
