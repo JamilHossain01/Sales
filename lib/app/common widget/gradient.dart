@@ -1,42 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pet_donation/app/uitilies/app_images.dart';
 
 class GradientContainer extends StatelessWidget {
-  final double height;
-  final double width;
-  final List<Color> colors;
-  final List<double> stops;
-  final AlignmentGeometry center;
-  final double radius;
-  final Widget? child;
-
-  const GradientContainer({
-    Key? key,
-    required this.height,
-    required this.width,
-    this.colors = const [
-      Color(0xFF19A2A5),
-      Color(0x0019A2A5),
-    ],
-    this.stops = const [0.01, 0.85],
-    this.center = Alignment.topRight,
-    this.radius = 1.0,
-    this.child,
-  }) : super(key: key);
+  const GradientContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        gradient: RadialGradient(
-          colors: colors,
-          stops: stops,
-          center: center,
-          radius: radius,
-        ),
+    return SizedBox(
+      width: double.infinity,
+      child: Image.asset(
+        AppImages.gradients,
+        fit: BoxFit.cover,
       ),
-      child: child,
     );
   }
 }

@@ -5,11 +5,9 @@ import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/common%20widget/heart_conatiner.dart';
 import 'package:pet_donation/app/modules/services/controllers/services_controller.dart';
 import 'package:pet_donation/app/modules/services/views/veterinary_view.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
 import '../../../common widget/common_search_bar.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_app_bar_widget.dart';
-import '../../dashboard/views/dashboard_view.dart';
 import 'grooming.dart';
 
 class ServicesView extends GetView<ServicesController> {
@@ -34,8 +32,7 @@ class ServicesView extends GetView<ServicesController> {
         children: [
           // Top gradient
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
 
           // Main content

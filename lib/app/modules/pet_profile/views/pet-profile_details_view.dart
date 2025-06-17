@@ -6,13 +6,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_donation/app/common%20widget/custom_button.dart';
-import 'package:pet_donation/app/common%20widget/custom_dropdown_controller.dart';
-import 'package:pet_donation/app/common%20widget/custom_text_filed.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
-import 'package:pet_donation/app/common%20widget/heart_conatiner.dart';
 import 'package:pet_donation/app/modules/pet_profile/views/edit_pet_profile.dart';
-import 'package:pet_donation/app/modules/pet_profile/views/my_pets_view.dart';
 import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -73,12 +69,11 @@ class _PetdetaielsProfileViewState extends State<PetdetaielsProfileView> {
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: const CommonAppBar(
-        title: 'Add Pet Profile',
+        title: 'Pet Profile',
       ),
       body: Stack(children: [
         GradientContainer(
-          height: screenHeight * 0.2,
-          width: double.infinity,
+
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -151,20 +146,21 @@ class _PetdetaielsProfileViewState extends State<PetdetaielsProfileView> {
                   const SizedBox(height: 8),
                   Center(
                     child: CustomText(
-                      text: 'Add profile picture',
+                      text: 'Rina',
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.mainColor,
                     ),
                   ),
                   Gap(4.h),
-                  Gap(40.h),                  Container(
+                  Gap(40.h),
+                  Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: AppColors.borderColor),
                         borderRadius: BorderRadius.circular(12.r)),
-                    child:
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16,top: 16,bottom: 16),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, top: 16, bottom: 16),
                       child: Column(
                         children: [
                           InfoRow(
@@ -197,12 +193,13 @@ class _PetdetaielsProfileViewState extends State<PetdetaielsProfileView> {
                         ],
                       ),
                     ),
-
                   ),
-
                   Gap(4.h),
                   Gap(40.h),
                   CustomButton(
+                    imagePath: AppImages.edit,
+                    border: Border.all(color: AppColors.mainColor),
+                    isGradient: false,titleColor: AppColors.mainColor,
                     title: 'Edit Profile',
                     onTap: () {
                       Get.to(() => EditePetProfileView());

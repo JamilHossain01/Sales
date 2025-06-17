@@ -47,8 +47,7 @@ class _FilterViewState extends State<FilterView> {
       body: Stack(
         children: [
           GradientContainer(
-            height: MediaQuery.of(context).size.height * 0.2,
-            width: double.infinity,
+
           ),
           Padding(
             padding: EdgeInsets.all(16.0.w),

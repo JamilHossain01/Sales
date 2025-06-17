@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_donation/app/common%20widget/CustomBottomSheet.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
@@ -24,8 +23,7 @@ class ForgetPasswordView extends GetView {
       body: Stack(
         children: [
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           SafeArea(
             child: SingleChildScrollView(

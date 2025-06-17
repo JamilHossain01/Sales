@@ -9,7 +9,6 @@ import 'package:pet_donation/app/modules/profile/controllers/porfile_image_contr
 import 'package:pet_donation/app/modules/profile/controllers/profile_controller.dart';
 import 'package:pet_donation/app/modules/profile/views/about_us.dart';
 import 'package:pet_donation/app/modules/profile/views/edite_profile.dart';
-import 'package:pet_donation/app/modules/profile/views/notification_view.dart';
 import 'package:pet_donation/app/modules/profile/views/privacy_policy.dart';
 import 'package:pet_donation/app/modules/profile/views/setting.dart';
 import 'package:pet_donation/app/modules/profile/views/terms_of_use_view.dart';
@@ -40,8 +39,7 @@ class ProfileView extends GetView<ProfileController> {
         children: [
           // Top gradient fading softly to white
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
 
           Padding(

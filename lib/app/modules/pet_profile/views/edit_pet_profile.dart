@@ -10,8 +10,7 @@ import 'package:pet_donation/app/common%20widget/custom_dropdown_controller.dart
 import 'package:pet_donation/app/common%20widget/custom_text_filed.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
-import 'package:pet_donation/app/modules/home/views/home_view.dart';
-import 'package:pet_donation/app/modules/pet_profile/views/my_pets_view.dart';
+import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -75,8 +74,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
       body: Stack(
           children: [
             GradientContainer(
-              height: screenHeight * 0.2,
-              width: double.infinity,
+
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -151,7 +149,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                         text: 'Full Name',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color:AppColors.textFieldColor,
                       ),
                       Gap(4.h),
                       CustomTextField(
@@ -165,7 +163,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                         text: 'Chip number',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color:AppColors.textFieldColor,
                       ),
                       Gap(4.h),
                       CustomTextField(
@@ -180,7 +178,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                         text: 'Breed',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color:AppColors.textFieldColor,
                       ),
                       Gap(4.h),
                       CustomTextField(
@@ -194,7 +192,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                         text: 'Gender',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color:AppColors.textFieldColor,
                       ),
                       Gap(4.h),
                       SizedBox(
@@ -215,7 +213,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                         text: 'Date of Birth',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color:AppColors.textFieldColor,
                       ),
                       Gap(4.h),
                       GestureDetector(
@@ -233,7 +231,7 @@ class _EditePetProfileViewState extends State<EditePetProfileView> {
                       CustomButton(
                         title: 'Save',
                         onTap: () {
-                          Get.to(()=>HomeView());
+                          Get.to(()=>DashboardView());
                           // if (_formKey.currentState!.validate()) {
                           //   if (selectedGender == null) {
                           //     Get.snackbar('Error', 'Please select gender',

@@ -34,10 +34,11 @@ class SignupView extends GetView<SignupController> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
-          ),
+        Container(
+        height: 200,
+        width: double.infinity,
+        child: Image.asset(AppImages.gradients),
+      ),
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

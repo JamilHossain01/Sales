@@ -1,5 +1,6 @@
 class AppImages {
   static const String image = "assets/images/small_dog.png";
+  static const String edit = "assets/images/edite.png";
   static const String love = "assets/images/love.png";
   static const String baltukas= "assets/images/Baltukas.png";
   static const String cat1 = "assets/images/cat1.png";
@@ -25,6 +26,8 @@ class AppImages {
   static const String pLegs = "assets/images/pet_legs.png";
   static const String arrow= "assets/images/aDown.png";
   static const String pet1= "assets/images/pet1.jpg";
+  static const String pets1= "assets/images/pets1.png";
+  static const String pets2= "assets/images/pets2.png";
   static const String pet2= "assets/images/pet2.jpg";
   static const String pet3= "assets/images/pet3.jpg";
   static const String pet4= "assets/images/pet4.jpg";
@@ -40,6 +43,7 @@ class AppImages {
   static const String maineCoon = "assets/images/Maine_Coon.png";
 
   static const String profile = "assets/images/profile.png";
+  static const String gradients = "assets/images/Add Pet Profile.png";
   static const String service1 = "assets/images/service1.png";
   static const String service = "assets/images/service.png";
   static const String service2 = "assets/images/service2.png";

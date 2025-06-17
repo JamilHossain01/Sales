@@ -11,7 +11,6 @@ import 'package:pet_donation/app/common%20widget/custom_text_filed.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
-import 'package:pet_donation/app/modules/profile/controllers/profile_controller.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
@@ -51,8 +50,7 @@ class _EditeProfileViewState extends State<EditeProfileView> {
         children: [
           // Top gradient fading softly to white
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
 
           Padding(

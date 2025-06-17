@@ -75,7 +75,7 @@ class DashboardView extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                currentIndex == 4 ?  AppImages.profileInactive:AppImages.profileActive,
+                currentIndex == 4 ?  AppImages.pets2:AppImages.pets1,
                 width: 24,
                 height: 24,
               ),

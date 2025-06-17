@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 
+import '../uitilies/app_colors.dart';
+
 class CustomDropdown extends StatefulWidget {
   final String? value;
   final String hint;
@@ -33,7 +35,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         text: widget.hint,
         fontSize: 14.sp, // Adjusted to match the image's text size
         fontWeight: FontWeight.w400, // Slightly lighter for hint
-        color: Colors.black.withOpacity(0.6), // Matches the lighter hint color
+        color: AppColors.textFieldColor,
       ),
       items: widget.items.map((String value) {
         return DropdownMenuItem<String>(
@@ -42,25 +44,25 @@ class _CustomDropdownState extends State<CustomDropdown> {
             text: value,
             fontSize: 14.sp, // Consistent with hint size
             fontWeight: FontWeight.w400, // Consistent weight
-            color: Colors.black, // Matches the image's text color
+            color: AppColors.textFieldColor,
           ),
         );
       }).toList(),
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         filled: true, // Adds the light gray background
-        fillColor: Colors.grey[200], // Light gray background from the image
+        fillColor: Colors.white, // Light gray background from the image
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey[400]!), // Subtle border
+          borderSide: BorderSide(color: widget.borderColor ?? AppColors.borderColor,), // Subtle border
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.borderColor ?? Colors.grey[400]!),
+          borderSide: BorderSide(color: widget.borderColor ??AppColors.borderColor,),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.focusedBorderColor ?? Colors.grey[400]!), // Subtle focused border
+          borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.borderColor,), // Subtle focused border
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h), // Adjusted padding
          // Matches the arrow style

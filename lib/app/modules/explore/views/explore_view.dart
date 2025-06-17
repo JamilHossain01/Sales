@@ -4,10 +4,8 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:pet_donation/app/common widget/common_search_bar.dart';
-import 'package:pet_donation/app/common widget/custom text/custom_text_widget.dart';
 import 'package:pet_donation/app/common widget/gradient.dart';
 import 'package:pet_donation/app/common widget/heart_conatiner.dart';
-import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:pet_donation/app/modules/explore/controllers/explore_controller.dart';
 import 'package:pet_donation/app/modules/explore/views/filter_view.dart';
 import 'package:pet_donation/app/modules/pet_profile_details/views/pet_profile_details_view.dart';
@@ -76,8 +74,7 @@ class ExploreView extends GetView<ExploreController> {
         children: [
           // Top gradient fading softly to white
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           // UI elements over the gradient
           Padding(

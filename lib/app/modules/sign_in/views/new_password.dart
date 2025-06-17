@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/common%20widget/custom_opt_field.dart';
 import 'package:pet_donation/app/common%20widget/custom_text_filed.dart';
 import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
 
 import '../../../common widget/custom_button.dart';
 import '../../../common widget/gradient.dart';
@@ -27,8 +24,7 @@ class NewPasswordView extends GetView {
       body: Stack(
         children: [
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           SafeArea(
             child: SingleChildScrollView(

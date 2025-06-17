@@ -30,8 +30,7 @@ class LogInView extends GetView<LogInController> {
         children: [
           // Top gradient fading softly to white
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
 
 

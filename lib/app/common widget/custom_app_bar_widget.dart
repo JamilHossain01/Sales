@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../uitilies/app_colors.dart';
 import 'custom text/custom_text_widget.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -30,16 +31,16 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: CustomText(
         text: title,
-        fontWeight: FontWeight.w600,
-        fontSize: 20.sp,
-        color: Colors.black,
+        fontWeight: FontWeight.w500,
+        fontSize: 16.sp,
+        color:AppColors.textColor1,
       ),
       leading: showBackButton
           ? IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black),
+        icon: Icon(Icons.arrow_back,color:AppColors.textColor1,),
         onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
       )
-          : const SizedBox.shrink(), // ✅ hide if false
+          : const SizedBox.shrink(),
       actions: trailing != null
           ? [
         Padding(

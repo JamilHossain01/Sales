@@ -3,19 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_donation/app/common%20widget/custom_button.dart';
 import 'package:pet_donation/app/common%20widget/custom_tab_bar_view.dart';
 import 'package:pet_donation/app/common%20widget/gradient.dart';
 import 'package:pet_donation/app/modules/home/widgets/carosele_slider.dart';
 import 'package:pet_donation/app/modules/pet_profile_details/views/pet_profile_details_view.dart';
 import 'package:pet_donation/app/modules/profile/views/profile_view.dart';
-import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_header_widgets.dart';
-import '../../../uitilies/app_colors.dart';
 import '../../profile/views/notification_view.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/trending_servoces.dart';
@@ -49,8 +45,7 @@ class HomeView extends GetView<HomeController> {
       body: Stack(
         children: [
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),

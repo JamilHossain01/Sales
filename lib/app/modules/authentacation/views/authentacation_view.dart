@@ -16,8 +16,7 @@ class AuthentacationView extends GetView<AuthentacationController> {
       body: Column(
         children: [
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           const SizedBox(height: 24),
           const Center(

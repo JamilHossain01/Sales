@@ -7,7 +7,6 @@ import 'package:pet_donation/app/common%20widget/custom_button.dart';
 import 'package:pet_donation/app/common%20widget/successfull_view.dart';
 import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:shimmer/main.dart';
 
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/gradient.dart';
@@ -32,8 +31,7 @@ class PetSurveyView extends GetView<PetSurveyController> {
         children: [
           // Top gradient fading softly to white
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
 
 

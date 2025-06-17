@@ -73,10 +73,10 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
       ),
       body: Stack(
         children: [
-        GradientContainer(
-        height: screenHeight * 0.2,
-        width: double.infinity,
-      ),
+          SizedBox(
+            width: double.infinity,
+            child: Image.asset(AppImages.gradients),
+          ),
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -150,7 +150,7 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
                   text: 'Full Name',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: AppColors.textFieldColor,
                 ),
                 Gap(4.h),
                 CustomTextField(
@@ -164,7 +164,7 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
                   text: 'Chip number',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: AppColors.textFieldColor,
                 ),
                 Gap(4.h),
                 CustomTextField(
@@ -179,7 +179,7 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
                   text: 'Breed',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: AppColors.textFieldColor,
                 ),
                 Gap(4.h),
                 CustomTextField(
@@ -193,12 +193,13 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
                   text: 'Gender',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: AppColors.textFieldColor,
                 ),
                 Gap(4.h),
                 SizedBox(
                   height: 45.h,
                   child: CustomDropdown(
+                    borderColor: AppColors.borderColor,
                     value: selectedGender,
                     hint: 'Select Gender',
                     items: genderItems,
@@ -214,7 +215,7 @@ class _AddPetProfileViewState extends State<AddPetProfileView> {
                   text: 'Date of Birth',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: AppColors.textFieldColor,
                 ),
                 Gap(4.h),
                 GestureDetector(

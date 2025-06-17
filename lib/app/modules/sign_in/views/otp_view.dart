@@ -27,8 +27,7 @@ class OtpView extends GetView {
       body: Stack(
         children: [
           GradientContainer(
-            height: screenHeight * 0.2,
-            width: double.infinity,
+
           ),
           SafeArea(
             child: SingleChildScrollView(

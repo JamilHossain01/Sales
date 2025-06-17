@@ -11,4 +11,6 @@ class AppColors {
   static Color borderColor = Color(0xFFECEEF1);
   static Color female = Color(0xFFFF90CC);
   static Color male = Color(0xFFE2FFF5);
+  static Color textFieldColor = Color(0xFF464646);
+  static Color textColor1 = Color(0xFF1A1A1A);
 }

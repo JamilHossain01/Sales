@@ -11,8 +11,6 @@ import '../../../common widget/gradient.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../controllers/pet_profile_details_controller.dart';
-import '../widgets/map_screen.dart';
-import '../widgets/w_widgets.dart';
 
 class PetProfileDetailsView extends GetView<PetProfileDetailsController> {
   PetProfileDetailsView({super.key});
@@ -52,8 +50,7 @@ class PetProfileDetailsView extends GetView<PetProfileDetailsController> {
                     child: Column(
                       children: [
                         GradientContainer(
-                          height: screenHeight * 0.2,
-                          width: double.infinity,
+
                         ),
                       ],
                     ),
