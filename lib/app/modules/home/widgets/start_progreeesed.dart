@@ -29,9 +29,16 @@ class StatProgressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           /// Primary value text (e.g., €4,000)
+            CustomText(
+                      text: label,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withOpacity(0.62),
+                    ),
           CustomText(
             text: primaryValue,
             fontSize: 20.sp,
@@ -39,28 +46,21 @@ class StatProgressCard extends StatelessWidget {
             color: AppColors.white,
           ),
 
-          SizedBox(height: 6.h),
 
           /// Label text (e.g., Total Sales)
-          CustomText(
-            text: label,
-            fontSize: 10.sp,
-            fontWeight: FontWeight.w400,
-            color: Colors.white.withOpacity(0.62),
-          ),
 
-          SizedBox(height: 8.h),
+
 
           /// Linear Progress
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.r),
-            child: LinearProgressIndicator(
-              value: progressValue,
-              backgroundColor: Colors.grey.withOpacity(0.4),
-              color: color,
-              minHeight: 10.h,
-            ),
-          ),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(20.r),
+          //   child: LinearProgressIndicator(
+          //     value: progressValue,
+          //     backgroundColor: Colors.grey.withOpacity(0.4),
+          //     color: color,
+          //     minHeight: 10.h,
+          //   ),
+          // ),
 
           /// Optional Subtext (e.g., 60% Complete)
           if (subValue.isNotEmpty) ...[

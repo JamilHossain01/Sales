@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../../common widget/customSnackBar.dart';
 import '../../../routes/app_pages.dart';
 import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/local_storage.dart';
 
 class SignInController extends GetxController {
@@ -42,9 +43,9 @@ class SignInController extends GetxController {
       if (response.statusCode == 200 && responseData['success'] == true) {
         final data = responseData['data'];
         if (data != null) {
-          await storage.write('accessToken', data['accessToken']);
-          await storage.write('refreshToken', data['refreshToken']);
-          CustomSnackbar.showSuccess(responseData['message'] ?? 'Sign in successful!'); // Show success message
+          await storage.write(AppConstant.accessToken, data['accessToken']);
+          await storage.write(AppConstant.refreshToken, data['refreshToken']);
+          CustomSnackbar.showSuccess(responseData['message'] ?? 'Sign in successful!');
           Get.offAllNamed(Routes.DASHBOARD);
         } else {
           throw Exception("No token data received");
@@ -60,3 +61,5 @@ class SignInController extends GetxController {
     }
   }
 }
+
+// Assuming AppConstant class (if not already defined, add this in a separate file)

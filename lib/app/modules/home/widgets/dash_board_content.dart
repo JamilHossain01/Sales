@@ -14,6 +14,7 @@ import 'package:pet_donation/app/modules/open_deal/views/open_deal_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 import '../../../common widget/custom_header_widgets.dart';
+import '../../profile/controllers/get_myProfile_controller.dart';
 import '../../view_details/views/view_details_view.dart';
 import '../model/badget_model_data.dart';
 import 'badge_card_widgets.dart';
@@ -21,7 +22,9 @@ import 'leader_board_widgets.dart';
 
 
 class DashboardContent extends StatelessWidget {
-  const DashboardContent({super.key});
+   DashboardContent({super.key});
+  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +47,23 @@ class DashboardContent extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         color: Colors.white.withOpacity(0.72),
                       ),
-                      Gap(44.w),
-                      DropdownButton<String>(
-                        value: 'This Month',
-                        items: <String>['This Month', 'Last Month'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: CustomText(
-                              text: value,
-                              fontSize: 10.sp,
-
-                              color: Colors.white,
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (_) {},
-                        dropdownColor: const Color(0xFF2D2D2D),
-                      ),
+                      // Gap(44.w),
+                      // DropdownButton<String>(
+                      //   value: 'This Month',
+                      //   items: <String>['This Month', 'Last Month'].map((String value) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: value,
+                      //       child: CustomText(
+                      //         text: value,
+                      //         fontSize: 10.sp,
+                      //
+                      //         color: Colors.white,
+                      //       ),
+                      //     );
+                      //   }).toList(),
+                      //   onChanged: (_) {},
+                      //   dropdownColor: const Color(0xFF2D2D2D),
+                      // ),
                     ],
                   ),
                 ],
@@ -71,17 +74,18 @@ class DashboardContent extends StatelessWidget {
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children:  [
               StatProgressCard(
-                primaryValue: '€4,000',
+                primaryValue: '€${profileController.profileData.value.data?.salesCount ?? "N/A"}',
                 label: 'Total Sales',
-                subValue: '\$10,000 Target',
+                subValue: '€${profileController.profileData.value.data?.salesCount ?? "N/A"} ${"Target"}',
                 progressValue: 0.4,
               ),
               StatProgressCard(
-                primaryValue: '€10,000',
+                primaryValue: '€${profileController.profileData.value.data?.salesCount ?? "N/A"}',
                 label: 'Target',
-                subValue: '70% Complete',
+                subValue: '€${profileController.profileData.value.data?.salesCount ?? "N/A"} ${"% "} ${"Complete"}',
+
                 progressValue: 0.7,
               ),
             ],
@@ -90,15 +94,15 @@ class DashboardContent extends StatelessWidget {
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children:  [
               StatCard(
-                primaryValue: '€5,000',
+                primaryValue: '€${profileController.profileData.value.data?.dealCount ?? "N/A"}',
                 label: 'Avg. Deal Size',
                 subValue: '',
                 color: Colors.amber,
               ),
               StatCard(
-                primaryValue: '€1,000',
+                primaryValue: '€${profileController.profileData.value.data?.commission ?? "N/A"}',
                 label: 'Commission',
                 subValue: '',
                 color: Colors.amber,
@@ -109,11 +113,13 @@ class DashboardContent extends StatelessWidget {
           const SizedBox(height: 20),
           TargetProgressCard(
             title: 'Monthly Target',
-            progressValue: 0.5,
-            achievedText: 'Achieved: €5,000 of €10,000',
-            percentageLabel: '50%',
+            progressValue: (profileController.profileData.value.data?.monthlyTargetPercentage ?? 0).toDouble(),
+            achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
+                'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+            percentageLabel: '${profileController.profileData.value.data?.salesCount ?? "N/A"}%',
             footerMessage: "You're halfway there! 🎉",
           ),
+
           const SizedBox(height: 20),
 
           /// Leaderboard
@@ -155,10 +161,12 @@ class DashboardContent extends StatelessWidget {
           BadgeProgressCard(
             title: 'Your Upcoming Badge',
             badgeLabel: 'First 10K Month',
-            progressText: "You've closed €6,000 of €10,000 to earn this badge",
+            progressText: "You've closed €${profileController.profileData.value.data?.salesCount ?? 0} "
+                "of €${profileController.profileData.value.data?.monthlyTarget ?? 0} ${"to earn this badge"}",
+
             targetCard: TargetProgressCard(
               title: 'Monthly Target',
-              progressValue: 0.5,
+              progressValue: (profileController.profileData.value.data?.monthlyTargetPercentage ?? 0).toDouble(),
               achievedText: 'Achieved: €5,000 of €10,000',
               percentageLabel: '50%',
               footerMessage: "You're halfway there! 🎉",

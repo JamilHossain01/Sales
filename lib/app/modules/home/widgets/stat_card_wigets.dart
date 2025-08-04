@@ -27,7 +27,7 @@ class StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomText(
             text: primaryValue,

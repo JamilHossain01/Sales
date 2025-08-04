@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
 import 'package:pet_donation/app/common%20widget/custom_button.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
 
 import '../../../common widget/custom_text_filed.dart';
+import '../controllers/chnage_password_controller.dart'; // Import the controller
 
 class ChangedPasswordView extends StatefulWidget {
   const ChangedPasswordView({super.key});
@@ -19,6 +19,21 @@ class ChangedPasswordView extends StatefulWidget {
 
 class _ChangedPasswordViewState extends State<ChangedPasswordView> {
   bool isChecked = false;
+
+  // TextEditingControllers for the input fields
+  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  final ChangePasswordController changePasswordController = Get.put(ChangePasswordController());
+
+  @override
+  void dispose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +61,7 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
             ),
             Gap(5.h),
             CustomTextField(
+              controller: currentPasswordController, // Attach controller
               hintText: 'Enter your password',
               showObscure: true,
               fillColor: Colors.white.withOpacity(0.090),
@@ -62,6 +78,7 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
             ),
             Gap(5.h),
             CustomTextField(
+              controller: newPasswordController, // Attach controller
               hintText: 'Enter your new password',
               showObscure: true,
               fillColor: Colors.white.withOpacity(0.090),
@@ -78,6 +95,7 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
             ),
             Gap(5.h),
             CustomTextField(
+              controller: confirmPasswordController, // Attach controller
               hintText: 'Enter your confirm password',
               showObscure: true,
               fillColor: Colors.white.withOpacity(0.090),
@@ -85,43 +103,8 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
 
             Gap(30.h),
 
-            /// Native Checkbox
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                      activeColor: const Color(0xFF00D1FF),
-                      checkColor: Colors.black,
-                      side:  BorderSide(color:AppColors.blue,
-                      ),
-                    ),
-                    CustomText(
-                      text: 'Remember Me',
-                      fontSize: 14.sp,
-                      color: AppColors.blue,
-                    )
-                  ],
-                ),
-                GestureDetector(
-                  onTap: (){},
-                  child: CustomText(
-                    text: 'Forgot Password?',
-                    fontSize: 14.sp,
-                    color: AppColors.blue,
-                  ),
-                )
-              ],
-            ),
 
-            Gap(20.h),
+
 
             /// Submit Button
             CustomButton(
@@ -133,7 +116,11 @@ class _ChangedPasswordViewState extends State<ChangedPasswordView> {
               ),
               title: 'Update Password',
               onTap: () {
-                // Add logic here if needed
+                changePasswordController.passwordChange(
+                  oldPassword: currentPasswordController.text,
+                  newPassword: newPasswordController.text,
+                  confirmPassword: confirmPasswordController.text,
+                );
               },
             ),
           ],

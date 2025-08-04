@@ -36,8 +36,7 @@ import '../modules/setting/bindings/setting_binding.dart';
 import '../modules/setting/views/setting_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
-import '../modules/signup/bindings/signup_binding.dart';
-import '../modules/signup/views/signup_view.dart';
+
 import '../modules/spalsh/bindings/spalsh_binding.dart';
 import '../modules/spalsh/views/spalsh_view.dart';
 import '../modules/view_details/bindings/view_details_binding.dart';
@@ -88,11 +87,7 @@ class AppPages {
       page: () => const SignInView(),
       binding: SignInBinding(),
     ),
-    GetPage(
-      name: _Paths.SIGNUP,
-      page: () => const SignupView(),
-      binding: SignupBinding(),
-    ),
+
     GetPage(
       name: _Paths.DASHBOARD,
       page: () => DashboardView(),

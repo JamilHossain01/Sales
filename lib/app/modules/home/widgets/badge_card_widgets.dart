@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -82,16 +83,24 @@ class BadgeProgressCard extends StatelessWidget {
               ],
             ),
 
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: navButtons
-                  .map((e) => _buildNavButton(
-                e.label,
-                e.assetPath,
-                e.color ?? AppColors.orangeColor,
-                e.textColor ?? AppColors.white,
-              ))
-                  .toList(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+                CustomText(text: 'Earned Badges',fontWeight: FontWeight.w500,fontSize: 14.sp,color: AppColors.white,),
+                Gap(5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: navButtons
+                      .map((e) => _buildNavButton(
+                    e.label,
+                    e.assetPath,
+                    e.color ?? AppColors.orangeColor,
+                    e.textColor ?? AppColors.white,
+                  ))
+                      .toList(),
+                ),
+              ],
             ),
           ),
         ],

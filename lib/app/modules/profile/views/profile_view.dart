@@ -151,7 +151,7 @@ class ProfileView extends GetView<ProfileController> {
                titleColor: AppColors.white,
                title: 'Edit Profile',
                onTap: () {
-                 Get.to(() => EditProfileView());
+                 // Get.to(() => EditProfileView());
                  // if (_formKey.currentState!.validate()) {
                  //   if (selectedGender == null) {
                  //     Get.snackbar('Error', 'Please select gender',

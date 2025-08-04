@@ -13,7 +13,7 @@ import '../../../common widget/custom_button.dart';
 import '../../../common widget/gradient.dart';
 
 class OtpView extends GetView {
-  const OtpView({super.key});
+  const OtpView({super.key, required String email});
 
   @override
   Widget build(BuildContext context) {

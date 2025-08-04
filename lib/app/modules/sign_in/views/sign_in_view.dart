@@ -4,21 +4,27 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/common%20widget/custom_button.dart';
+import 'package:pet_donation/app/modules/profile/views/forget_password_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 import '../../../common widget/custom_text_filed.dart';
 import '../controllers/log_in_controller.dart';
 
-class SignInView extends GetView<SignInController> {
+class SignInView extends StatefulWidget {
   const SignInView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Initialize controller only once using Get.find to avoid multiple instances
-    final SignInController signInController = Get.put(SignInController());
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<SignInView> createState() => _SignInViewState();
+}
 
+class _SignInViewState extends State<SignInView> {
+  final SignInController signInController = Get.put(SignInController());
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
@@ -73,7 +79,7 @@ class SignInView extends GetView<SignInController> {
               ),
               Gap(4.h),
               CustomTextField(
-                controller: emailController, // Link controller
+                controller: emailController,
                 hintText: 'email',
                 showObscure: false,
               ),
@@ -86,9 +92,45 @@ class SignInView extends GetView<SignInController> {
               ),
               Gap(4.h),
               CustomTextField(
-                controller: passwordController, // Link controller
+                controller: passwordController,
                 hintText: 'password',
                 showObscure: true,
+              ),
+              Gap(40.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: isChecked,
+                        onChanged: (value) {
+                          setState(() {
+                            isChecked = value ?? false;
+                          });
+                        },
+                        activeColor: const Color(0xFF00D1FF),
+                        checkColor: Colors.black,
+                        side: BorderSide(color: AppColors.blue),
+                      ),
+                      CustomText(
+                        text: 'Remember Me',
+                        fontSize: 14.sp,
+                        color: AppColors.blue,
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(()=>ForgetPasswordView());
+                    },
+                    child: CustomText(
+                      text: 'Forgot Password?',
+                      fontSize: 14.sp,
+                      color: AppColors.blue,
+                    ),
+                  ),
+                ],
               ),
               Gap(40.h),
               Obx(() => CustomButton(

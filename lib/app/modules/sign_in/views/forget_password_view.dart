@@ -77,7 +77,7 @@ class ForgetPasswordView extends GetView {
                         subtitle2: 'your password to your email',
                         imageAsset: AppImages.chat,
                         onDone: () {
-                          Get.to(() => OtpView());
+                          Get.to(() => OtpView(email: '',));
                           Navigator.of(context).pop(); // Close the bottom sheet
                         },
                       );

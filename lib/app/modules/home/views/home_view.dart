@@ -8,6 +8,7 @@ import 'package:pet_donation/app/modules/badges/views/badges_view.dart';
 import 'package:pet_donation/app/modules/home/widgets/customConainerLinaer.dart';
 import 'package:pet_donation/app/modules/home/widgets/profile_header_card.dart';
 import 'package:pet_donation/app/modules/leader_board/views/leader_board_view.dart';
+import 'package:pet_donation/app/modules/profile/controllers/get_myProfile_controller.dart';
 import 'package:pet_donation/app/modules/sales/views/sales_view.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
@@ -23,6 +24,7 @@ class HomeView extends GetView<HomeController> {
 
   final HomeImageController _imageController = Get.find(); // Use Get.find() if already put before
   final NavController _navController = Get.put(NavController());
+  final GetMyProfileController profileController = Get.put(GetMyProfileController());
 
   final List<NavItem> navItems = [
     NavItem(
@@ -57,7 +59,7 @@ class HomeView extends GetView<HomeController> {
           children: [
             CustomGradientContainer(
               child: ProfileHeaderCard(
-                username: "Alex Thompson",
+                username:profileController.profileData.value.data?.name ?? "N/A",
                 leagueText: "Silver League",
                 rankText: "Global Rank: #35",
               ),
