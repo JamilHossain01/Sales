@@ -8,7 +8,6 @@ import 'package:pet_donation/app/common%20widget/CustomBottomSheet.dart';
 import 'package:pet_donation/app/common%20widget/check_box.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/common%20widget/custom_button.dart';
-import 'package:pet_donation/app/common%20widget/custom_text_filed.dart';
 import 'package:pet_donation/app/modules/sign_in/views/forget_password_view.dart';
 import 'package:pet_donation/app/modules/sign_in/views/otp_view.dart';
 import 'package:pet_donation/app/modules/sign_in/views/sign_in_view.dart';
@@ -16,6 +15,7 @@ import 'package:pet_donation/app/routes/app_pages.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
+import '../../../common widget/custom_text_filed.dart';
 import '../../../common widget/gradient.dart';
 import '../controllers/signup_controller.dart';
 
@@ -253,7 +253,8 @@ class SignupView extends GetView<SignupController> {
                   Gap(40.h),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 70),
-                    child: Row(
+                    child:
+                    Row(
                       children: [
                         Center(
                           child: RichText(

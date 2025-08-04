@@ -19,7 +19,7 @@ class _PrivacyPolicyViewState extends State<PrivacyPolicyView> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: const CommonAppBar(
         title: 'Privacy Policy',

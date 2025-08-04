@@ -1,147 +1,72 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-
 import 'package:get/get.dart';
-import 'package:pet_donation/app/common%20widget/custom_tab_bar_view.dart';
-import 'package:pet_donation/app/common%20widget/gradient.dart';
-import 'package:pet_donation/app/modules/home/widgets/carosele_slider.dart';
-import 'package:pet_donation/app/modules/pet_profile_details/views/pet_profile_details_view.dart';
-import 'package:pet_donation/app/modules/profile/views/profile_view.dart';
+import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:pet_donation/app/modules/badges/views/badges_view.dart';
+
+import 'package:pet_donation/app/modules/home/widgets/customConainerLinaer.dart';
+import 'package:pet_donation/app/modules/home/widgets/profile_header_card.dart';
+import 'package:pet_donation/app/modules/leader_board/views/leader_board_view.dart';
+import 'package:pet_donation/app/modules/sales/views/sales_view.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
-import '../../../common widget/custom_header_widgets.dart';
-import '../../profile/views/notification_view.dart';
+import '../../profile/controllers/porfile_image_controller.dart';
 import '../controllers/home_controller.dart';
-import '../widgets/trending_servoces.dart';
+import '../controllers/nav_controller.dart';
+import '../widgets/dash_board_content.dart';
+import '../widgets/nav_button_wigets.dart';
+import '../widgets/nav_item.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final HomeImageController _imageController = Get.find(); // Use Get.find() if already put before
+  final NavController _navController = Get.put(NavController());
+
+  final List<NavItem> navItems = [
+    NavItem(
+      label: 'Dashboard',
+      iconPath: AppImages.dashboard,
+      content: DashboardContent(),
+    ),
+    NavItem(
+      label: 'Sales',
+      iconPath: AppImages.sales,
+      content:SalesView(),
+    ),
+    NavItem(
+      label: 'Leaderboards',
+      iconPath: AppImages.leaderboards,
+      content: LeaderBoardView(),
+    ),
+    NavItem(
+      label: 'Badges',
+      iconPath: AppImages.badges,
+      content:BadgesView(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final tabs = ['All', 'Cats', 'Dogs'];
-
-    final data = {
-      'All': [
-        {'name': 'Becon', 'gender': 'Female', 'age': '2 yrs'},
-        {'name': 'Mini', 'gender': 'Male', 'age': '1.5 yrs'},
-        {'name': 'Charlie', 'gender': 'Male', 'age': '3 yrs'},
-      ],
-      'Cats': [
-        {'name': 'Mini', 'gender': 'Male', 'age': '1.5 yrs'},
-      ],
-      'Dogs': [
-        {'name': 'Becon', 'gender': 'Female', 'age': '2 yrs'},
-        {'name': 'Charlie', 'gender': 'Male', 'age': '3 yrs'},
-      ],
-    };
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          GradientContainer(
-
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                SizedBox(height: screenHeight * 0.05),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        Get.to(()=> ProfileView());
-                      },
-                      child: SizedBox(
-                        child: Image.asset(
-                          AppImages.profile,
-                          height: 40.h,
-                          width: 40,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          child: Image.asset(
-                            AppImages.pin,
-                            height: 15.h,
-                            width: 13,
-                          ),
-                        ),
-                        Gap(4.w),
-                        CustomText(
-                          text: 'Dhaka',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                        ),
-                        Gap(4.w),
-                        SizedBox(
-                          child: Image.asset(
-                            AppImages.arrow,
-                            height: 15.h,
-                            width: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        Get.to(()=>NotificationView());
-                      },
-                      child: Container(
-                        height: 40.h,
-                        width: 40.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50.r),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(11.0),
-                          child: Image.asset(
-                            AppImages.bell,
-                            height: 24.h,
-                            width: 24.w,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        BannerCarousel(),
-                        SizedBox(height: 4),
-                        HeaderWidgets(title: 'Services', subTitle: 'See All'),
-                        SizedBox(height: 12.h),
-                        TrendingProvidersSection(),
-                        SizedBox(height: 12),
-                        HeaderWidgets(
-                            title: 'Categories', subTitle: 'See More'),
-                        SizedBox(height: 12.h,),
-                        SizedBox(height: 600, child: GestureDetector( onTap: (){
-                          Get.to(()=> PetProfileDetailsView());
-                        },
-                            child: AdoptionTabView())),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomGradientContainer(
+              child: ProfileHeaderCard(
+                username: "Alex Thompson",
+                leagueText: "Silver League",
+                rankText: "Global Rank: #35",
+              ),
             ),
-          ),
-        ],
+
+            /// Show Active Content
+            Obx(() => navItems[_navController.activeTabIndex.value].content),
+          ],
+        ),
       ),
     );
   }

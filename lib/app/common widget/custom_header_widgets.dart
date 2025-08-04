@@ -16,8 +16,8 @@ class HeaderWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomText(text: title,fontSize: 16.sp,fontWeight: FontWeight.w600,color: Colors.black,),
-        CustomText(text: subTitle,fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.textGray,)
+        CustomText(text: title,fontSize: 14.sp,fontWeight: FontWeight.w500,color: AppColors.white.withOpacity(0.7),),
+        CustomText(text: subTitle,fontSize: 12.sp,fontWeight: FontWeight.w400,color: Color(0XFFFCB806).withOpacity(0.6),)
       ],);
   }
 }

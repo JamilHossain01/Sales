@@ -15,9 +15,17 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812), // Your design size
       minTextAdapt: true,
+
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
+          theme: ThemeData(
+            fontFamily: 'Poppins', // 👈 This applies Poppins globally
+            scaffoldBackgroundColor: Colors.black,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+
           debugShowCheckedModeBanner: false,
           title: "Application",
           initialRoute: AppPages.INITIAL,

@@ -18,11 +18,11 @@ class CommonSearchbar extends StatelessWidget {
           hintText: 'Search items...',
           hintStyle: TextStyle(
             fontSize: 12,
-            color: AppColors.textGray,
+            color: AppColors.orangeColor,
           ),
           prefixIcon: Icon(
             Icons.search,
-            color: AppColors.borderColor,
+            color: AppColors.orangeColor,
           ),
           filled: true,
           fillColor: Colors.transparent,
@@ -30,14 +30,14 @@ class CommonSearchbar extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: AppColors.borderColor,
+              color: AppColors.orangeColor,
               width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: AppColors.borderColor,
+              color: AppColors.orangeColor,
               width: 1.5,
             ),
           ),

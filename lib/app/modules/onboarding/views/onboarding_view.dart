@@ -1,10 +1,15 @@
+import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/common%20widget/custom_button.dart';
+import 'package:pet_donation/app/modules/sign_in/views/sign_in_view.dart';
+import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:pet_donation/app/uitilies/app_images.dart';
 
+import '../../../common widget/button/slider_button.dart'; // This is your SwipeToStartButton
 import '../controllers/onboarding_controller.dart';
 
 class OnboardingView extends GetView<OnboardingController> {
@@ -15,118 +20,102 @@ class OnboardingView extends GetView<OnboardingController> {
     final controller = this.controller;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child:
-              TextButton(
-                onPressed: () {
-                  final lastIndex = controller.pages.length - 1;
-                  controller.pageController.animateToPage(
-                    lastIndex,
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeInOut,
-                  );
-                  controller.currentPage.value = lastIndex;
-                },
-                child: CustomText(
-                  text: 'Skip',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20.sp,
-                ),
+            /// Background Image
+            Positioned.fill(
+              child: Image.asset(
+                AppImages.onBoard,
+                fit: BoxFit.cover,
               ),
+            ),
 
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: controller.pageController,
-                itemCount: controller.pages.length,
-                onPageChanged: controller.onPageChanged,
-                itemBuilder: (context, index) {
-                  final page = controller.pages[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              page.imageAsset,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        CustomText(
-                          text: page.title,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24.sp,
-                        ),
-                        const SizedBox(height: 12),
-                        CustomText(
-                          textAlign: TextAlign.start,
-                          text: page.subtitle,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: const Color(0xFF999999),
-                        ),
-                        const SizedBox(height: 40),
-                      ],
+            /// Bottom Content
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 40.h,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: 'Rise',
+                        color: AppColors.orangeColor,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      CustomText(
+                        text: ' to the Top',
+                        color: Colors.white,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: 'with the',
+                        color: Colors.white,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      CustomText(
+                        text: ' Wolf Pack',
+                        color: AppColors.orangeColor,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                  Gap(8.h),
+                  CustomText(
+                    text: 'Track your wins, hit your milestones, and rise as',
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  CustomText(
+                    text: 'the sales closer you were born to be.',
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  Gap(40.h),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ActionSlider.standard(
+                      backgroundColor: AppColors.orangeColor,
+                      toggleColor: AppColors.white,
+
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        color: AppColors.orangeColor,
+                      ),
+
+                      child: const Text(
+                        'Swipe to Get Started',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+
+                      action: (controller) async {
+                        controller.loading(); // Start loading
+                        await Future.delayed(const Duration(seconds: 2));
+                        controller.success(); // Show success animation
+                        Get.off(() => const SignInView()); // Navigate to next screen
+                      },
                     ),
-                  );
-                },
+                  ),
+
+                ],
               ),
             ),
-            Obx(() {
-              final isLastPage =
-                  controller.currentPage.value == controller.pages.length - 1;
-              return Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                child: Row(
-                  children: [
-                    Row(
-                      children: List.generate(
-                        controller.pages.length,
-                            (index) {
-                          final bool isActive =
-                              controller.currentPage.value == index;
-                          return AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            width: isActive ? 20 : 8,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color:
-                              isActive ? Colors.teal : Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(
-                                  isActive ? 12 : 50),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 160.w,
-                      child: CustomButton(
-                        borderRadius: 100,
-                        title: isLastPage ? 'Get Started' : 'Next',
-                        fontSize: 16.sp,
-                        onTap: controller.nextPage,
-                        isGradient: true,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
           ],
         ),
       ),

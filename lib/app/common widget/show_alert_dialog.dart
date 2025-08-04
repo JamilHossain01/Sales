@@ -24,19 +24,20 @@ class SignOutDialog extends StatelessWidget {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
-        side: BorderSide(color: AppColors.mainColor, width: 1.5),
+        side: BorderSide(color: AppColors.orangeColor, width: 1.5),
       ),
       child: Container(
-        height: 190.h,
+        height: 170.h,
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: AppColors.mainColor, width: 1.5),
+          border: Border.all(color: AppColors.orangeColor, width: 1.5),
           color: Colors.white,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Gap(1.h),
             CustomText(
               text: title,
               fontSize: 14.sp,
@@ -51,11 +52,12 @@ class SignOutDialog extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       isGradient: false,
-                      border: Border.all(color: AppColors.mainColor),
+                      buttonColor: AppColors.white,
+                      border: Border.all(color: AppColors.textGray),
                       title: 'No',
                       fontWeight: FontWeight.w500,
                       fontSize: 12.sp,
-                      titleColor: AppColors.mainColor,
+                      titleColor:Colors.black,
                       onTap: () {
                         Navigator.of(context).pop();
                         if (onCancel != null) onCancel!();
@@ -65,6 +67,9 @@ class SignOutDialog extends StatelessWidget {
                   Gap(20.w),
                   Expanded(
                     child: CustomButton(
+                      isGradient: false,
+                      buttonColor: AppColors.orangeColor,
+
                       fontWeight: FontWeight.w500,
                       fontSize: 12.sp,
                       title: 'Yes',

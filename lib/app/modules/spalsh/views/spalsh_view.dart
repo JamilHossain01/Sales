@@ -19,13 +19,13 @@ class SpalshView extends GetView<SpalshController> {
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: Center(
         child: SizedBox(
           child: Image.asset(
-            AppImages.logo,
-            height: 162,
-            width: 200,
+            AppImages.spalsh,
+            height: 428,
+            width: double.infinity,
           ),
         ),
       ),

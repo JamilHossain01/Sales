@@ -16,6 +16,7 @@ dependencies:
   get: ^4.6.6
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
+  action_slider: ^0.7.0
   flutter_screenutil:
   pinput:
   flutter_faq: ^1.0.1+1

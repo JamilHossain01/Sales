@@ -18,6 +18,14 @@ abstract class Routes {
   static const PET_PROFILE = _Paths.PET_PROFILE;
   static const PET_PROFILE_DETAILS = _Paths.PET_PROFILE_DETAILS;
   static const PET_SURVEY = _Paths.PET_SURVEY;
+  static const SALES = _Paths.SALES;
+  static const VIEW_DETAILS = _Paths.VIEW_DETAILS;
+  static const OPEN_DEAL = _Paths.OPEN_DEAL;
+  static const CLOSED_DEAL = _Paths.CLOSED_DEAL;
+  static const LEADER_BOARD = _Paths.LEADER_BOARD;
+  static const BADGES = _Paths.BADGES;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const SETTING = _Paths.SETTING;
 }
 
 abstract class _Paths {
@@ -37,4 +45,12 @@ abstract class _Paths {
   static const PET_PROFILE = '/pet-profile';
   static const PET_PROFILE_DETAILS = '/pet-profile-details';
   static const PET_SURVEY = '/pet-survey';
+  static const SALES = '/sales';
+  static const VIEW_DETAILS = '/view-details';
+  static const OPEN_DEAL = '/open-deal';
+  static const CLOSED_DEAL = '/closed-deal';
+  static const LEADER_BOARD = '/leader-board';
+  static const BADGES = '/badges';
+  static const EDIT_PROFILE = '/edit-profile';
+  static const SETTING = '/setting';
 }

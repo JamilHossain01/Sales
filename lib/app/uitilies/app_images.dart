@@ -1,4 +1,45 @@
 class AppImages {
+
+  static const String login1 = "assets/images/login1.png";
+  static const String onBoard = "assets/images/onBoard.png";
+  static const String spalsh = "assets/images/spalsh.png";
+  static const String spLogo = "assets/images/spLogo.png";
+  static const String eyes = "assets/images/eye.png";
+
+  static const String E = "assets/images/E.png";
+  static const String arrowBack = "assets/images/arrow-circle-left.png";
+  static const String trophy = "assets/images/tropshy.png";
+  static const String milestone  = "assets/images/milestone.png";
+  static const String medal = "assets/images/medel.png";
+  static const String badges = "assets/images/badges.png";
+  static const String spCalendar = "assets/images/spCalendar.png";
+  static const String deLate = "assets/images/deletIcon.png";
+  static const String export = "assets/images/export.png";
+  static const String data = "assets/images/data.png";
+  static const String dashboard = "assets/images/Dashboard.png";
+  static const String leaderboards = "assets/images/Leaderboards.png";
+  static const String sales = "assets/images/Sales.png";
+  // bottom
+
+  static const navHomeSelected = 'assets/images/Home.png';
+  static const navHomeUnselected = 'assets/images/h.png';
+
+  static const navExploreSelected = 'assets/images/Profile1.png';
+  static const navExploreUnselected = 'assets/images/Profile2.png';
+
+  static const navServiceSelected = 'assets/images/setting.png';
+  static const navServiceUnselected = 'assets/images/setting-2.png';
+
+  static const navForumSelected = 'assets/images/notification-bing.png';
+  static const navForumUnselected = 'assets/images/notifications1.png';
+  static const NotificationMAin = 'assets/images/NotificationMAin.png';
+
+
+
+
+
+
+
   static const String image = "assets/images/small_dog.png";
   static const String edit = "assets/images/edite.png";
   static const String love = "assets/images/love.png";
@@ -34,7 +75,11 @@ class AppImages {
   static const String heart= "assets/images/heart.png";
   static const String setting= "assets/images/setting.png";
   static const String setting1= "assets/images/setting1.png";
+  static const String callReceived = "assets/images/call-received.png";
+  static const String Unlock = "assets/images/Unlock.png";
+  static const String Logout = "assets/images/Logout.png";
   static const String delete= "assets/images/delete.png";
+  static const String settingSP = "assets/images/settingSP.png";
   static const String pet= "assets/images/petImage.png";
   static const String neutered = "assets/images/Neutered.png";
   static const String calendars = "assets/images/calenders.png";

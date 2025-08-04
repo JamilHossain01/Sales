@@ -23,56 +23,37 @@ class _NotificationViewState extends State<NotificationView> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: const CommonAppBar(
         title: 'Notifications',
       ),
-      body: Stack(
-        children: [
-          // Top gradient fading softly to white
-
-          GradientC(
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              title: const Text('Settings'),
-              centerTitle: true,
-              leading: const BackButton(color: Colors.black),
-            ),
-          ),
-
+      body:
 
 
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 110),
+            child:
+            Column(
               children: [
-                SizedBox(height: screenHeight * 0.1),
-                CustomText(text: 'Today',fontWeight: FontWeight.w500,fontSize: 16.sp,),
-                Gap(4.h),
                 NotificationItem(
-                  title: 'Today',
-                  message: 'SOS Gyvūnai Shelter sent you a new message regarding your adoption application ',
-                  time: '11.00 AM',
-                  message1: 'regarding your adoption application',
+                  isHighlighted: false,
+                  title: "New Sale Logged!",
+                  message: "Great job, Alex! You’ve just logged a new",
+                  message1: "sale worth \$2,000. Keep it up!",
+                  time: "10:12 AM",
+                  showEmoji: true,
                 ),
-                Gap(16.h),
-
-                CustomText(text: 'Yesterday',fontWeight: FontWeight.w500,fontSize: 16.sp,),
-                Gap(4.h),
-                NotificationItem(
-                  title: 'Today',
-                  message: 'SOS Gyvūnai Shelter sent you a new message ',
-                  time: '11.00 AM',
-                  message1: 'regarding your adoption application',
-                )
+                NotificationItem(isHighlighted: true,
+                  title: "You’re just",
+                  message: "You’re just \$1,500 away from your monthly",
+                  message1: "target! Let’s hit that goal!",
+                  time: "10:12 AM",
+                ),
               ],
-            ),
+            )
           ),
-        ],
-      ),
+
     );
   }
 }

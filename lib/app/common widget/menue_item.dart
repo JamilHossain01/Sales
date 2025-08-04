@@ -8,6 +8,7 @@ class MenuItem extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final Color? textColor;
+  final Color? iconColors;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
@@ -22,45 +23,56 @@ class MenuItem extends StatelessWidget {
     this.backgroundColor,
     this.padding,
     this.borderRadius,
-  }) : assert(icon != null || assetImagePath != null, 'Either icon or assetImagePath must be provided.');
+    this.iconColors,
+  }) : assert(icon != null || assetImagePath != null,
+  'Either icon or assetImagePath must be provided.');
 
   @override
   Widget build(BuildContext context) {
-    Widget leadingWidget;
-
-    if (assetImagePath != null) {
-      leadingWidget = Padding(
-        padding: padding ?? const EdgeInsets.only(right: 12.0),
-        child: Image.asset(
-          assetImagePath!,
-          width: 24,
-          height: 24,
-          fit: BoxFit.contain,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: padding ?? EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+        decoration: BoxDecoration(
+          color: backgroundColor ?? const Color(0xFF333333).withOpacity(0.25),
+          borderRadius: borderRadius ?? BorderRadius.circular(0),
+          border: Border(
+            top: BorderSide(color: const Color(0XFFFDFDFD).withOpacity(0.29)),
+            bottom: BorderSide(color: const Color(0XFFFDFDFD).withOpacity(0.29)),
+          ),
         ),
-      );
-    } else {
-      leadingWidget = Padding(
-        padding: padding ?? const EdgeInsets.only(right: 12.0),
-        child: Icon(icon, color: textColor ?? Colors.black),
-      );
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.transparent,
-        borderRadius: borderRadius ?? BorderRadius.circular(0),
-      ),
-      child: ListTile(
-        leading: leadingWidget,
-        title: CustomText(
-          text: title,
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
-          color: textColor ?? Colors.black,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Image + Title
+            Row(
+              children: [
+                if (assetImagePath != null)
+                  Image.asset(
+                    assetImagePath!,
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
+                  )
+                else if (icon != null)
+                  Icon(icon, color: iconColors ?? Colors.white, size: 24),
+                SizedBox(width: 5.w), // 5 pixel gap between image and text
+                CustomText(
+                  text: title,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                  color: textColor ?? Colors.black,
+                ),
+              ],
+            ),
+            // Trailing arrow
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: iconColors ?? Colors.white,
+            ),
+          ],
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       ),
     );
   }

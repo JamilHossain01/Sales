@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,12 +15,19 @@ class CustomButton extends StatelessWidget {
   final double fontSize;
   final BoxBorder? border;
   final Color? titleColor;
+  final Color? ImageColor;
   final Widget? widget;
   final bool? isGradient;
   final Gradient? gradient;
 
-  /// 🔹 NEW: Optional image to display beside title
+  // Optional image and icons
   final String? imagePath;
+  final double? imageWidth;
+  final double? imageHeight;
+  final BoxFit? imageFit;
+
+  final Widget? leftIcon;
+  final Widget? rightIcon;
 
   const CustomButton({
     super.key,
@@ -41,7 +46,12 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.buttonColor,
     this.fontWeight = FontWeight.w700,
-    this.imagePath, // ✅ added
+    this.imagePath,
+    this.imageWidth,
+    this.imageHeight,
+    this.imageFit,
+    this.leftIcon,
+    this.rightIcon, this.ImageColor,
   });
 
   @override
@@ -62,10 +72,10 @@ class CustomButton extends StatelessWidget {
           border: border,
           gradient: isGradient == true
               ? gradient ??
-              const LinearGradient(
+               LinearGradient(
                 colors: [
-                  Color(0xff8AD8C0),
-                  Color(0xff19A2A5),
+                  Color(0xffFCB806).withOpacity(0.050),
+                  Color(0xffFCB806).withOpacity(0.090),
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -85,10 +95,22 @@ class CustomButton extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (imagePath != null) ...[
-                    Image.asset(imagePath!, width: 24, height: 24),
+                  // 🔹 Left icon or image
+                  if (leftIcon != null)
+                    leftIcon!
+                  else if (imagePath != null)
+                    Image.asset(
+                      imagePath!,
+                      width: imageWidth ?? 24,
+                      height: imageHeight ?? 24,
+                      fit: imageFit ?? BoxFit.contain,
+                      color:ImageColor,
+                    ),
+
+                  if (leftIcon != null || imagePath != null)
                     const SizedBox(width: 8),
-                  ],
+
+                  // 🔸 Button title
                   Text(
                     title,
                     style: GoogleFonts.urbanist(
@@ -97,6 +119,12 @@ class CustomButton extends StatelessWidget {
                       color: titleColor,
                     ),
                   ),
+
+                  // 🔹 Right icon
+                  if (rightIcon != null) ...[
+                    const SizedBox(width: 8),
+                    rightIcon!,
+                  ],
                 ],
               ),
         ),
