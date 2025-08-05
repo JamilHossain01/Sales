@@ -17,6 +17,8 @@ class ApiUrl {
   // Client
   static String allClients= "$baseUrl/client";
   static String myClients = "$baseUrl/client/my-clients?limit=3";
+  static String myAllClients = "$baseUrl/client/my-clients";
+  static String closerCreate = "$baseUrl/closer/create";
 
 
 

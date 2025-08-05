@@ -5,9 +5,9 @@ import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../model/my_clients_model.dart';
 
-class ClientsGetController extends GetxController {
+class MyAllClientsGetController extends GetxController {
   var isLoading = false.obs;
-  var profileData = MyClientModel().obs;
+  var myAllClientData = MyClientModel().obs;
 
   @override
   void onInit() {
@@ -18,11 +18,11 @@ class ClientsGetController extends GetxController {
   Future<void> fetchMyProfile() async {
     try {
       isLoading(true);
-      final response = await BaseClient.getRequest(api: ApiUrl.myClients);
+      final response = await BaseClient.getRequest(api: ApiUrl.myAllClients);
 
       if (response.statusCode == 200) {
         final data = await BaseClient.handleResponse(response);
-        profileData.value = MyClientModel.fromJson(data);
+        myAllClientData.value = MyClientModel.fromJson(data);
       } else {
         throw "Failed to load profile (${response.statusCode})";
       }

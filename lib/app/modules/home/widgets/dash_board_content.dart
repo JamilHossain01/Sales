@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/modules/home/controllers/my_clients_controller.dart';
+import 'package:pet_donation/app/modules/sales/views/sales_screen.dart';
 import 'package:pet_donation/app/modules/home/widgets/perform_card_wigets.dart';
 import 'package:pet_donation/app/modules/home/widgets/rececnt_deatils_widgets.dart';
 import 'package:pet_donation/app/modules/home/widgets/start_progreeesed.dart';
@@ -230,9 +231,10 @@ class DashboardContent extends StatelessWidget {
           SizedBox(height: 15.h),
 
           HeaderWidgets(
+
             title: 'Recent Deals',
             subTitle: 'View All',
-            onSubTitleTap: ()=>Get.to(()=>SalesView()),
+            onSubTitleTap: ()=>Get.to(()=>SalesScreen()),
 
           ),
           SizedBox(height: 10.h),
@@ -279,7 +281,7 @@ class DashboardContent extends StatelessWidget {
                     commissionEarned: '€${client.commissionRate ?? 0}',
                     // Add logic if available
                     onViewDetailsTap: () {
-                      Get.to(() => OpenDealView());
+                      Get.to(() => OpenDealView(clientId: client.id ?? '',));
                     },
                   );
                 },

@@ -35,7 +35,7 @@ class HomeView extends GetView<HomeController> {
     NavItem(
       label: 'Sales',
       iconPath: AppImages.sales,
-      content:SalesView(),
+      content:SalesContent(),
     ),
     NavItem(
       label: 'Leaderboards',

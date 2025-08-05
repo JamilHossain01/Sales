@@ -112,7 +112,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.SALES,
-      page: () => SalesView(),
+      page: () => SalesContent(),
       binding: SalesBinding(),
     ),
     GetPage(
@@ -122,7 +122,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OPEN_DEAL,
-      page: () => const OpenDealView(),
+      page: () =>  OpenDealView(clientId: '',),
       binding: OpenDealBinding(),
     ),
     GetPage(

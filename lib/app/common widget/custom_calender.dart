@@ -5,7 +5,16 @@ import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widge
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
 class CustomCalendarWidget extends StatefulWidget {
-  const CustomCalendarWidget({Key? key}) : super(key: key);
+  final Function(DateTime)? onDateSelected;
+  final Function()? onClearDate;
+  final DateTime? selectedFilterDate;
+
+  const CustomCalendarWidget({
+    Key? key,
+    this.onDateSelected,
+    this.onClearDate,
+    this.selectedFilterDate,
+  }) : super(key: key);
 
   @override
   State<CustomCalendarWidget> createState() => _CustomCalendarWidgetState();
@@ -13,6 +22,21 @@ class CustomCalendarWidget extends StatefulWidget {
 
 class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
   DateTime selectedDate = DateTime.now();
+  DateTime? selectedFilterDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedFilterDate = widget.selectedFilterDate;
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomCalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedFilterDate != oldWidget.selectedFilterDate) {
+      selectedFilterDate = widget.selectedFilterDate;
+    }
+  }
 
   List<DateTime> getWeekDates(DateTime date) {
     final firstDay = date.subtract(Duration(days: date.weekday - 1));
@@ -31,6 +55,23 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
     });
   }
 
+  void _handleDateSelection(DateTime date) {
+    setState(() {
+      if (selectedFilterDate != null &&
+          selectedFilterDate!.day == date.day &&
+          selectedFilterDate!.month == date.month &&
+          selectedFilterDate!.year == date.year) {
+        // Clear selection if same date is tapped
+        selectedFilterDate = null;
+        widget.onClearDate?.call();
+      } else {
+        // Select new date
+        selectedFilterDate = date;
+        widget.onDateSelected?.call(date);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final weekDates = getWeekDates(selectedDate);
@@ -41,7 +82,10 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(onPressed: _goToPreviousWeek, icon: const Icon(Icons.arrow_back_ios, color: Colors.white)),
+            IconButton(
+                onPressed: _goToPreviousWeek,
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white)
+            ),
             Row(
               children: [
                 CustomText(
@@ -51,11 +95,18 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                   color: Colors.white,
                 ),
                 SizedBox(width: 8.w),
-                Image.asset(AppImages.spCalendar,height: 24.h,width: 24.w
-                    , color: Colors.white)
+                Image.asset(
+                    AppImages.spCalendar,
+                    height: 24.h,
+                    width: 24.w,
+                    color: Colors.white
+                )
               ],
             ),
-            IconButton(onPressed: _goToNextWeek, icon: const Icon(Icons.arrow_forward_ios, color: Colors.white)),
+            IconButton(
+                onPressed: _goToNextWeek,
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.white)
+            ),
           ],
         ),
 
@@ -71,19 +122,18 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
             separatorBuilder: (_, __) => SizedBox(width: 10.w),
             itemBuilder: (context, index) {
               final date = weekDates[index];
-              final isSelected = date.day == selectedDate.day &&
-                  date.month == selectedDate.month &&
-                  date.year == selectedDate.year;
+              final isSelected = selectedFilterDate != null &&
+                  date.day == selectedFilterDate!.day &&
+                  date.month == selectedFilterDate!.month &&
+                  date.year == selectedFilterDate!.year;
 
               return GestureDetector(
-                onTap: () {
-                  setState(() => selectedDate = date);
-                },
+                onTap: () => _handleDateSelection(date),
                 child: Container(
                   width: 48.w,
                   padding: EdgeInsets.symmetric(vertical: 10.h),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.transparent : Colors.transparent,
+                    color: isSelected ? AppColors.orangeColor.withOpacity(0.2) : Colors.transparent,
                     border: Border.all(
                       color: isSelected ? AppColors.orangeColor : Colors.transparent,
                       width: 1.2,
@@ -103,9 +153,10 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                         text: _weekdayShort(date.weekday),
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
-                        color: isSelected ? AppColors.orangeColor : Colors.white.withOpacity(0.7),
+                        color: isSelected
+                            ? AppColors.orangeColor
+                            : Colors.white.withOpacity(0.7),
                       ),
-
                     ],
                   ),
                 ),
@@ -113,6 +164,23 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
             },
           ),
         ),
+
+        // Clear date button when a date is selected
+        if (selectedFilterDate != null)
+          Padding(
+            padding: EdgeInsets.only(top: 10.h),
+            child: TextButton(
+              onPressed: () {
+                setState(() => selectedFilterDate = null);
+                widget.onClearDate?.call();
+              },
+              child: CustomText(
+                text: "Clear date",
+                color: AppColors.orangeColor,
+                fontSize: 14.sp,
+              ),
+            ),
+          ),
       ],
     );
   }

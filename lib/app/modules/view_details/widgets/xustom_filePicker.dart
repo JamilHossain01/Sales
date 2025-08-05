@@ -10,8 +10,13 @@ import '../../../modules/view_details/controllers/image_controller.dart';
 
 class CustomFilePicker extends StatefulWidget {
   final Function(File?)? onFilePicked;
+  final Function(String?)? onFilePickedPath;
 
-  const CustomFilePicker({super.key, this.onFilePicked});
+  const CustomFilePicker({
+    super.key,
+    this.onFilePicked,
+    this.onFilePickedPath,
+  });
 
   @override
   _CustomFilePickerState createState() => _CustomFilePickerState();
@@ -21,16 +26,47 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
   File? _selectedFile;
   final ImagePickerController _imagePickerController = Get.find();
 
-  Future<void> _pickFile() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _showPickDialog() async {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Select Image Source'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _selectedFile = File(pickedFile.path);
         _imagePickerController.selectedImagePath.value = pickedFile.path;
       });
-      if (widget.onFilePicked != null) {
-        widget.onFilePicked!(_selectedFile);
-      }
+      widget.onFilePicked?.call(_selectedFile);
+      widget.onFilePickedPath?.call(pickedFile.path);
     }
   }
 
@@ -47,12 +83,12 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
         ),
         SizedBox(height: 8.h),
         GestureDetector(
-          onTap: _pickFile,
+          onTap: _showPickDialog,
           child: Container(
             width: double.infinity,
             height: 45.h,
             decoration: BoxDecoration(
-              color:Color(0xFF333333).withOpacity(0.25),
+              color: const Color(0xFF333333).withOpacity(0.25),
               border: Border.all(
                 color: Colors.white.withOpacity(0.080),
               ),
@@ -64,14 +100,13 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFF212529),
-                  ),
+                    border: Border.all(color: const Color(0xFF212529)),
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                   child: CustomText(
                     text: 'Choose file',
                     fontSize: 14.sp,
-                    color: Color(0xFF212529),
+                    color: const Color(0xFF212529),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -83,7 +118,7 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
                         : _selectedFile!.path.split('/').last,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF212529),
+                    color: const Color(0xFF212529),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -96,3 +131,4 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
     );
   }
 }
+

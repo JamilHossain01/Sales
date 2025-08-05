@@ -14,200 +14,181 @@ import '../../../common widget/custom_dropdown_controller.dart';
 import '../../../common widget/custom_text_filed.dart';
 import '../../../uitilies/app_images.dart';
 import '../../onboarding/widgets/row_button_widgets.dart';
+import '../../sales/controllers/deal_closer_create_controller.dart';
 import '../../view_details/controllers/check_box_controler.dart';
 
 class OpenAddDealsForm extends StatefulWidget {
-  const OpenAddDealsForm({super.key});
+  const OpenAddDealsForm({super.key, required this.clientId});
+  final String clientId;
 
   @override
   State<OpenAddDealsForm> createState() => _OpenAddDealsFormState();
 }
 
 class _OpenAddDealsFormState extends State<OpenAddDealsForm> {
-  String? selectedClient;
-  String? selectedStatus;
+  String? selectedImagePath;
+  final _formKey = GlobalKey<FormState>();
+  final DealController dealController = Get.put(DealController());
+  final CheckboxController checkboxController = Get.put(CheckboxController());
 
-  final List<String> clients = [
-    'Techsavy Solutions Ltd.',
-    'NextGen Tech',
-    'CodeLab'
-  ];
-  final List<String> statusList = ['Pending', 'Approved', 'Rejected'];
+  final TextEditingController _propositionController = TextEditingController();
+  final TextEditingController _dealDateController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _clienNameController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
+
+  void _submitForm() {
+    final formState = _formKey.currentState;
+    if (formState != null && formState.validate()) {
+      dealController.createDeal(
+        proposition: _propositionController.text,
+        dealDate: _dealDateController.text,
+        amount: int.tryParse(_amountController.text) ?? 0,
+        clientId:widget.clientId,
+        notes: _noteController.text,
+        filePath: selectedImagePath ?? '',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final checkboxController = Get.find<CheckboxController>();
+    return Form(
+      key: _formKey, // ⬅️ Wrap everything inside Form
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: 'Client Name',
+            fontSize: 16.sp,
+            color: Colors.white.withOpacity(0.82),
+            fontWeight: FontWeight.w500,
+          ),
+          SizedBox(height: 8.h),
+          CustomTextField(
+            hintText: 'Client Name',
+            showObscure: false,
+            controller: _clienNameController,
+          ),
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomText(
-          text: 'Client Name',
-          fontSize: 16.sp,
-          color: Colors.white.withOpacity(0.82),
-          fontWeight: FontWeight.w500,
-        ),
-        SizedBox(height: 8.h),
-        CustomTextField(hintText: 'Client Name', showObscure: false),
+          SizedBox(height: 10.h),
+          CustomText(
+            text: 'Proposition',
+            fontSize: 16.sp,
+            color: Colors.white.withOpacity(0.82),
+          ),
+          SizedBox(height: 10.h),
+          CustomTextField(
+            hintText: "Enter proposition",
+            showObscure: false,
+            controller: _propositionController,
+          ),
 
-        SizedBox(height: 10.h),
-        CustomText(
-          text: 'Proposition',
-          fontSize: 16.sp,
-          color: Colors.white.withOpacity(0.82),
-        ),
-        SizedBox(height: 10.h),
+          SizedBox(height: 10.h),
+          CustomText(
+            text: 'Deal Date',
+            fontSize: 16.sp,
+            color: Colors.white.withOpacity(0.82),
+            fontWeight: FontWeight.w500,
+          ),
+          SizedBox(height: 10.h),
+          CustomTextField(
+            controller: _dealDateController,
+            hintText: "Enter Date",
+            showObscure: false,
+            suffix: Padding(
+              padding: const EdgeInsets.all(12),
+              child: GestureDetector(
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000), // Lower limit
+                    lastDate: DateTime(2100), // Upper limit
+                  );
 
-        CustomTextField(
-          hintText: "Enter proposition",
-          showObscure: false,
-        ),
-        SizedBox(height: 10.h),
-        CustomText(
-          text: 'Deal Date',
-          fontSize: 16.sp,
-          color: Colors.white.withOpacity(0.82),
-          fontWeight: FontWeight.w500,
-        ),
-        SizedBox(height: 10.h),
-
-        CustomTextField(
-          hintText: "Enter proposition",
-          showObscure: false,
-          suffix: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Image.asset(
-              AppImages.spCalendar,
-              height: 18,
-              width: 18,
-              color: AppColors.grayBlak,
+                  if (pickedDate != null) {
+                    // Format date as dd-MM-yyyy
+                    String formattedDate = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
+                    setState(() {
+                      _dealDateController.text = formattedDate;
+                    });
+                  }
+                },
+                child: Image.asset(
+                  AppImages.spCalendar,
+                  height: 18,
+                  width: 18,
+                  color: AppColors.grayBlak,
+                ),
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 10.h),
 
 
-        CustomText(
-          text: 'Deal Amount',
-          fontSize: 16.sp,
-          color: Colors.white.withOpacity(0.82),
-          fontWeight: FontWeight.w500,
-        ),
-        SizedBox(height: 10.h),
-
-        CustomTextField(
-          hintText: "Enter Amount",
-          showObscure: false,
-          suffix: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Image.asset(
-              AppImages.data,
-              height: 14,
-              width: 14,
-              color: AppColors.grayBlak,
+          SizedBox(height: 10.h),
+          CustomText(
+            text: 'Deal Amount',
+            fontSize: 16.sp,
+            color: Colors.white.withOpacity(0.82),
+            fontWeight: FontWeight.w500,
+          ),
+          SizedBox(height: 10.h),
+          CustomTextField(
+            controller: _amountController,
+            hintText: "Enter Amount",
+            showObscure: false,
+            suffix: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Image.asset(
+                AppImages.data,
+                height: 14,
+                width: 14,
+                color: AppColors.grayBlak,
+              ),
             ),
           ),
-        ),
-        CustomText(
-          text: 'Status',
-          fontSize: 14.sp,
-          color: Colors.white.withOpacity(0.82),
-          fontWeight: FontWeight.w500,
-        ),
-        SizedBox(height: 8.h),
-        SizedBox(
-          height: 45.h,
-          child: CustomDropdown(
-            value: selectedStatus,
-            hint: 'Select status',
-            items: statusList,
-            borderColor: Colors.white.withOpacity(0.80),
-            focusedBorderColor: Colors.white.withOpacity(0.09),
-            fillColor: const Color(0xFF333333).withOpacity(0.25),
-            onChanged: (value) {
-              setState(() {
-                selectedStatus = value;
-              });
+
+          SizedBox(height: 16.h),
+          CustomFilePicker(
+            onFilePickedPath: (path) {
+              selectedImagePath = path;
+              print('Picked path: $selectedImagePath');
             },
           ),
-        ),
-        SizedBox(height: 16.h),
-        CustomFilePicker(),
-        SizedBox(height: 16.h),
-        Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: Color(0XFF00D1FF).withOpacity(0.090),
-              borderRadius: BorderRadius.circular(8.r)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: 'Pricing Breakdown',
-                fontSize: 14.sp,
-                color: Colors.white.withOpacity(0.82),
-                fontWeight: FontWeight.w300,
-              ),
-              Gap(10.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      imagePath: AppImages.export,
-                      title: 'Export',
-                      onTap: () {},
-                      isGradient: false,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      imageHeight: 15,
-                      imageWidth: 15,
-                      buttonColor: AppColors.white.withOpacity(0.16),
-                    ),
-                  ),
-                  Gap(10.w),
-                  Expanded(
-                    child: CustomButton(
-                      border: Border.all(color: Colors.red),
-                      imagePath: AppImages.deLate,
-                      imageHeight: 15,
-                      imageWidth: 15,
-                      title: 'Delete',
-                      titleColor: Colors.red,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      onTap: () {},
-                      isGradient: false,
-                      buttonColor: Colors.transparent,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-        CustomText(
-          text: 'Notes',
-          fontSize: 16.sp,
-          color: Colors.white.withOpacity(0.82),
-          fontWeight: FontWeight.w500,
-        ),
-        Gap(10.h),
-        CustomTextField(
-          maxLines: 5,
-          hintText: "Enter notes here.....",
-          showObscure: false,
-        ),
-        Gap(10.h),
-        CustomCheckboxWithText(
-          text: "Set Reminder",
-          isChecked: checkboxController.isChecked,
-          activeColor: const Color(0xFF00D1FF),
-        ),
-        Gap(20.h),
-        RowButtonWidgets(),
-        SizedBox(height: 20.h),
 
-      ],
+          SizedBox(height: 16.h),
+          CustomText(
+            text: 'Notes',
+            fontSize: 16.sp,
+            color: Colors.white.withOpacity(0.82),
+            fontWeight: FontWeight.w500,
+          ),
+          Gap(10.h),
+          CustomTextField(
+            maxLines: 5,
+            hintText: "Enter notes here.....",
+            showObscure: false,
+            controller: _noteController,
+          ),
+
+          Gap(10.h),
+          CustomCheckboxWithText(
+            text: "Set Reminder",
+            isChecked: checkboxController.isChecked,
+            activeColor: const Color(0xFF00D1FF),
+          ),
+
+          Gap(20.h),
+          Obx(() {
+            return RowButtonWidgets(
+              isLoading2: dealController.isLoading.value,
+              onTapSave: _submitForm,
+            );
+          }),
+          SizedBox(height: 20.h),
+        ],
+      ),
     );
   }
 }
