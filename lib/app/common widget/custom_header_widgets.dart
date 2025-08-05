@@ -8,16 +8,36 @@ import 'custom text/custom_text_widget.dart';
 class HeaderWidgets extends StatelessWidget {
   final String title;
   final String subTitle;
+  final VoidCallback? onSubTitleTap;  // Add this
+
   const HeaderWidgets({
-    super.key, required this.title, required this.subTitle,
+    super.key,
+    required this.title,
+    required this.subTitle,
+    this.onSubTitleTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomText(text: title,fontSize: 14.sp,fontWeight: FontWeight.w500,color: AppColors.white.withOpacity(0.7),),
-        CustomText(text: subTitle,fontSize: 12.sp,fontWeight: FontWeight.w400,color: Color(0XFFFCB806).withOpacity(0.6),)
-      ],);
+        CustomText(
+          text: title,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.white.withOpacity(0.7),
+        ),
+        GestureDetector(
+          onTap: onSubTitleTap,
+          child: CustomText(
+            text: subTitle,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+            color: const Color(0XFFFCB806).withOpacity(0.6),
+          ),
+        ),
+      ],
+    );
   }
 }
