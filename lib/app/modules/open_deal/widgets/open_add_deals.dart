@@ -1,21 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/view_details/widgets/check_box.dart';
-import 'package:pet_donation/app/modules/view_details/widgets/xustom_filePicker.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
 
+import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_button.dart';
 import '../../../common widget/custom_dropdown_controller.dart';
 import '../../../common widget/custom_text_filed.dart';
+import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../onboarding/widgets/row_button_widgets.dart';
 import '../../sales/controllers/deal_closer_create_controller.dart';
 import '../../view_details/controllers/check_box_controler.dart';
+import '../../view_details/controllers/image_controller.dart';
+import '../../view_details/widgets/check_box.dart';
+import '../../view_details/widgets/xustom_filePicker.dart';
 
 class OpenAddDealsForm extends StatefulWidget {
   const OpenAddDealsForm({super.key, required this.clientId});
@@ -36,6 +35,8 @@ class _OpenAddDealsFormState extends State<OpenAddDealsForm> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _clienNameController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  final ImagePickerController imagePickerController = Get.put(ImagePickerController());
+
 
   void _submitForm() {
     final formState = _formKey.currentState;
@@ -44,7 +45,7 @@ class _OpenAddDealsFormState extends State<OpenAddDealsForm> {
         proposition: _propositionController.text,
         dealDate: _dealDateController.text,
         amount: int.tryParse(_amountController.text) ?? 0,
-        clientId:widget.clientId,
+        clientId: widget.clientId,
         notes: _noteController.text,
         filePath: selectedImagePath ?? '',
       );
@@ -53,143 +54,143 @@ class _OpenAddDealsFormState extends State<OpenAddDealsForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey, // ⬅️ Wrap everything inside Form
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomText(
-            text: 'Client Name',
-            fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.82),
-            fontWeight: FontWeight.w500,
-          ),
-          SizedBox(height: 8.h),
-          CustomTextField(
-            hintText: 'Client Name',
-            showObscure: false,
-            controller: _clienNameController,
-          ),
+    return Material( // ✅ FIX: Ensure Material ancestor is present
+      color: Colors.transparent,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: 'Client Name',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 8.h),
+            CustomTextField(
+              hintText: 'Client Name',
+              showObscure: false,
+              controller: _clienNameController,
+            ),
 
-          SizedBox(height: 10.h),
-          CustomText(
-            text: 'Proposition',
-            fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.82),
-          ),
-          SizedBox(height: 10.h),
-          CustomTextField(
-            hintText: "Enter proposition",
-            showObscure: false,
-            controller: _propositionController,
-          ),
+            SizedBox(height: 10.h),
+            CustomText(
+              text: 'Proposition',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+            ),
+            SizedBox(height: 10.h),
+            CustomTextField(
+              hintText: "Enter proposition",
+              showObscure: false,
+              controller: _propositionController,
+            ),
 
-          SizedBox(height: 10.h),
-          CustomText(
-            text: 'Deal Date',
-            fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.82),
-            fontWeight: FontWeight.w500,
-          ),
-          SizedBox(height: 10.h),
-          CustomTextField(
-            controller: _dealDateController,
-            hintText: "Enter Date",
-            showObscure: false,
-            suffix: Padding(
-              padding: const EdgeInsets.all(12),
-              child: GestureDetector(
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000), // Lower limit
-                    lastDate: DateTime(2100), // Upper limit
-                  );
+            SizedBox(height: 10.h),
+            CustomText(
+              text: 'Deal Date',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 10.h),
+            CustomTextField(
+              controller: _dealDateController,
+              hintText: "Enter Date",
+              showObscure: false,
+              suffix: Padding(
+                padding: const EdgeInsets.all(12),
+                child: GestureDetector(
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
 
-                  if (pickedDate != null) {
-                    // Format date as dd-MM-yyyy
-                    String formattedDate = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
-                    setState(() {
-                      _dealDateController.text = formattedDate;
-                    });
-                  }
-                },
+                    if (pickedDate != null) {
+                      String formattedDate = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
+                      setState(() {
+                        _dealDateController.text = formattedDate;
+                      });
+                    }
+                  },
+                  child: Image.asset(
+                    AppImages.spCalendar,
+                    height: 18,
+                    width: 18,
+                    color: AppColors.grayBlak,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 10.h),
+            CustomText(
+              text: 'Deal Amount',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 10.h),
+            CustomTextField(
+              controller: _amountController,
+              hintText: "Enter Amount",
+              showObscure: false,
+              suffix: Padding(
+                padding: const EdgeInsets.all(12),
                 child: Image.asset(
-                  AppImages.spCalendar,
-                  height: 18,
-                  width: 18,
+                  AppImages.data,
+                  height: 14,
+                  width: 14,
                   color: AppColors.grayBlak,
                 ),
               ),
             ),
-          ),
 
-
-          SizedBox(height: 10.h),
-          CustomText(
-            text: 'Deal Amount',
-            fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.82),
-            fontWeight: FontWeight.w500,
-          ),
-          SizedBox(height: 10.h),
-          CustomTextField(
-            controller: _amountController,
-            hintText: "Enter Amount",
-            showObscure: false,
-            suffix: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Image.asset(
-                AppImages.data,
-                height: 14,
-                width: 14,
-                color: AppColors.grayBlak,
-              ),
+            SizedBox(height: 16.h),
+            CustomFilePicker(
+              onFilePickedPath: (path) {
+                selectedImagePath = path;
+                print('Picked path: $selectedImagePath');
+              },
             ),
-          ),
 
-          SizedBox(height: 16.h),
-          CustomFilePicker(
-            onFilePickedPath: (path) {
-              selectedImagePath = path;
-              print('Picked path: $selectedImagePath');
-            },
-          ),
+            SizedBox(height: 16.h),
+            CustomText(
+              text: 'Notes',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+              fontWeight: FontWeight.w500,
+            ),
+            Gap(10.h),
+            CustomTextField(
+              maxLines: 5,
+              hintText: "Enter notes here.....",
+              showObscure: false,
+              controller: _noteController,
+            ),
 
-          SizedBox(height: 16.h),
-          CustomText(
-            text: 'Notes',
-            fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.82),
-            fontWeight: FontWeight.w500,
-          ),
-          Gap(10.h),
-          CustomTextField(
-            maxLines: 5,
-            hintText: "Enter notes here.....",
-            showObscure: false,
-            controller: _noteController,
-          ),
+            Gap(10.h),
+            CustomCheckboxWithText(
+              text: "Set Reminder",
+              isChecked: checkboxController.isChecked,
+              activeColor: const Color(0xFF00D1FF),
+            ),
 
-          Gap(10.h),
-          CustomCheckboxWithText(
-            text: "Set Reminder",
-            isChecked: checkboxController.isChecked,
-            activeColor: const Color(0xFF00D1FF),
-          ),
-
-          Gap(20.h),
-          Obx(() {
-            return RowButtonWidgets(
-              isLoading2: dealController.isLoading.value,
-              onTapSave: _submitForm,
-            );
-          }),
-          SizedBox(height: 20.h),
-        ],
+            Gap(20.h),
+            Obx(() {
+              return RowButtonWidgets(
+                isLoading2: dealController.isLoading.value,
+                onTapSave: _submitForm,
+              );
+            }),
+            SizedBox(height: 20.h),
+          ],
+        ),
       ),
     );
   }
 }
-

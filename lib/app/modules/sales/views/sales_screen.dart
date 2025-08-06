@@ -10,7 +10,10 @@ import 'package:pet_donation/app/modules/home/widgets/target_widgets.dart';
 import 'package:pet_donation/app/modules/home/widgets/rececnt_deatils_widgets.dart';
 import 'package:pet_donation/app/modules/open_deal/views/open_deal_view.dart';
 
+import '../../closed_deal/views/closed_deal_view.dart';
 import '../../home/model/my_clients_model.dart';
+import '../../open_deal/widgets/closed_deal_widgets.dart';
+import '../../open_deal/widgets/open_add_deals.dart';
 import '../../profile/controllers/get_myProfile_controller.dart';
 
 class SalesScreen extends StatefulWidget {
@@ -21,9 +24,10 @@ class SalesScreen extends StatefulWidget {
 }
 
 class _SalesScreenState extends State<SalesScreen> {
-  final MyAllClientsGetController dealController = Get.put(MyAllClientsGetController());
+  final MyAllClientsGetController dealController =
+      Get.put(MyAllClientsGetController());
   final GetMyProfileController profileController =
-  Get.put(GetMyProfileController());
+      Get.put(GetMyProfileController());
   DateTime? _selectedDate;
   String _searchQuery = '';
   String _selectedStatus = 'All';
@@ -39,17 +43,21 @@ class _SalesScreenState extends State<SalesScreen> {
 
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      clients = clients.where((client) =>
-      client.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false
-      ).toList();
+      clients = clients
+          .where((client) =>
+              client.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ??
+              false)
+          .toList();
     }
 
     // Apply status filter
     if (_selectedStatus != 'All') {
-      clients = clients.where((client) =>
-      (client.closer?.status?.toLowerCase() == _selectedStatus.toLowerCase()) ??
-          (_selectedStatus == 'New' && client.closer == null)
-      ).toList();
+      clients = clients
+          .where((client) =>
+              (client.closer?.status?.toLowerCase() ==
+                  _selectedStatus.toLowerCase()) ??
+              (_selectedStatus == 'New' && client.closer == null))
+          .toList();
     }
 
     // Apply date filter if a date is selected
@@ -78,16 +86,14 @@ class _SalesScreenState extends State<SalesScreen> {
             TargetProgressCard(
               title: 'Monthly Target',
               progressValue: (profileController
-                  .profileData.value.data?.monthlyTargetPercentage ??
-                  0)
+                          .profileData.value.data?.monthlyTargetPercentage ??
+                      0)
                   .toDouble(),
               achievedText:
-              'Achieved: €${profileController.profileData.value.data
-                  ?.salesCount ?? "N/A"} '
-                  'of €${profileController.profileData.value.data
-                  ?.monthlyTarget ?? "N/A"}',
+                  'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
+                  'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
               percentageLabel:
-              '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
+                  '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
               footerMessage: "You're halfway there! 🎉",
             ),
             Gap(20.h),
@@ -104,7 +110,8 @@ class _SalesScreenState extends State<SalesScreen> {
                   _selectedDate = null;
                 });
               },
-              selectedFilterDate: _selectedDate, // Changed from selectedDate to selectedFilterDate
+              selectedFilterDate:
+                  _selectedDate, // Changed from selectedDate to selectedFilterDate
             ),
             Gap(20.h),
 
@@ -158,8 +165,10 @@ class _SalesScreenState extends State<SalesScreen> {
                     child: DropdownButton<String>(
                       dropdownColor: const Color(0xFF6C4D0C),
                       value: _selectedStatus,
-                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
-                      items: ['All', 'New', 'Open', 'Closed'].map((String status) {
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
+                      items:
+                          ['All', 'New', 'Open', 'Closed'].map((String status) {
                         return DropdownMenuItem<String>(
                           value: status,
                           child: Text(
@@ -181,7 +190,9 @@ class _SalesScreenState extends State<SalesScreen> {
             Gap(20.h),
 
             // Clear Filters Button
-            if (_selectedDate != null || _searchQuery.isNotEmpty || _selectedStatus != 'All')
+            if (_selectedDate != null ||
+                _searchQuery.isNotEmpty ||
+                _selectedStatus != 'All')
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Align(
@@ -212,7 +223,9 @@ class _SalesScreenState extends State<SalesScreen> {
               if (filteredClients.isEmpty) {
                 return Center(
                   child: Text(
-                    _searchQuery.isNotEmpty || _selectedDate != null || _selectedStatus != 'All'
+                    _searchQuery.isNotEmpty ||
+                            _selectedDate != null ||
+                            _selectedStatus != 'All'
                         ? "No matching results"
                         : "No data available",
                   ),
@@ -230,22 +243,34 @@ class _SalesScreenState extends State<SalesScreen> {
                   final tagLabel = status == 'CLOSED'
                       ? 'Closed'
                       : status == 'OPEN'
-                      ? 'Open'
-                      : status == 'NEW'
-                      ? 'New'
-                      : "New";
+                          ? 'Open'
+                          : status == 'NEW'
+                              ? 'New'
+                              : "New";
 
                   return RecentDetails(
                     color: const Color(0xFF16A34A),
                     tagLabel: tagLabel,
                     companyName: client.name ?? 'N/A',
-                    startDate: DateUtil.formatTimeAgo(client.createdAt?.toLocal()),
-                    endDate: DateUtil.formatTimeAgo(client.updatedAt?.toLocal()),
+                    startDate:
+                        DateUtil.formatTimeAgo(client.createdAt?.toLocal()),
+                    endDate:
+                        DateUtil.formatTimeAgo(client.updatedAt?.toLocal()),
                     revenueTarget: '€${client.revenueTarget ?? 0}',
                     revenueClosed: '€${client.closer?.amount ?? 0}',
                     commissionEarned: '€${client.commissionRate ?? 0}',
                     onViewDetailsTap: () {
-                      Get.to(() => OpenDealView(clientId: client.id ?? ''));
+                      switch (status) {
+                        case "NEW":
+                          Get.to(() => OpenAddDealsForm(clientId: client.id ?? ''));
+                          break;
+                        case "OPEN":
+                          Get.to(() => OpenDealView(clientId: client.id ?? ''));
+                          break;
+                        case "CLOSED":
+                          Get.to(() => ClosedDealView());
+                          break;
+                      }
                     },
                   );
                 },
