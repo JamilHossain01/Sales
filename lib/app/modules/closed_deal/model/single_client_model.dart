@@ -1,5 +1,5 @@
-class MyClientModel {
-  MyClientModel({
+class SingleClientModel {
+  SingleClientModel({
      this.success,
      this.message,
      this.data,
@@ -9,8 +9,8 @@ class MyClientModel {
   final String? message;
   final Data? data;
 
-  factory MyClientModel.fromJson(Map<String, dynamic> json){
-    return MyClientModel(
+  factory SingleClientModel.fromJson(Map<String, dynamic> json){
+    return SingleClientModel(
       success: json["success"],
       message: json["message"],
       data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -21,24 +21,6 @@ class MyClientModel {
 
 class Data {
   Data({
-    required this.meta,
-    required this.data,
-  });
-
-  final Meta? meta;
-  final List<Datum> data;
-
-  factory Data.fromJson(Map<String, dynamic> json){
-    return Data(
-      meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-      data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-    );
-  }
-
-}
-
-class Datum {
-  Datum({
     required this.id,
     required this.name,
     required this.offer,
@@ -51,6 +33,7 @@ class Datum {
     required this.createdAt,
     required this.updatedAt,
     required this.closer,
+    required this.user,
   });
 
   final String? id;
@@ -65,9 +48,10 @@ class Datum {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final Closer? closer;
+  final User? user;
 
-  factory Datum.fromJson(Map<String, dynamic> json){
-    return Datum(
+  factory Data.fromJson(Map<String, dynamic> json){
+    return Data(
       id: json["id"],
       name: json["name"],
       offer: json["offer"],
@@ -80,6 +64,7 @@ class Datum {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       closer: json["closer"] == null ? null : Closer.fromJson(json["closer"]),
+      user: json["user"] == null ? null : User.fromJson(json["user"]),
     );
   }
 
@@ -160,25 +145,31 @@ class CloserDocument {
 
 }
 
-class Meta {
-  Meta({
-    required this.page,
-    required this.limit,
-    required this.total,
-    required this.totalPage,
+class User {
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.profilePicture,
+    required this.about,
+    required this.registeredId,
   });
 
-  final dynamic page;
-  final dynamic limit;
-  final dynamic total;
-  final dynamic totalPage;
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? profilePicture;
+  final String? about;
+  final String? registeredId;
 
-  factory Meta.fromJson(Map<String, dynamic> json){
-    return Meta(
-      page: json["page"],
-      limit: json["limit"],
-      total: json["total"],
-      totalPage: json["totalPage"],
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
+      id: json["id"],
+      name: json["name"],
+      email: json["email"],
+      profilePicture: json["profilePicture"],
+      about: json["about"],
+      registeredId: json["registeredId"],
     );
   }
 

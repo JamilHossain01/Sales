@@ -9,10 +9,13 @@ import 'package:pet_donation/app/modules/leader_board/widgets/month_league_widge
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
 
+import '../../home/controllers/my_clients_controller.dart';
 import '../controllers/leader_board_controller.dart';
 
 class LeaderBoardView extends GetView<LeaderBoardController> {
-  const LeaderBoardView({super.key});
+   LeaderBoardView({super.key});
+  final LeaderBoardController controller = Get.put(LeaderBoardController());
+   final MyClientGetController dealController = Get.put(MyClientGetController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -66,14 +69,14 @@ class LeaderBoardView extends GetView<LeaderBoardController> {
                     Row(
                       children: [
                         CustomText(
-                          text: '#15',
+                          text: controller.leaderBoardData.value.data?.rank.toString() ?? "",
                           fontWeight: FontWeight.w700,
                           color: AppColors.orangeColor,
                           fontSize: 20.sp,
                         ),
                         Gap(10.w),
                         CustomText(
-                          text: 'Alex Thompson',
+                          text:dealController.dealData.value.data?.data[0].name ??  'N/A',
                           fontWeight: FontWeight.w500,
                           color: AppColors.white,
                           fontSize: 18.sp,

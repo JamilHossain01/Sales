@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
 import 'package:pet_donation/app/modules/closed_deal/widgets/closed_wdigest_view.dart';
 import 'package:pet_donation/app/modules/view_details/controllers/check_box_controler.dart';
+
 import '../../../common widget/custom_button.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../open_deal/controllers/open_deal_controller.dart';
@@ -10,7 +11,9 @@ import '../../view_details/controllers/image_controller.dart';
 import '../widgets/closed_deal_clients_details_widgets.dart';
 
 class ClosedDealView extends StatefulWidget {
-  const ClosedDealView({super.key});
+
+  final String clientID;
+  const ClosedDealView({super.key, required this.clientID});
 
   @override
   State<ClosedDealView> createState() => _ClosedDealViewState();
@@ -51,9 +54,8 @@ class _ClosedDealViewState extends State<ClosedDealView> {
                     buttonColor: isAddDealActive
                         ? const Color(0XFFFCB806).withOpacity(0.30)
                         : const Color(0XFFFCB806).withOpacity(0.15),
-                    titleColor: isAddDealActive
-                        ? Colors.white
-                        : AppColors.textGray,
+                    titleColor:
+                        isAddDealActive ? Colors.white : AppColors.textGray,
                     title: 'Add Deals',
                     onTap: () {
                       setState(() {
@@ -69,9 +71,8 @@ class _ClosedDealViewState extends State<ClosedDealView> {
                     buttonColor: !isAddDealActive
                         ? const Color(0XFFFCB806).withOpacity(0.30)
                         : const Color(0XFFFCB806).withOpacity(0.15),
-                    titleColor: !isAddDealActive
-                        ? Colors.white
-                        : AppColors.textGray,
+                    titleColor:
+                        !isAddDealActive ? Colors.white : AppColors.textGray,
                     title: 'Client Details',
                     onTap: () {
                       setState(() {
@@ -83,7 +84,9 @@ class _ClosedDealViewState extends State<ClosedDealView> {
               ],
             ),
             const SizedBox(height: 20),
-            isAddDealActive ? ClosedViewWidgets() : const  ClosedDealClintDeatilsView(),
+            isAddDealActive
+                ? ClosedViewWidgets()
+                : ClosedDealClintDeatilsView(clientId:widget.clientID,),
           ],
         ),
       ),

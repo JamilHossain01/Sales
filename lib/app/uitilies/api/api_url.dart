@@ -20,8 +20,12 @@ class ApiUrl {
   static String myAllClients = "$baseUrl/client/my-clients";
   static String closerCreate = "$baseUrl/closer/create";
 
+  //leaderboard
+  static String leaderboard = "$baseUrl/user/leaderboard";
 
-
+  static String singleClients({required dynamic clientId}) {
+    return '$baseUrl/client/$clientId'; // Ensure BASE_URL is prepended
+  }
 
 
 }

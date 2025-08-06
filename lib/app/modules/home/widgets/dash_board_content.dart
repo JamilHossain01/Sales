@@ -12,7 +12,7 @@ import 'package:pet_donation/app/modules/home/widgets/rececnt_deatils_widgets.da
 import 'package:pet_donation/app/modules/home/widgets/start_progreeesed.dart';
 import 'package:pet_donation/app/modules/home/widgets/stat_card_wigets.dart';
 import 'package:pet_donation/app/modules/home/widgets/target_widgets.dart';
-import 'package:pet_donation/app/modules/open_deal/views/open_deal_view.dart';
+import 'package:pet_donation/app/modules/open_deal/views/new_deal_view.dart';
 import 'package:pet_donation/app/modules/sales/views/sales_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -281,7 +281,7 @@ class DashboardContent extends StatelessWidget {
                     commissionEarned: '€${client.commissionRate ?? 0}',
                     // Add logic if available
                     onViewDetailsTap: () {
-                      Get.to(() => OpenDealView(clientId: client.id ?? '',));
+                      Get.to(() => NewDealView(clientId: client.id ?? '',));
                     },
                   );
                 },

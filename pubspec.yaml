@@ -16,9 +16,12 @@ dependencies:
   get: ^4.6.6
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
-  action_slider: ^0.7.0
   flutter_screenutil:
+  dio: ^5.4.0
+  path_provider: ^2.1.2
+  permission_handler: ^11.3.0
   pinput:
+  action_slider: ^0.7.0
   flutter_faq: ^1.0.1+1
   font_awesome_flutter: ^10.7.0
   flutter_rating_bar:

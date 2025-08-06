@@ -16,15 +16,15 @@ import '../../view_details/controllers/image_controller.dart';
 import '../../view_details/widgets/check_box.dart';
 import '../../view_details/widgets/xustom_filePicker.dart';
 
-class OpenAddDealsForm extends StatefulWidget {
-  const OpenAddDealsForm({super.key, required this.clientId});
+class NewAddDealsForm extends StatefulWidget {
+  const NewAddDealsForm({super.key, required this.clientId});
   final String clientId;
 
   @override
-  State<OpenAddDealsForm> createState() => _OpenAddDealsFormState();
+  State<NewAddDealsForm> createState() => _NewAddDealsFormState();
 }
 
-class _OpenAddDealsFormState extends State<OpenAddDealsForm> {
+class _NewAddDealsFormState extends State<NewAddDealsForm> {
   String? selectedImagePath;
   final _formKey = GlobalKey<FormState>();
   final DealController dealController = Get.put(DealController());

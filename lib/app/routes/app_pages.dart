@@ -24,7 +24,7 @@ import '../modules/log_in/views/log_in_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/open_deal/bindings/open_deal_binding.dart';
-import '../modules/open_deal/views/open_deal_view.dart';
+import '../modules/open_deal/views/new_deal_view.dart';
 
 
 import '../modules/profile/bindings/profile_binding.dart';
@@ -122,17 +122,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OPEN_DEAL,
-      page: () =>  OpenDealView(clientId: '',),
+      page: () =>  NewDealView(clientId: '',),
       binding: OpenDealBinding(),
     ),
     GetPage(
       name: _Paths.CLOSED_DEAL,
-      page: () => const ClosedDealView(),
+      page: () =>  ClosedDealView(clientID: '',),
       binding: ClosedDealBinding(),
     ),
     GetPage(
       name: _Paths.LEADER_BOARD,
-      page: () => const LeaderBoardView(),
+      page: () =>  LeaderBoardView(),
       binding: LeaderBoardBinding(),
     ),
     GetPage(

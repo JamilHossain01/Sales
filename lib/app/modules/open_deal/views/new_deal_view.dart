@@ -11,17 +11,16 @@ import '../../view_details/controllers/image_controller.dart';
 import '../../view_details/widgets/clinet_details_wigets.dart';
 import '../controllers/open_deal_controller.dart';
 import '../widgets/closed_deal_widgets.dart';
-import '../widgets/open_deal_update_widgest.dart';
 
-class OpenDealView extends StatefulWidget {
-  const OpenDealView({super.key, required this.clientId});
+class NewDealView extends StatefulWidget {
+  const NewDealView({super.key, required this.clientId});
   final String clientId;
 
   @override
-  State<OpenDealView> createState() => _OpenDealViewState();
+  State<NewDealView> createState() => _NewDealViewState();
 }
 
-class _OpenDealViewState extends State<OpenDealView> {
+class _NewDealViewState extends State<NewDealView> {
   String? selectedClient;
   String? selectedStatus;
   bool isAddDealActive = true;
@@ -88,7 +87,7 @@ class _OpenDealViewState extends State<OpenDealView> {
               ],
             ),
             const SizedBox(height: 20),
-            isAddDealActive ? OpenDealUpdateForm(clientId:widget.clientId,) :  ClosedDealClintDeatilsView(clientId: widget.clientId,),
+            isAddDealActive ? NewAddDealsForm(clientId:widget.clientId,) :  ClosedDealClintDeatilsView(clientId: widget.clientId,),
           ],
         ),
       ),

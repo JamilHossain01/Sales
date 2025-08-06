@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:pet_donation/app/modules/closed_deal/views/closed_deal_view.dart';
-import 'package:pet_donation/app/modules/open_deal/views/open_deal_view.dart';
+import 'package:pet_donation/app/modules/open_deal/views/new_deal_view.dart';
 import 'package:pet_donation/app/modules/view_details/views/view_details_view.dart';
 import 'package:pet_donation/app/uitilies/app_colors.dart';
 import 'package:pet_donation/app/uitilies/app_images.dart';
@@ -34,10 +34,10 @@ class _MonthWithLeagueMenuState extends State<MonthWithLeagueMenu> {
         Get.to(() => ViewDetailsView());
         break;
       case 'Championship':
-        Get.to(() => OpenDealView(clientId: '',));
+        Get.to(() => NewDealView(clientId: '',));
         break;
       case 'National':
-        Get.to(() => ClosedDealView());
+        Get.to(() => ClosedDealView(clientID: '',));
         break;
     }
   }

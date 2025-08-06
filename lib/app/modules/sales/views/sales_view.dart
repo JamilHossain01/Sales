@@ -14,7 +14,7 @@ import 'package:pet_donation/app/modules/sales/widgets/common_search_bar_with_fi
 import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
 import 'package:pet_donation/app/uitilies/date_time_formate.dart';
 import 'package:pet_donation/app/modules/home/controllers/ny_clients_controller.dart';
-import 'package:pet_donation/app/modules/open_deal/views/open_deal_view.dart';
+import 'package:pet_donation/app/modules/open_deal/views/new_deal_view.dart';
 import 'package:pet_donation/app/modules/home/model/my_clients_model.dart';
 import 'package:pet_donation/app/modules/profile/controllers/get_myProfile_controller.dart';
 class SalesContent extends StatefulWidget {
@@ -206,7 +206,7 @@ class _SalesContentState extends State<SalesContent> {
                   revenueTarget: '€${client.revenueTarget ?? 0}',
                   revenueClosed: '€${client.closer?.amount ?? 0}',
                   commissionEarned: '€${client.commissionRate ?? 0}',
-                  onViewDetailsTap: () => Get.to(() => OpenDealView(clientId: client.id ?? '')),
+                  onViewDetailsTap: () => Get.to(() => NewDealView(clientId: client.id ?? '')),
                 );
               },
             );
