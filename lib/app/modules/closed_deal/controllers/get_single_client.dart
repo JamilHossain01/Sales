@@ -1,6 +1,6 @@
  import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:pet_donation/app/uitilies/api/api_url.dart';
+import 'package:wolf_pack/app/uitilies/api/api_url.dart';
 import 'dart:convert';
 import '../../../uitilies/api/base_client.dart';
 import '../model/single_client_model.dart';

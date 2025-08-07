@@ -8,6 +8,8 @@ import '../modell/leader_board_model.dart';
 class LeaderBoardController extends GetxController {
   var isLoading = false.obs;
   var leaderBoardData = LeaderBoardModel().obs;
+  var othersVisibleCount = 5.obs; // 👈 for other performers pagination
+
 
   @override
   void onInit() {
@@ -36,5 +38,8 @@ class LeaderBoardController extends GetxController {
 
   Future<void> refreshProfile() async {
     await fetchMyProfile();
+  }
+  void loadMoreOthers() {
+    othersVisibleCount.value += 5;
   }
 }

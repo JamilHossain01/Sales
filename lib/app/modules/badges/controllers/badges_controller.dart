@@ -1,23 +1,40 @@
 import 'package:get/get.dart';
+import 'package:wolf_pack/app/modules/badges/model/badges_model.dart';
+
+import '../../../common widget/customSnackBar.dart';
+import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/base_client.dart';
 
 class BadgesController extends GetxController {
-  //TODO: Implement BadgesController
+  var isLoading = false.obs;
+  var badgesData = Badges().obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    fetchMyProfile();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> fetchMyProfile() async {
+    try {
+      isLoading(true);
+      final response = await BaseClient.getRequest(api: ApiUrl.badges);
+
+      if (response.statusCode == 200) {
+        final data = await BaseClient.handleResponse(response);
+        badgesData.value = Badges.fromJson(data);
+      } else {
+        throw "Failed to load profile (${response.statusCode})";
+      }
+    } catch (e) {
+      CustomSnackbar.showError(e.toString());
+      rethrow;
+    } finally {
+      isLoading(false);
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  Future<void> refreshProfile() async {
+    await fetchMyProfile();
   }
-
-  void increment() => count.value++;
 }

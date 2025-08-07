@@ -1,17 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/badges/views/badges_view.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/modules/badges/views/badges_view.dart';
 
-import 'package:pet_donation/app/modules/home/widgets/customConainerLinaer.dart';
-import 'package:pet_donation/app/modules/home/widgets/profile_header_card.dart';
-import 'package:pet_donation/app/modules/leader_board/views/leader_board_view.dart';
-import 'package:pet_donation/app/modules/profile/controllers/get_myProfile_controller.dart';
-import 'package:pet_donation/app/modules/sales/views/sales_view.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/modules/home/widgets/customConainerLinaer.dart';
+import 'package:wolf_pack/app/modules/home/widgets/profile_header_card.dart';
+import 'package:wolf_pack/app/modules/leader_board/views/leader_board_view.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
+import 'package:wolf_pack/app/modules/sales/views/sales_view.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
+import '../../../uitilies/custom_loader.dart';
 import '../../profile/controllers/porfile_image_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/nav_controller.dart';
@@ -22,9 +22,11 @@ import '../widgets/nav_item.dart';
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
 
-  final HomeImageController _imageController = Get.find(); // Use Get.find() if already put before
+  final HomeImageController _imageController =
+  Get.find(); // Use Get.find() if already put before
   final NavController _navController = Get.put(NavController());
-  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+  final GetMyProfileController profileController =
+  Get.put(GetMyProfileController());
 
   final List<NavItem> navItems = [
     NavItem(
@@ -35,7 +37,7 @@ class HomeView extends GetView<HomeController> {
     NavItem(
       label: 'Sales',
       iconPath: AppImages.sales,
-      content:SalesContent(),
+      content: SalesContent(),
     ),
     NavItem(
       label: 'Leaderboards',
@@ -45,31 +47,39 @@ class HomeView extends GetView<HomeController> {
     NavItem(
       label: 'Badges',
       iconPath: AppImages.badges,
-      content:BadgesView(),
+      content: BadgesView(),
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomGradientContainer(
-              child: ProfileHeaderCard(
-                username:profileController.profileData.value.data?.name ?? "N/A",
-                leagueText: "Silver League",
-                rankText: "Global Rank: #35",
-              ),
-            ),
+        backgroundColor: Colors.black,
+        extendBodyBehindAppBar: true,
+        body:
+        Obx(() {
+          if (profileController.isLoading.value ||
+              profileController.isLoading.value) {
+            return CustomLoader();
+          }
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomGradientContainer(
+                  child: ProfileHeaderCard(
+                    username:
+                    profileController.profileData.value.data?.name ?? "N/A",
+                    leagueText:  profileController.profileData.value.data?.league?.name ?? "N/A",
+                    rankText:  "${'Global Rank: '}${profileController.profileData.value.data?.rank.toString()?? "N/A"}"
+                  ),
+                ),
 
-            /// Show Active Content
-            Obx(() => navItems[_navController.activeTabIndex.value].content),
-          ],
-        ),
-      ),
-    );
+                /// Show Active Content
+                Obx(() =>
+                navItems[_navController.activeTabIndex.value].content),
+              ],
+            ),
+          );
+        }));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/routes/app_pages.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/routes/app_pages.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 class OnboardingController extends GetxController {
   final pageController = PageController();

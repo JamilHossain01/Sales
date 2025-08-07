@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:wolf_pack/app/modules/dashboard/views/dashboard_view.dart';
 
 import '../controllers/dashboard_controller.dart';
 

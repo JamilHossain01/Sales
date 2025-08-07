@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../widgets/nav_item.dart'; // Make sure this file exists with NavItem class
 

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/open_deal/widgets/export_widgets.dart';
-import 'package:pet_donation/app/modules/view_details/widgets/location_tile.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/modules/open_deal/widgets/export_widgets.dart';
+import 'package:wolf_pack/app/modules/view_details/widgets/location_tile.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
 
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
-import 'package:pet_donation/app/uitilies/container_icon.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/uitilies/container_icon.dart';
 
 import '../../../common widget/heart_conatiner.dart';
 

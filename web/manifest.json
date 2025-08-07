@@ -1,6 +1,6 @@
 {
-    "name": "pet_donation",
-    "short_name": "pet_donation",
+    "name": "wolf_pack",
+    "short_name": "wolf_pack",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

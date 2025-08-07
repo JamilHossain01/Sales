@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/home/widgets/customConainerLinaer.dart';
-import 'package:pet_donation/app/modules/home/widgets/dash_board_content.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
-import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/modules/home/widgets/customConainerLinaer.dart';
+import 'package:wolf_pack/app/modules/home/widgets/dash_board_content.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/porfile_image_controller.dart';
 import '../controllers/nav_controller.dart';
 import 'leauge_conatainer.dart';
 import 'nav_button_wigets.dart';

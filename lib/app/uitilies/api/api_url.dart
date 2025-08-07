@@ -22,10 +22,22 @@ class ApiUrl {
 
   //leaderboard
   static String leaderboard = "$baseUrl/user/leaderboard";
+  static String top3 = "$baseUrl/user/leaderboard?limit=3";
 
   static String singleClients({required dynamic clientId}) {
     return '$baseUrl/client/$clientId'; // Ensure BASE_URL is prepended
   }
+
+  //
+  static String supportCreate = "$baseUrl/settings/send-support-message";
+
+
+  //Badges
+  static String badges  = "$baseUrl/user/badges";
+
+
+
+
 
 
 }

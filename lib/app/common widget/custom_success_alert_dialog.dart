@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_donation/app/common%20widget/custom_button_widget.dart';
+import 'package:wolf_pack/app/common%20widget/custom_button_widget.dart';
 
 class CustomSuccessAlertDialog {
   static void showCustomDialog({

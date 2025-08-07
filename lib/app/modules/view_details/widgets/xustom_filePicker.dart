@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:pet_donation/app/common widget/custom text/custom_text_widget.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/common widget/custom text/custom_text_widget.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../../modules/view_details/controllers/image_controller.dart';
 
 class CustomFilePicker extends StatefulWidget {

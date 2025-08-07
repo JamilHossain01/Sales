@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_donation/app/common%20widget/custom_button.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/custom_button.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_colors.dart';

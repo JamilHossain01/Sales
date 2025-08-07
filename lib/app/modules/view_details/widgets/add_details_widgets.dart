@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/view_details/widgets/check_box.dart';
-import 'package:pet_donation/app/modules/view_details/widgets/xustom_filePicker.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/modules/view_details/widgets/check_box.dart';
+import 'package:wolf_pack/app/modules/view_details/widgets/xustom_filePicker.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
 import '../../../common widget/custom_button.dart';
 import '../../../common widget/custom_dropdown_controller.dart';

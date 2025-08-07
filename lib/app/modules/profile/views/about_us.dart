@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:pet_donation/app/common%20widget/gradient.dart';
+import 'package:wolf_pack/app/common%20widget/gradient.dart';
 
 import '../../../common widget/custom_app_bar_widget.dart';
 import '../widgets/about_section_widgets.dart';

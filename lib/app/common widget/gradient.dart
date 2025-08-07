@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 class GradientContainer extends StatelessWidget {
   const GradientContainer({Key? key}) : super(key: key);

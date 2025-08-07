@@ -45,6 +45,9 @@ class SignInController extends GetxController {
         if (data != null) {
           await storage.write(AppConstant.accessToken, data['accessToken']);
           await storage.write(AppConstant.refreshToken, data['refreshToken']);
+          await storage.write(AppConstant.role, data['role']); // Fixed this line
+
+
           CustomSnackbar.showSuccess(responseData['message'] ?? 'Sign in successful!');
           Get.offAllNamed(Routes.DASHBOARD);
         } else {
@@ -61,5 +64,3 @@ class SignInController extends GetxController {
     }
   }
 }
-
-// Assuming AppConstant class (if not already defined, add this in a separate file)

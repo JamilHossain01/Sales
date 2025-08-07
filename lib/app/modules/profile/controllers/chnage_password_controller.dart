@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/modules/dashboard/views/dashboard_view.dart';
-import 'package:pet_donation/app/modules/profile/views/profile_view.dart';
+import 'package:wolf_pack/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:wolf_pack/app/modules/profile/views/profile_view.dart';
 import '../../../common widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/common%20widget/custom_button.dart';
-import 'package:pet_donation/app/modules/profile/views/forget_password_view.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/common%20widget/custom_button.dart';
+import 'package:wolf_pack/app/modules/profile/views/forget_password_view.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 import '../../../common widget/custom_text_filed.dart';
 import '../controllers/log_in_controller.dart';
 

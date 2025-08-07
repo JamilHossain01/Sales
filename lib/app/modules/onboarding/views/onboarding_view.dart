@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/modules/sign_in/views/sign_in_view.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/modules/sign_in/views/sign_in_view.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../../common widget/button/slider_button.dart'; // This is your SwipeToStartButton
 import '../controllers/onboarding_controller.dart';

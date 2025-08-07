@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/modules/profile/views/notification_view.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/modules/profile/views/notification_view.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../edit_profile/views/edit_profile_view.dart';
 import '../../home/views/home_view.dart';

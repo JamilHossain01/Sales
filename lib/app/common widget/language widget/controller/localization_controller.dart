@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:pet_donation/app/common%20widget/language%20widget/language_component.dart';
+// import 'package:wolf_pack/app/common%20widget/language%20widget/language_component.dart';
 //
 // import 'package:shared_preferences/shared_preferences.dart';
 //

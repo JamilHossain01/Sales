@@ -5,13 +5,13 @@
 // import 'package:gap/gap.dart';
 // import 'package:get/get.dart';
 // import 'package:image_picker/image_picker.dart';
-// import 'package:pet_donation/app/common%20widget/custom_button.dart';
-// import 'package:pet_donation/app/common%20widget/gradient.dart';
-// import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
-// import 'package:pet_donation/app/modules/pet_profile/views/edit_pet_profile.dart';
-// import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
-// import 'package:pet_donation/app/uitilies/app_colors.dart';
-// import 'package:pet_donation/app/uitilies/app_images.dart';
+// import 'package:wolf_pack/app/common%20widget/custom_button.dart';
+// import 'package:wolf_pack/app/common%20widget/gradient.dart';
+// import 'package:wolf_pack/app/common%20widget/custom_app_bar_widget.dart';
+// import 'package:wolf_pack/app/modules/pet_profile/views/edit_pet_profile.dart';
+// import 'package:wolf_pack/app/modules/profile/controllers/porfile_image_controller.dart';
+// import 'package:wolf_pack/app/uitilies/app_colors.dart';
+// import 'package:wolf_pack/app/uitilies/app_images.dart';
 //
 // import '../../../common widget/custom text/custom_text_widget.dart';
 // import '../widgets/infow_row_widgets.dart';

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852956645307",
+    "project_id": "sales-e8f5a",
+    "storage_bucket": "sales-e8f5a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852956645307:android:fe883f1ac5d30b832fa69e",
+        "android_client_info": {
+          "package_name": "jamil.com.wolf_pack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoPxRzmBvDSVnyT9RcvCPE87EexrPKXDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

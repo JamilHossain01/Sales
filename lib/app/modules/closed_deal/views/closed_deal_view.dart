@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/common%20widget/custom_app_bar_widget.dart';
-import 'package:pet_donation/app/modules/closed_deal/widgets/closed_wdigest_view.dart';
-import 'package:pet_donation/app/modules/view_details/controllers/check_box_controler.dart';
+import 'package:wolf_pack/app/common%20widget/custom_app_bar_widget.dart';
+import 'package:wolf_pack/app/modules/closed_deal/widgets/closed_wdigest_view.dart';
+import 'package:wolf_pack/app/modules/view_details/controllers/check_box_controler.dart';
 
 import '../../../common widget/custom_button.dart';
 import '../../../uitilies/app_colors.dart';

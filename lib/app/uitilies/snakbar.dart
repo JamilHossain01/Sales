@@ -3,7 +3,7 @@
 // import 'package:get/get_core/src/get_main.dart';
 // import 'package:get/get_navigation/get_navigation.dart';
 // import 'package:get/get_navigation/src/snackbar/snackbar.dart';
-// import 'package:pet_donation/app/uitilies/app_colors.dart';
+// import 'package:wolf_pack/app/uitilies/app_colors.dart';
 //
 // class CustomSnackbar extends StatelessWidget {
 //   final String message;

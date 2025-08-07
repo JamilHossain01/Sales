@@ -6,16 +6,16 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:pet_donation/app/common%20widget/gradient.dart';
-import 'package:pet_donation/app/modules/profile/controllers/get_myProfile_controller.dart';
-import 'package:pet_donation/app/modules/profile/controllers/porfile_image_controller.dart';
-import 'package:pet_donation/app/modules/profile/controllers/profile_controller.dart';
-import 'package:pet_donation/app/modules/profile/views/about_us.dart';
-import 'package:pet_donation/app/modules/profile/views/edite_profile.dart';
-import 'package:pet_donation/app/modules/profile/views/privacy_policy.dart';
-import 'package:pet_donation/app/modules/profile/views/setting.dart';
-import 'package:pet_donation/app/modules/profile/views/terms_of_use_view.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/gradient.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/porfile_image_controller.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/profile_controller.dart';
+import 'package:wolf_pack/app/modules/profile/views/about_us.dart';
+import 'package:wolf_pack/app/modules/profile/views/edite_profile.dart';
+import 'package:wolf_pack/app/modules/profile/views/privacy_policy.dart';
+import 'package:wolf_pack/app/modules/profile/views/setting.dart';
+import 'package:wolf_pack/app/modules/profile/views/terms_of_use_view.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../../common widget/custom_app_bar_widget.dart';
 import '../../../common widget/custom_button.dart';

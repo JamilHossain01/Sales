@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../model/badget_model_data.dart';
 
@@ -11,6 +12,7 @@ class BadgeProgressCard extends StatelessWidget {
   final String title;
   final String badgeLabel;
   final String progressText;
+  final String iconPath;
   final Widget targetCard;
   final List<NavButtonData> navButtons;
 
@@ -20,7 +22,7 @@ class BadgeProgressCard extends StatelessWidget {
     required this.badgeLabel,
     required this.progressText,
     required this.targetCard,
-    required this.navButtons,
+    required this.navButtons, required this.iconPath,
   }) : super(key: key);
 
   @override
@@ -39,8 +41,26 @@ class BadgeProgressCard extends StatelessWidget {
             fontSize: 14.sp,
             color: AppColors.white,
           ),
-          SizedBox(child: Image.asset(AppImages.milestone,height: 56.h,width: 42.w
-            ,)),
+          Container(
+            width: 42.w,
+            height: 42.h,
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            alignment: Alignment.center,
+            child: CachedNetworkImage(
+              imageUrl: iconPath,
+              width: 24.w,
+              height: 24.h,
+
+              errorWidget: (context, url, error) => const Icon(
+                Icons.error,
+                size: 24,
+                color: Colors.orange,
+              ),
+            ),
+          ),
           CustomText(
             text: badgeLabel,
             fontWeight: FontWeight.w400,
@@ -108,7 +128,8 @@ class BadgeProgressCard extends StatelessWidget {
     );
   }
 
-  Widget _buildNavButton(String title, String iconPath, Color bgColor, Color textColor) {
+
+  Widget _buildNavButton(String title, String iconUrl, Color bgColor, Color textColor) {
     return Container(
       width: 70.w,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -118,7 +139,17 @@ class BadgeProgressCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.asset(iconPath, width: 24.w, height: 24.h),
+          CachedNetworkImage(
+            imageUrl: iconUrl,
+            width: 24.w,
+            height: 24.h,
+
+            errorWidget: (context, url, error) => Icon(
+              Icons.error,
+              size: 24,
+              color: Colors.orange,
+            ),
+          ),
           SizedBox(height: 4.h),
           CustomText(
             text: title,

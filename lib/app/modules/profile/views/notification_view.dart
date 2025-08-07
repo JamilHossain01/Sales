@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
-import 'package:pet_donation/app/common%20widget/gradient.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/common%20widget/noitification_item.dart';
-import 'package:pet_donation/app/common%20widget/top_bar.dart';
+import 'package:wolf_pack/app/common%20widget/gradient.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/common%20widget/noitification_item.dart';
+import 'package:wolf_pack/app/common%20widget/top_bar.dart';
 
 import '../../../common widget/custom_app_bar_widget.dart';
 

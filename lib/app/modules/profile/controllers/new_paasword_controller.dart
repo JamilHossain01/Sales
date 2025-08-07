@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
-import 'package:pet_donation/app/uitilies/api/app_constant.dart';
+import 'package:wolf_pack/app/uitilies/api/app_constant.dart';
 
 import '../../../common widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';

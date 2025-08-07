@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_donation/app/common%20widget/gradient.dart';
+import 'package:wolf_pack/app/common%20widget/gradient.dart';
 
 import '../controllers/authentacation_controller.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
 class LeagueContainer extends StatelessWidget {
   final String text;
@@ -25,8 +25,9 @@ class LeagueContainer extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(8.r)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Center(
+
           child: Row(
             children: [
               Image.asset(
@@ -35,13 +36,17 @@ class LeagueContainer extends StatelessWidget {
                 width: 15.w,
               ),
               SizedBox(width: 4.w),
-              CustomText(
-                text: text,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: textColor,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Row(
+                children: [
+                  CustomText(
+                    text: text,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: textColor,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ],
           ),

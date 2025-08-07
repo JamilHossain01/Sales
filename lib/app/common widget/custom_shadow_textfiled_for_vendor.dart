@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_donation/app/uitilies/app_colors.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
 class CustomShadowTextFiledVendor extends StatelessWidget {
   final String title;

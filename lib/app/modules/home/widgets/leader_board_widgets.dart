@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_donation/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:pet_donation/app/common%20widget/custom_header_widgets.dart';
-import 'package:pet_donation/app/modules/home/widgets/perform_card_wigets.dart';
-import 'package:pet_donation/app/uitilies/app_images.dart';
+import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/common%20widget/custom_header_widgets.dart';
+import 'package:wolf_pack/app/modules/home/widgets/perform_card_wigets.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../../uitilies/app_colors.dart';
 

@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:get/get_core/src/get_main.dart';
-// import 'package:pet_donation/app/modules/pet_profile/views/pet-profile_details_view.dart';
+// import 'package:wolf_pack/app/modules/pet_profile/views/pet-profile_details_view.dart';
 //
 // import '../../../common widget/custom_app_bar_widget.dart';
 // import '../../../common widget/custom_button.dart';
