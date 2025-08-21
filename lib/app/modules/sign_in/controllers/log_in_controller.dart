@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -24,10 +25,25 @@ class SignInController extends GetxController {
     isLoading.value = true;
 
     try {
+      // Get FCM token from StorageService or FirebaseMessaging
+      String? fcmToken = await storage.read<String>(AppConstant.fcmToken);
+      debugPrint("FCM Token from storage: $fcmToken");
+
+      // If token is not in storage, fetch fresh token (optional)
+      if (fcmToken == null) {
+        fcmToken = await FirebaseMessaging.instance.getToken();
+        debugPrint("FCM Token fetched from FirebaseMessaging: $fcmToken");
+        if (fcmToken != null) {
+          await storage.write(AppConstant.fcmToken, fcmToken);
+          debugPrint("FCM Token saved to storage");
+        }
+      }
+
       final url = Uri.parse(ApiUrl.signIn);
       final body = {
         "email": email.trim(),
         "password": password,
+        "fcmToken": fcmToken ?? "",
       };
 
       debugPrint("Login request body: $body");
@@ -45,8 +61,7 @@ class SignInController extends GetxController {
         if (data != null) {
           await storage.write(AppConstant.accessToken, data['accessToken']);
           await storage.write(AppConstant.refreshToken, data['refreshToken']);
-          await storage.write(AppConstant.role, data['role']); // Fixed this line
-
+          await storage.write(AppConstant.role, data['role']);
 
           CustomSnackbar.showSuccess(responseData['message'] ?? 'Sign in successful!');
           Get.offAllNamed(Routes.DASHBOARD);

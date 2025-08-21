@@ -1,5 +1,6 @@
 class ApiUrl {
-  static const String baseUrl = "http://10.10.10.3:4000/api/v1";
+  // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
+  static const String baseUrl = "http://172.252.13.82:4103/api/v1";
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
 
@@ -15,10 +16,16 @@ class ApiUrl {
   static String resendEmail  = "$baseUrl/auth/forget-password";
 
   // Client
-  static String allClients= "$baseUrl/client";
+  static String allClients= "$baseUrl/client?status=CLOSED";
   static String myClients = "$baseUrl/client/my-clients?limit=3";
-  static String myAllClients = "$baseUrl/client/my-clients";
+  // static String myAllClients = "$baseUrl/client/my-clients";
   static String closerCreate = "$baseUrl/closer/create";
+  static String allPrizewinner = "$baseUrl/prize";
+  static String userPrizeWinner = "$baseUrl/user/prize-winner";
+  static String topPerformers = "$baseUrl/user/top-performers";
+  static String nextAchievements = "$baseUrl/user/next-achievement";
+
+
 
   //leaderboard
   static String leaderboard = "$baseUrl/user/leaderboard";
@@ -26,15 +33,18 @@ class ApiUrl {
 
   static String singleClients({required dynamic clientId}) {
     return '$baseUrl/client/$clientId'; // Ensure BASE_URL is prepended
+  } static String singlePrize({required dynamic clientId}) {
+    return '$baseUrl/prize$clientId'; // Ensure BASE_URL is prepended
   }
 
-  //
   static String supportCreate = "$baseUrl/settings/send-support-message";
 
 
   //Badges
   static String badges  = "$baseUrl/user/badges";
 
+  //Notification
+   static String notification  = "$baseUrl/notification/notifications";
 
 
 

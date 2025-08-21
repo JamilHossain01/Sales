@@ -88,18 +88,19 @@ class _SalesContentState extends State<SalesContent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TargetProgressCard(
-              title: 'Monthly Target',
-              progressValue: (profileController
-                          .profileData.value.data?.monthlyTargetPercentage ??
-                      0)
-                  .toDouble(),
+              title: 'Deals Closed',
+              progressValue: ((profileController
+                  .profileData.value.data?.monthlyTargetPercentage ?? 0)
+                  .toDouble() /
+                  100), // ✅ divide by 100
               achievedText:
-                  'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
+              'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
                   'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
               percentageLabel:
-                  '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
+              '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
               footerMessage: "You're halfway there! 🎉",
             ),
+
             Gap(20.h),
             CustomCalendarWidget(
               onDateSelected: (date) => setState(() => _selectedDate = date),

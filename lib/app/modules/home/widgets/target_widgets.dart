@@ -8,7 +8,7 @@ class TargetProgressCard extends StatelessWidget {
   final double progressValue; // Between 0.0 and 1.0
   final String achievedText;
   final String percentageLabel;
-  final String footerMessage;
+  final String? footerMessage;
   final String? motivationLine1;
   final String? motivationLine2;
 
@@ -18,9 +18,9 @@ class TargetProgressCard extends StatelessWidget {
     required this.progressValue,
     required this.achievedText,
     required this.percentageLabel,
-    required this.footerMessage,
+    // required this.footerMessage,
     this.motivationLine1,
-    this.motivationLine2,
+    this.motivationLine2, this.footerMessage,
   }) : super(key: key);
 
   @override
@@ -92,7 +92,7 @@ class TargetProgressCard extends StatelessWidget {
                 color: Colors.white,
               ),
               CustomText(
-                text: footerMessage,
+                text: footerMessage?? "",
                 fontSize: 10.sp,
                 color: Colors.grey,
               ),

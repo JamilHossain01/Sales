@@ -91,7 +91,7 @@ class _SalesScreenState extends State<SalesScreen> {
               achievedText: 'Achieved: ${_formatCurrency(profileController.profileData.value.data?.salesCount)} '
                   'of ${_formatCurrency(profileController.profileData.value.data?.monthlyTarget)}',
               percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
-              footerMessage: "You're halfway there! 🎉",
+              // footerMessage: "You're halfway there! 🎉",
             ),
             Gap(20.h),
 
@@ -203,13 +203,16 @@ class _SalesScreenState extends State<SalesScreen> {
                   status == 'NEW' ? 'New' : "New";
 
                   return RecentDetails(
-                    color: const Color(0xFF16A34A),
+                    color: const Color(0xFFE12728),
                     tagLabel: tagLabel,
                     companyName: client.name ?? 'N/A',
                     startDate: DateUtil.formatTimeAgo(client.createdAt?.toLocal()),
                     endDate: DateUtil.formatTimeAgo(client.updatedAt?.toLocal()),
-                    revenueTarget: _formatCurrency(client.revenueTarget),
-                    revenueClosed: _formatCurrency(client.closer?.amount),
+                    revenueTarget: _formatCurrencyDropDecimals(client.revenueTarget),
+                    revenueClosed: _formatCurrencyDropDecimals(client.closer?.amount),
+
+
+
                     commissionEarned: '${client.commissionRate ?? 0}%',
                     onViewDetailsTap: () {
                       switch (status) {
@@ -235,4 +238,20 @@ class _SalesScreenState extends State<SalesScreen> {
       ),
     );
   }
+  String _formatCurrencyDropDecimals(dynamic value) {
+    if (value == null) return '0';
+    double v;
+    if (value is String) {
+      v = double.tryParse(value) ?? 0.0;
+    } else if (value is num) {
+      v = value.toDouble();
+    } else {
+      return '0';
+    }
+
+    final intInt = v.truncate(); // remove decimal part
+    return NumberFormat.decimalPattern().format(intInt); // add commas if needed
+  }
+
+
 }

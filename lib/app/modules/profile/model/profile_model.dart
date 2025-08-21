@@ -1,21 +1,22 @@
 class ProfileModel {
   ProfileModel({
-    this.success,
-    this.message,
-    this.data,
+     this.success,
+     this.message,
+     this.data,
   });
 
   final bool? success;
   final String? message;
   final Data? data;
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) {
+  factory ProfileModel.fromJson(Map<String, dynamic> json){
     return ProfileModel(
-      success: json["success"] as bool?,
-      message: json["message"] as String?,
-      data: json["data"] == null ? null : Data.fromJson(json["data"] as Map<String, dynamic>),
+      success: json["success"],
+      message: json["message"],
+      data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
   }
+
 }
 
 class Data {
@@ -36,7 +37,7 @@ class Data {
     required this.salesCount,
     required this.monthlyTarget,
     required this.dealClosedCount,
-    required this.league,
+    required this.myAchievements,
     required this.commission,
     required this.monthlyTargetPercentage,
     required this.avgDealAmount,
@@ -47,88 +48,111 @@ class Data {
   final String? name;
   final String? email;
   final String? role;
-  final String? profilePicture;
+  final dynamic profilePicture;
   final bool? isDelete;
   final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final String? phoneNumber;
+  final dynamic phoneNumber;
   final dynamic loginCount;
-  final String? about;
+  final dynamic about;
   final dynamic dealCount;
   final dynamic salesCount;
   final dynamic monthlyTarget;
   final dynamic dealClosedCount;
-  final League? league;
-  final double? commission;
+  final List<MyAchievement> myAchievements;
+  final dynamic commission;
   final dynamic monthlyTargetPercentage;
   final dynamic avgDealAmount;
   final dynamic rank;
 
-  factory Data.fromJson(Map<String, dynamic> json) {
+  factory Data.fromJson(Map<String, dynamic> json){
     return Data(
-      id: json["id"] as String?,
-      name: json["name"] as String?,
-      email: json["email"] as String?,
-      role: json["role"] as String?,
-      profilePicture: json["profilePicture"] as String?,
-      isDelete: json["isDelete"] as bool?,
-      isActive: json["isActive"] as bool?,
-      createdAt: json["createdAt"] == null
-          ? null
-          : DateTime.tryParse(json["createdAt"] as String),
-      updatedAt: json["updatedAt"] == null
-          ? null
-          : DateTime.tryParse(json["updatedAt"] as String),
-      phoneNumber: json["phoneNumber"] as String?,
+      id: json["id"],
+      name: json["name"],
+      email: json["email"],
+      role: json["role"],
+      profilePicture: json["profilePicture"],
+      isDelete: json["isDelete"],
+      isActive: json["isActive"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      phoneNumber: json["phoneNumber"],
       loginCount: json["loginCount"],
-      about: json["about"] as String?,
+      about: json["about"],
       dealCount: json["dealCount"],
       salesCount: json["salesCount"],
       monthlyTarget: json["monthlyTarget"],
       dealClosedCount: json["dealClosedCount"],
-      league: json["league"] == null
-          ? null
-          : League.fromJson(json["league"] as Map<String, dynamic>),
-      commission: json["commission"] == null
-          ? null
-          : double.tryParse(json["commission"].toString()),
+      myAchievements: json["myAchievements"] == null ? [] : List<MyAchievement>.from(json["myAchievements"]!.map((x) => MyAchievement.fromJson(x))),
+      commission: json["commission"],
       monthlyTargetPercentage: json["monthlyTargetPercentage"],
       avgDealAmount: json["avgDealAmount"],
       rank: json["rank"],
     );
   }
+
 }
 
-class League {
-  League({
+class MyAchievement {
+  MyAchievement({
+    required this.id,
+    required this.userId,
+    required this.achievementId,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.achievement,
+  });
+
+  final String? id;
+  final String? userId;
+  final String? achievementId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final Achievement? achievement;
+
+  factory MyAchievement.fromJson(Map<String, dynamic> json){
+    return MyAchievement(
+      id: json["id"],
+      userId: json["userId"],
+      achievementId: json["achievementId"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      achievement: json["achievement"] == null ? null : Achievement.fromJson(json["achievement"]),
+    );
+  }
+
+}
+
+class Achievement {
+  Achievement({
     required this.id,
     required this.name,
-    required this.dealAmount,
-    required this.description,
+    required this.salesCount,
+    required this.dealCount,
+    required this.revenue,
     required this.createdAt,
     required this.updatedAt,
   });
 
   final String? id;
   final String? name;
-  final dynamic dealAmount;
-  final String? description;
+  final dynamic salesCount;
+  final dynamic dealCount;
+  final dynamic revenue;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory League.fromJson(Map<String, dynamic> json) {
-    return League(
-      id: json["id"] as String?,
-      name: json["name"] as String?,
-      dealAmount: json["dealAmount"],
-      description: json["description"] as String?,
-      createdAt: json["createdAt"] == null
-          ? null
-          : DateTime.tryParse(json["createdAt"] as String),
-      updatedAt: json["updatedAt"] == null
-          ? null
-          : DateTime.tryParse(json["updatedAt"] as String),
+  factory Achievement.fromJson(Map<String, dynamic> json){
+    return Achievement(
+      id: json["id"],
+      name: json["name"],
+      salesCount: json["salesCount"],
+      dealCount: json["dealCount"],
+      revenue: json["revenue"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
     );
   }
+
 }

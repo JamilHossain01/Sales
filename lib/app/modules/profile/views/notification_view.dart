@@ -1,59 +1,61 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:get/get.dart';
 import 'package:wolf_pack/app/common%20widget/noitification_item.dart';
-import 'package:wolf_pack/app/common%20widget/top_bar.dart';
-
 import '../../../common widget/custom_app_bar_widget.dart';
+import '../../notification/notification_controller.dart';
 
-class NotificationView extends StatefulWidget {
-  const NotificationView({super.key});
+class NotificationView extends StatelessWidget {
+  NotificationView({Key? key}) : super(key: key);
 
-  @override
-  State<NotificationView> createState() => _NotificationViewState();
-}
+  // Initialize the controller (make sure it is registered with Get.put somewhere)
+  final NotificationController controller = Get.put(NotificationController());
 
-class _NotificationViewState extends State<NotificationView> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    // Call API on init or you can do this in controller's onInit()
+    controller.getNotificationData();
 
     return Scaffold(
       backgroundColor: Colors.black,
-      extendBodyBehindAppBar: true,
-      appBar: const CommonAppBar(
-        title: 'Notifications',
+      appBar: const CommonAppBar(title: 'Notifications',        showBackButton: false,
       ),
-      body:
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
+          if (controller.notificationData.value.data == null ||
+              controller.notificationData.value.data!.data.isEmpty) {
+            return const Center(
+              child: Text(
+                "No notifications",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 110),
-            child:
-            Column(
-              children: [
-                NotificationItem(
-                  isHighlighted: false,
-                  title: "New Sale Logged!",
-                  message: "Great job, Alex! You’ve just logged a new",
-                  message1: "sale worth \$2,000. Keep it up!",
-                  time: "10:12 AM",
-                  showEmoji: true,
-                ),
-                NotificationItem(isHighlighted: true,
-                  title: "You’re just",
-                  message: "You’re just \$1,500 away from your monthly",
-                  message1: "target! Let’s hit that goal!",
-                  time: "10:12 AM",
-                ),
-              ],
-            )
-          ),
+          final notifications = controller.notificationData.value.data!.data;
 
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final item = notifications[index];
+              return NotificationItem(
+                isHighlighted: !item.isRead!,
+                title: item.title ?? "No Title",
+                message: item.body ?? "",
+                message1: "", // adjust if you have message1 or split body
+                time: item.createdAt != null
+                    ? TimeOfDay.fromDateTime(item.createdAt!).format(context)
+                    : "",
+                showEmoji: false, // or true depending on your logic
+              );
+            },
+          );
+        }),
+      ),
     );
   }
 }

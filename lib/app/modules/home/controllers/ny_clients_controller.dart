@@ -18,7 +18,7 @@ class MyAllClientsGetController extends GetxController {
   Future<void> fetchMyProfile() async {
     try {
       isLoading(true);
-      final response = await BaseClient.getRequest(api: ApiUrl.myAllClients);
+      final response = await BaseClient.getRequest(api: ApiUrl.allClients);
 
       if (response.statusCode == 200) {
         final data = await BaseClient.handleResponse(response);

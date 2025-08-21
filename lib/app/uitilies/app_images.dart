@@ -5,6 +5,7 @@ class AppImages {
   static const String spalsh = "assets/images/spalsh.png";
   static const String spLogo = "assets/images/spLogo.png";
   static const String eyes = "assets/images/eye.png";
+  static const String noData = "assets/images/nodata.jpg";
 
   static const String E = "assets/images/E.png";
   static const String arrowBack = "assets/images/arrow-circle-left.png";
@@ -33,6 +34,7 @@ class AppImages {
   static const navForumSelected = 'assets/images/notification-bing.png';
   static const navForumUnselected = 'assets/images/notifications1.png';
   static const NotificationMAin = 'assets/images/NotificationMAin.png';
+  static const king = 'assets/images/king.png';
 
 
 

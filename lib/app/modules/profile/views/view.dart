@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -34,7 +35,7 @@ class ProfilePage extends GetView<EditProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CommonAppBar(title: 'Profile'),
+      appBar: CommonAppBar(title: 'Profile',showBackButton: false,),
       body: Obx(() {
         if (profileController.isLoading.value) {
           return  Center(child: CustomLoader());
@@ -51,58 +52,47 @@ class ProfilePage extends GetView<EditProfileController> {
             children: [
               Center(
                 child: Obx(() {
-                  return Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: AppColors.orangeColor,
-                        radius: 55.r,
-                        backgroundImage: _imageController.selectedImagePath.value.isEmpty
-                            ? const AssetImage(AppImages.profile)
-                            : FileImage(File(_imageController.selectedImagePath.value)) as ImageProvider,
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          final source = await showModalBottomSheet<ImageSource>(
-                            context: context,
-                            builder: (_) => SafeArea(
-                              child: Wrap(
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.camera_alt),
-                                    title: const Text('Camera'),
-                                    onTap: () => Navigator.pop(context, ImageSource.camera),
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.photo_library),
-                                    title: const Text('Gallery'),
-                                    onTap: () => Navigator.pop(context, ImageSource.gallery),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                  final localImage = _imageController.selectedImagePath.value;
+                  final networkImage = profileController.profileData.value.data?.profilePicture ?? '';
 
-                          if (source != null) {
-                            await _imageController.pickImage(source);
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.orangeColor,
-                          ),
-                          child: Image.asset(
-                            AppImages.edit,
-                            height: 20.h,
-                            width: 20.w,
-                            color: Colors.black,
-                          ),
-                        ),
+                  if (networkImage.isNotEmpty) {
+                    return CachedNetworkImage(
+                      imageUrl: networkImage,
+                      imageBuilder: (context, imageProvider) => CircleAvatar(
+                        radius: 55.r,
+                        backgroundColor: AppColors.orangeColor,
+                        backgroundImage: imageProvider,
                       ),
-                    ],
-                  );
+                      placeholder: (context, url) => CircleAvatar(
+                        radius: 55.r,
+                        backgroundColor: AppColors.orangeColor,
+                        backgroundImage: localImage.isNotEmpty
+                            ? FileImage(File(localImage))
+                            : const AssetImage(AppImages.profile)
+                        as ImageProvider,
+                      ),
+                      errorWidget: (context, url, error) => CircleAvatar(
+                        radius: 55.r,
+                        backgroundColor: AppColors.orangeColor,
+                        backgroundImage: localImage.isNotEmpty
+                            ? FileImage(File(localImage))
+                            : const AssetImage(AppImages.profile)
+                        as ImageProvider,
+                      ),
+                    );
+                  } else if (localImage.isNotEmpty) {
+                    return CircleAvatar(
+                      radius: 55.r,
+                      backgroundColor: AppColors.orangeColor,
+                      backgroundImage: FileImage(File(localImage)),
+                    );
+                  } else {
+                    return  CircleAvatar(
+                      radius: 55,
+                      backgroundColor: AppColors.orangeColor,
+                      backgroundImage: AssetImage(AppImages.profile),
+                    );
+                  }
                 }),
               ),
               Gap(40.h),

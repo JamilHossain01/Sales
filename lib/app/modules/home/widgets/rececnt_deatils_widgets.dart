@@ -102,13 +102,13 @@ class RecentDetails extends StatelessWidget {
         children: [
           CustomText(
             text: text,
-            fontSize: 12.sp,
+            fontSize: 11.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.white,
           ),
           CustomText(
             text: text1,
-            fontSize: 12.sp,
+            fontSize: 11.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.white,
           ),

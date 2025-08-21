@@ -67,10 +67,11 @@ class HomeView extends GetView<HomeController> {
               children: [
                 CustomGradientContainer(
                   child: ProfileHeaderCard(
+
                     username:
                     profileController.profileData.value.data?.name ?? "N/A",
-                    leagueText:  profileController.profileData.value.data?.league?.name ?? "N/A",
-                    rankText:  "${'Global Rank: '}${profileController.profileData.value.data?.rank.toString()?? "N/A"}"
+                    // leagueText:  profileController.profileData.value.data?.league?.name ?? "N/A",
+                    rankText:  "${'Global RankS: '}${profileController.profileData.value.data?.rank.toString()?? "N/A"}"
                   ),
                 ),
 

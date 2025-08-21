@@ -9,8 +9,8 @@ import '../../../uitilies/app_colors.dart';
 
 class LeaderboardCard extends StatelessWidget {
   final String rank;
-  final String league;
-  final String leagueName;
+  // final String league;
+  // final String leagueName;
   final List<PerformerCard> performers;
   final String motivationLine1;
   final String motivationLine2;
@@ -18,8 +18,8 @@ class LeaderboardCard extends StatelessWidget {
   const LeaderboardCard({
     Key? key,
     required this.rank,
-    required this.league,
-    required this.leagueName,
+    // required this.league,
+    // required this.leagueName,
     required this.performers,
     required this.motivationLine1,
     required this.motivationLine2,
@@ -61,18 +61,18 @@ class LeaderboardCard extends StatelessWidget {
             fontSize: 40.sp,
             color: AppColors.orangeColor,
           ),
-          CustomText(
-            text: league,
-            fontWeight: FontWeight.w400,
-            fontSize: 14.sp,
-            color: AppColors.white,
-          ),
-          CustomText(
-            text: leagueName,
-            fontWeight: FontWeight.w400,
-            fontSize: 12.sp,
-            color: Color(0xFF00D1FF),
-          ),
+          // CustomText(
+          //   text: league,
+          //   fontWeight: FontWeight.w400,
+          //   fontSize: 14.sp,
+          //   color: AppColors.white,
+          // ),
+          // CustomText(
+          //   text: leagueName,
+          //   fontWeight: FontWeight.w400,
+          //   fontSize: 12.sp,
+          //   color: Color(0xFF00D1FF),
+          // ),
           HeaderWidgets(title: 'Top Performers', subTitle: 'View All'),
           ...performers,
           Container(

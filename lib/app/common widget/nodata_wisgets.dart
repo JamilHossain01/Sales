@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 class NoDataWidget extends StatelessWidget {
   final String message;
@@ -12,7 +13,7 @@ class NoDataWidget extends StatelessWidget {
   const NoDataWidget({
     super.key,
     this.message = "No data available",
-    this.imagePath = 'assets/images/no_data_image.png',
+    this.imagePath = AppImages.noData,
     this.imageHeight = 140,
     this.spacing = 5,
     required String text,
@@ -25,6 +26,7 @@ class NoDataWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(imagePath, height: imageHeight),
+          Gap(10.h),
           CustomText(
             text: message,
             fontSize: 14,

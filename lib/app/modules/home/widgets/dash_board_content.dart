@@ -21,7 +21,9 @@ import '../../../common widget/common_listview_builder.dart';
 import '../../../common widget/custom_header_widgets.dart';
 import '../../../uitilies/date_time_formate.dart';
 import '../../badges/controllers/badges_controller.dart';
+import '../../badges/widgets/next_achive_widgets.dart';
 import '../../leader_board/controllers/leader_board_controller.dart';
+import '../../leader_board/controllers/next_achevement_controller.dart';
 import '../../profile/controllers/get_myProfile_controller.dart';
 import '../../view_details/views/view_details_view.dart';
 import '../model/badget_model_data.dart';
@@ -36,7 +38,9 @@ class DashboardContent extends StatelessWidget {
   final MyClientGetController dealController = Get.put(MyClientGetController());
   final LeaderBoardController controller = Get.put(LeaderBoardController());
   final BadgesController _controller = Get.put(BadgesController());
-
+  final BadgesController _badgesController = Get.put(BadgesController());
+  final GetMyProfileController _profileController = Get.put(GetMyProfileController());
+  final NextAchievementGetController nextController = Get.put(NextAchievementGetController());
 
   @override
   Widget build(BuildContext context) {
@@ -132,19 +136,19 @@ class DashboardContent extends StatelessWidget {
 
             const SizedBox(height: 20),
             TargetProgressCard(
-
               title: 'Monthly Target',
-              progressValue: (profileController
-                          .profileData.value.data?.monthlyTargetPercentage ??
-                      0)
-                  .toDouble(),
+              progressValue: ((profileController
+                  .profileData.value.data?.monthlyTargetPercentage ?? 0)
+                  .toDouble() /
+                  100), // ✅ divide by 100
               achievedText:
-                  'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
+              'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
                   'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
               percentageLabel:
-                  '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
-              footerMessage: "You're halfway there! 🎉",
+              '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
+              // footerMessage: "You're halfway there! 🎉",
             ),
+
 
             const SizedBox(height: 20),
 
@@ -164,8 +168,8 @@ class DashboardContent extends StatelessWidget {
 
               return LeaderboardCard(
                 rank: '#${profileController.profileData.value.data?.rank.toString() ?? 'N/A'}',
-                league: 'Global Leaderboard',
-                leagueName: profileController.profileData.value.data?.league?.name ?? 'N/A',
+                // league: 'Global Leaderboard',
+                // leagueName: profileController.profileData.value.data?.league?.name ?? 'N/A',
 
                 performers: top3.asMap().entries.map((entry) {
                   final index = entry.key;
@@ -196,35 +200,60 @@ class DashboardContent extends StatelessWidget {
             const SizedBox(height: 10),
 
             Obx(() {
-              final badgesData = _controller.badgesData.value.data;
-              if (badgesData == null) {
+              if (profileController.isLoading.value || nextController.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              // Build navButtons list from API data
-              final navButtons = badgesData.data.map((badge) {
+              final profileData = profileController.profileData.value.data;
+              if (profileData == null) {
+                return const Center(child: Text("No profile data available"));
+              }
+
+              final achievements = profileData.myAchievements ?? [];
+              final salesCount = profileData.salesCount ?? 0;
+              final monthlyTarget = profileData.monthlyTarget ?? 0;
+
+              final navButtons = achievements.map((myAch) {
                 return NavButtonData(
-                  label: badge.name ?? 'N/A',
-                  assetPath: badge.icon ?? '',  // Use iconPath from API
+                  label: myAch.achievement?.name ?? "N/A",
+                  assetPath: AppImages.milestone,
                   color: Colors.white.withOpacity(0.08),
                   textColor: const Color(0xFFFFB400),
                 );
               }).toList();
 
-              return BadgeProgressCard(
-                iconPath: badgesData.upComingBadge?.icon ?? '',
-                title: 'Your Upcoming Badge',
-                badgeLabel: badgesData.upComingBadge?.name ?? 'N/A',
-                progressText:
-                "You've closed €${profileController.profileData.value.data?.salesCount ?? 0} "
-                    "of €${profileController.profileData.value.data?.monthlyTarget ?? 0} to earn this badge",
-                targetCard: TargetProgressCard(
-                  title: 'Monthly Target',
-                  progressValue: (badgesData.progressToNext ?? 0).toDouble(),
-                  achievedText: 'Achieved: €5,000 of €10,000',
-                  percentageLabel: (badgesData.progressToNext ?? 50).toString(),
-                  footerMessage: "You're halfway there! 🎉",
+              /// Build horizontal list of next achievements dynamically
+              Widget nextAchievementsWidget = nextController.nextAchievementsData.value.data.isEmpty
+                  ? const Center(
+                child: Text(
+                  "No Next Achievements",
+                  style: TextStyle(color: Colors.white),
                 ),
+              )
+                  : SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: nextController.nextAchievementsData.value.data.map((datum) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: NextAchievementCard(
+                        title: datum.name ?? "N/A",
+                        iconUrl: AppImages.milestone, // Replace with specific icon if available
+                        bgColor: Colors.white.withOpacity(0.08),
+                        textColor: const Color(0xFFFFB400),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+
+              return BadgeProgressCard(
+                iconPath: AppImages.milestone,
+                title: 'Your Upcoming Badge',
+
+                progressText:
+                "Your upcoming achievement",
+                targetCard: nextAchievementsWidget,
                 navButtons: navButtons,
               );
             }),
@@ -250,7 +279,7 @@ class DashboardContent extends StatelessWidget {
                           ? 'Open'
                           : (client.closer?.status ?? '').toUpperCase() == 'NEW'
                               ? 'New'
-                              : "Unknown",
+                              : "New",
                   companyName: client.name ?? 'N/A',
                   startDate:
                       DateUtil.formatTimeAgo(client.createdAt?.toLocal()),
