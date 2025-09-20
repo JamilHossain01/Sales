@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCoxaEWbPuPG4tZf0bW_-sZeSvVulw8WR8',
-    appId: '1:852956645307:web:5f41b3e0338a1c6d2fa69e',
-    messagingSenderId: '852956645307',
-    projectId: 'sales-e8f5a',
-    authDomain: 'sales-e8f5a.firebaseapp.com',
-    storageBucket: 'sales-e8f5a.firebasestorage.app',
-    measurementId: 'G-BBSBSRFEL4',
+    apiKey: 'AIzaSyCJmFXW3zj-pu4iCPr0jK_PB5YBdc-okf0',
+    appId: '1:736751479548:web:518c3d82e9a572755e0579',
+    messagingSenderId: '736751479548',
+    projectId: 'wolfpack-ec92e',
+    authDomain: 'wolfpack-ec92e.firebaseapp.com',
+    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
+    measurementId: 'G-CPJHGTH8PG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCoPxRzmBvDSVnyT9RcvCPE87EexrPKXDw',
-    appId: '1:852956645307:android:fe883f1ac5d30b832fa69e',
-    messagingSenderId: '852956645307',
-    projectId: 'sales-e8f5a',
-    storageBucket: 'sales-e8f5a.firebasestorage.app',
+    apiKey: 'AIzaSyB2F6B1pRPR7030F_VbSdu9xIPLk3iidFo',
+    appId: '1:736751479548:android:2aca2848e71b3c9d5e0579',
+    messagingSenderId: '736751479548',
+    projectId: 'wolfpack-ec92e',
+    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCVpLfWJSvr5FZyJJhM90Z8wm1N9wrzq1U',
-    appId: '1:852956645307:ios:61fda309388db0f52fa69e',
-    messagingSenderId: '852956645307',
-    projectId: 'sales-e8f5a',
-    storageBucket: 'sales-e8f5a.firebasestorage.app',
+    apiKey: 'AIzaSyC0DQ8TussYPMPKsmAHMd3N5Q-84FBnDOI',
+    appId: '1:736751479548:ios:dc392ecfe959482e5e0579',
+    messagingSenderId: '736751479548',
+    projectId: 'wolfpack-ec92e',
+    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
     iosBundleId: 'jamil.com.petDonation',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCVpLfWJSvr5FZyJJhM90Z8wm1N9wrzq1U',
-    appId: '1:852956645307:ios:61fda309388db0f52fa69e',
-    messagingSenderId: '852956645307',
-    projectId: 'sales-e8f5a',
-    storageBucket: 'sales-e8f5a.firebasestorage.app',
+    apiKey: 'AIzaSyC0DQ8TussYPMPKsmAHMd3N5Q-84FBnDOI',
+    appId: '1:736751479548:ios:dc392ecfe959482e5e0579',
+    messagingSenderId: '736751479548',
+    projectId: 'wolfpack-ec92e',
+    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
     iosBundleId: 'jamil.com.petDonation',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCoxaEWbPuPG4tZf0bW_-sZeSvVulw8WR8',
-    appId: '1:852956645307:web:c63154d001f287b92fa69e',
-    messagingSenderId: '852956645307',
-    projectId: 'sales-e8f5a',
-    authDomain: 'sales-e8f5a.firebaseapp.com',
-    storageBucket: 'sales-e8f5a.firebasestorage.app',
-    measurementId: 'G-JK05GBDBZS',
+    apiKey: 'AIzaSyCJmFXW3zj-pu4iCPr0jK_PB5YBdc-okf0',
+    appId: '1:736751479548:web:823914406208a3bc5e0579',
+    messagingSenderId: '736751479548',
+    projectId: 'wolfpack-ec92e',
+    authDomain: 'wolfpack-ec92e.firebaseapp.com',
+    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
+    measurementId: 'G-913X6PB070',
   );
+
 }

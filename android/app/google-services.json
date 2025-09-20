@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "852956645307",
-    "project_id": "sales-e8f5a",
-    "storage_bucket": "sales-e8f5a.firebasestorage.app"
+    "project_number": "736751479548",
+    "project_id": "wolfpack-ec92e",
+    "storage_bucket": "wolfpack-ec92e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:852956645307:android:fe883f1ac5d30b832fa69e",
+        "mobilesdk_app_id": "1:736751479548:android:2aca2848e71b3c9d5e0579",
         "android_client_info": {
-          "package_name": "jamil.com.pet_donation"
+          "package_name": "jamil.com.wolf_pack"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCoPxRzmBvDSVnyT9RcvCPE87EexrPKXDw"
+          "current_key": "AIzaSyB2F6B1pRPR7030F_VbSdu9xIPLk3iidFo"
         }
       ],
       "services": {
