@@ -96,18 +96,18 @@ class DashboardContent extends StatelessWidget {
               children: [
                 StatProgressCard(
                   primaryValue:
-                      '€${profileController.profileData.value.data?.salesCount ?? "N/A"}',
+                      '€${profileController.profileData.value.data?.salesCount ?? "0"}',
                   label: 'Total Sales',
                   subValue:
-                      '€${profileController.profileData.value.data?.salesCount ?? "N/A"} ${"Target"}',
+                      '€${profileController.profileData.value.data?.salesCount ?? "0"} ${"Target"}',
                   progressValue: 0.4,
                 ),
                 StatProgressCard(
                   primaryValue:
-                      '€${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+                      '€${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
                   label: 'Target',
                   subValue:
-                      '€${profileController.profileData.value.data?.salesCount ?? "N/A"} ${"% "} ${"Complete"}',
+                      '€${profileController.profileData.value.data?.salesCount ?? "0"} ${"% "} ${"Complete"}',
                   progressValue: 0.7,
                 ),
               ],
@@ -117,16 +117,16 @@ class DashboardContent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+
                 StatCard(
-                  primaryValue:
-                      '€${profileController.profileData.value.data?.avgDealAmount?? "N/A"}',
+                  primaryValue: '€${(profileController.profileData.value.data?.avgDealAmount ?? 0).toStringAsFixed(3)}',
                   label: 'Avg. Deal Size',
                   subValue: '',
                   color: Colors.amber,
                 ),
                 StatCard(
                   primaryValue:
-                      '€${profileController.profileData.value.data?.commission ?? "N/A"}',
+                      '€${profileController.profileData.value.data?.commission ?? "0"}',
                   label: 'Commission',
                   subValue: '',
                   color: Colors.amber,

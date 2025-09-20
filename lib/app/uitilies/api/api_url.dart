@@ -1,6 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
-  static const String baseUrl = "http://172.252.13.82:4103/api/v1";
+  // static const String baseUrl = "http://172.252.13.82:4103/api/v1";
+  static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
 
