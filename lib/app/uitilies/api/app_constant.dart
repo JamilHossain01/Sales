@@ -1,8 +1,7 @@
 class AppConstant {
   static const String accessToken = 'accessToken';
   static const String refreshToken = 'refreshToken';
-  static const String otpToken = 'otpToken'; // For OTP flow
-  static const String role = 'USER_ROLE'; // ensure this exists
-  static const fcmToken = 'value';
-
+  static const String otpToken = 'otpToken';
+  static const String role = 'role';        // ✅ must be key, not "USER"
+  static const String fcmToken = 'fcmToken';
 }

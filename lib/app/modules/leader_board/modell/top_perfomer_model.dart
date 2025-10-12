@@ -42,7 +42,6 @@ class Value {
     required this.id,
     required this.name,
     required this.profilePicture,
-    required this.closer,
     required this.dealClosedCount,
     required this.salesCount,
     required this.revenue,
@@ -51,27 +50,29 @@ class Value {
     required this.startDate,
     required this.about,
     required this.count,
+    required this.totalAmount,
+    required this.totalRevenue,
   });
 
   final String? id;
   final String? name;
   final String? profilePicture;
-  final List<Closer> closer;
-  final int? dealClosedCount;
-  final int? salesCount;
-  final int? revenue;
-  final int? dealCount;
-  final int? monthlyTarget;
+  final dynamic dealClosedCount;
+  final dynamic salesCount;
+  final dynamic revenue;
+  final dynamic dealCount;
+  final dynamic monthlyTarget;
   final DateTime? startDate;
   final String? about;
   final Count? count;
+  final dynamic totalAmount;
+  final dynamic totalRevenue;
 
   factory Value.fromJson(Map<String, dynamic> json){
     return Value(
       id: json["id"],
       name: json["name"],
       profilePicture: json["profilePicture"],
-      closer: json["closer"] == null ? [] : List<Closer>.from(json["closer"]!.map((x) => Closer.fromJson(x))),
       dealClosedCount: json["dealClosedCount"],
       salesCount: json["salesCount"],
       revenue: json["revenue"],
@@ -80,48 +81,8 @@ class Value {
       startDate: DateTime.tryParse(json["startDate"] ?? ""),
       about: json["about"],
       count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
-    );
-  }
-
-}
-
-class Closer {
-  Closer({
-    required this.id,
-    required this.clientId,
-    required this.userId,
-    required this.proposition,
-    required this.dealDate,
-    required this.status,
-    required this.amount,
-    required this.notes,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  final String? id;
-  final String? clientId;
-  final String? userId;
-  final String? proposition;
-  final DateTime? dealDate;
-  final String? status;
-  final int? amount;
-  final String? notes;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  factory Closer.fromJson(Map<String, dynamic> json){
-    return Closer(
-      id: json["id"],
-      clientId: json["clientId"],
-      userId: json["userId"],
-      proposition: json["proposition"],
-      dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
-      status: json["status"],
-      amount: json["amount"],
-      notes: json["notes"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      totalAmount: json["totalAmount"],
+      totalRevenue: json["totalRevenue"],
     );
   }
 
@@ -132,7 +93,7 @@ class Count {
     required this.closer,
   });
 
-  final int? closer;
+  final dynamic closer;
 
   factory Count.fromJson(Map<String, dynamic> json){
     return Count(

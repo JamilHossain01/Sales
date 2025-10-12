@@ -51,19 +51,19 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB2F6B1pRPR7030F_VbSdu9xIPLk3iidFo',
-    appId: '1:736751479548:android:2aca2848e71b3c9d5e0579',
-    messagingSenderId: '736751479548',
-    projectId: 'wolfpack-ec92e',
-    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
+    apiKey: 'AIzaSyBuqnlD7bSAtwhMGtTCkUKbGT4TEM1A-aE',
+    appId: '1:115204408365:android:67232fa5ad10008baa64a4',
+    messagingSenderId: '115204408365',
+    projectId: 'the-wolf-pack-85049',
+    storageBucket: 'the-wolf-pack-85049.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC0DQ8TussYPMPKsmAHMd3N5Q-84FBnDOI',
-    appId: '1:736751479548:ios:dc392ecfe959482e5e0579',
-    messagingSenderId: '736751479548',
-    projectId: 'wolfpack-ec92e',
-    storageBucket: 'wolfpack-ec92e.firebasestorage.app',
+    apiKey: 'AIzaSyBttjjtDgW-WH5bcCNmPowoQkLHpeZAAPo',
+    appId: '1:115204408365:ios:29d34e16106c8585aa64a4',
+    messagingSenderId: '115204408365',
+    projectId: 'the-wolf-pack-85049',
+    storageBucket: 'the-wolf-pack-85049.firebasestorage.app',
     iosBundleId: 'jamil.com.petDonation',
   );
 

@@ -71,20 +71,16 @@ class ProfileHeaderCard extends StatelessWidget {
               );
             } else if (imageUrl.isNotEmpty) {
               // Network image with cache
-              return CircleAvatar(
-                radius: 55.r,
-                backgroundColor: AppColors.orangeColor,
-                child: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    width: 110.r,
-                    height: 110.r,
-                    fit: BoxFit.cover,
+              return ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  width: 110.r,
+                  height: 110.r,
+                  fit: BoxFit.cover,
 
-                    errorWidget: (context, url, error) => const CircleAvatar(
-                      radius: 55,
-                      backgroundImage: AssetImage(AppImages.profile),
-                    ),
+                  errorWidget: (context, url, error) => const CircleAvatar(
+                    radius: 55,
+                    backgroundImage: AssetImage(AppImages.profile),
                   ),
                 ),
               );
@@ -92,7 +88,7 @@ class ProfileHeaderCard extends StatelessWidget {
               // Default placeholder
               return CircleAvatar(
                 radius: 55.r,
-                backgroundColor: AppColors.orangeColor,
+                backgroundColor: AppColors.textGray,
                 backgroundImage: const AssetImage(AppImages.profile),
               );
             }

@@ -137,7 +137,7 @@ class LeaderBoardView extends GetView<LeaderBoardController> {
         Gap(12.h),
 
         CustomText(
-          text: 'Top Performers',
+          text: 'Hall of Fame',
           fontWeight: FontWeight.w600,
           fontSize: 18.sp,
           color: AppColors.white,
@@ -145,22 +145,30 @@ class LeaderBoardView extends GetView<LeaderBoardController> {
         Obx(() {
           final topPerformers = topPerformersGetController.topPerformersData.value.data;
 
+          // If topPerformers is null or empty, show loader
           if (topPerformers == null || topPerformers.isEmpty) {
             return Center(
-              child: CustomLoader(), // ✅ use your custom loader here
+              child: CustomLoader(),  // ✅ use your custom loader here
             );
           }
 
           return ListView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(), // for embedding in parent scroll
+            physics: const NeverScrollableScrollPhysics(),  // for embedding in parent scroll
             itemCount: topPerformers.length,
             itemBuilder: (context, index) {
               final performer = topPerformers[index];
 
+              // Check if the value or its properties are null before rendering
+              if (performer.value == null || performer.value?.name == null || performer.value?.name?.isEmpty == true) {
+                return Container();  // If value or name is null, don't show the card
+              }
+
               return NewLeaderBoardCard(
-                name: performer.value?.name ?? (performer.value !=null ? "Unknown" : ''),
-                value: performer.label?.replaceAll('_', ' ') ?? '',
+                profileImage: performer.value?.profilePicture,
+                totalAmount: '\$${performer.value?.totalAmount.toString() ?? "0"}',
+                name: performer.value?.name ?? "Unknown",  // Use "Unknown" if name is null
+                value: performer.label?.replaceAll('_', ' ') ?? "",  // Fallback to empty string if label is null
               );
             },
           );

@@ -1,44 +1,47 @@
+// My clients model (unique class names to avoid collisions)
+
 class MyClientModel {
   MyClientModel({
-     this.success,
-     this.message,
-     this.data,
+    this.success,
+    this.message,
+    this.data,
   });
 
   final bool? success;
   final String? message;
-  final Data? data;
+  final MyClientData? data;
 
-  factory MyClientModel.fromJson(Map<String, dynamic> json){
+  factory MyClientModel.fromJson(Map<String, dynamic> json) {
     return MyClientModel(
-      success: json["success"],
-      message: json["message"],
-      data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      success: json["success"] as bool?,
+      message: json["message"] as String?,
+      data: json["data"] == null
+          ? null
+          : MyClientData.fromJson(Map<String, dynamic>.from(json["data"] as Map)),
     );
   }
-
 }
 
-class Data {
-  Data({
+class MyClientData {
+  MyClientData({
     required this.meta,
     required this.data,
   });
 
-  final Meta? meta;
-  final List<Datum> data;
+  final MyClientMeta? meta;
+  final List<MyClientDatum> data;
 
-  factory Data.fromJson(Map<String, dynamic> json){
-    return Data(
-      meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-      data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+  factory MyClientData.fromJson(Map<String, dynamic> json) {
+    final list = json["data"] as List<dynamic>?;
+    return MyClientData(
+      meta: json["meta"] == null ? null : MyClientMeta.fromJson(Map<String, dynamic>.from(json["meta"] as Map)),
+      data: list == null ? <MyClientDatum>[] : list.map((e) => MyClientDatum.fromJson(Map<String, dynamic>.from(e as Map))).toList(),
     );
   }
-
 }
 
-class Datum {
-  Datum({
+class MyClientDatum {
+  MyClientDatum({
     required this.id,
     required this.name,
     required this.offer,
@@ -64,29 +67,28 @@ class Datum {
   final dynamic commissionRate;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final Closer? closer;
+  final MyClientCloser? closer;
 
-  factory Datum.fromJson(Map<String, dynamic> json){
-    return Datum(
-      id: json["id"],
-      name: json["name"],
-      offer: json["offer"],
-      userId: json["userId"],
-      targetAudience: json["targetAudience"],
-      contact: json["contact"],
-      location: json["location"],
+  factory MyClientDatum.fromJson(Map<String, dynamic> json) {
+    return MyClientDatum(
+      id: json["id"] as String?,
+      name: json["name"] as String?,
+      offer: json["offer"] as String?,
+      userId: json["userId"] as String?,
+      targetAudience: json["targetAudience"] as String?,
+      contact: json["contact"] as String?,
+      location: json["location"] as String?,
       revenueTarget: json["revenueTarget"],
       commissionRate: json["commissionRate"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      closer: json["closer"] == null ? null : Closer.fromJson(json["closer"]),
+      closer: json["closer"] == null ? null : MyClientCloser.fromJson(Map<String, dynamic>.from(json["closer"] as Map)),
     );
   }
-
 }
 
-class Closer {
-  Closer({
+class MyClientCloser {
+  MyClientCloser({
     required this.id,
     required this.clientId,
     required this.userId,
@@ -110,28 +112,28 @@ class Closer {
   final String? notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final List<CloserDocument> closerDocuments;
+  final List<MyClientCloserDocument> closerDocuments;
 
-  factory Closer.fromJson(Map<String, dynamic> json){
-    return Closer(
-      id: json["id"],
-      clientId: json["clientId"],
-      userId: json["userId"],
-      proposition: json["proposition"],
+  factory MyClientCloser.fromJson(Map<String, dynamic> json) {
+    final closerDocs = json["closerDocuments"] as List<dynamic>?;
+    return MyClientCloser(
+      id: json["id"] as String?,
+      clientId: json["clientId"] as String?,
+      userId: json["userId"] as String?,
+      proposition: json["proposition"] as String?,
       dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
-      status: json["status"],
+      status: json["status"] as String?,
       amount: json["amount"],
-      notes: json["notes"],
+      notes: json["notes"] as String?,
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      closerDocuments: json["closerDocuments"] == null ? [] : List<CloserDocument>.from(json["closerDocuments"]!.map((x) => CloserDocument.fromJson(x))),
+      closerDocuments: closerDocs == null ? <MyClientCloserDocument>[] : closerDocs.map((e) => MyClientCloserDocument.fromJson(Map<String, dynamic>.from(e as Map))).toList(),
     );
   }
-
 }
 
-class CloserDocument {
-  CloserDocument({
+class MyClientCloserDocument {
+  MyClientCloserDocument({
     required this.id,
     required this.closerId,
     required this.document,
@@ -147,21 +149,20 @@ class CloserDocument {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory CloserDocument.fromJson(Map<String, dynamic> json){
-    return CloserDocument(
-      id: json["id"],
-      closerId: json["closerId"],
-      document: json["document"],
-      path: json["path"],
+  factory MyClientCloserDocument.fromJson(Map<String, dynamic> json) {
+    return MyClientCloserDocument(
+      id: json["id"] as String?,
+      closerId: json["closerId"] as String?,
+      document: json["document"] as String?,
+      path: json["path"] as String?,
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
     );
   }
-
 }
 
-class Meta {
-  Meta({
+class MyClientMeta {
+  MyClientMeta({
     required this.page,
     required this.limit,
     required this.total,
@@ -173,13 +174,12 @@ class Meta {
   final dynamic total;
   final dynamic totalPage;
 
-  factory Meta.fromJson(Map<String, dynamic> json){
-    return Meta(
+  factory MyClientMeta.fromJson(Map<String, dynamic> json) {
+    return MyClientMeta(
       page: json["page"],
       limit: json["limit"],
       total: json["total"],
       totalPage: json["totalPage"],
     );
   }
-
 }

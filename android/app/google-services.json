@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "736751479548",
-    "project_id": "wolfpack-ec92e",
-    "storage_bucket": "wolfpack-ec92e.firebasestorage.app"
+    "project_number": "115204408365",
+    "project_id": "the-wolf-pack-85049",
+    "storage_bucket": "the-wolf-pack-85049.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:736751479548:android:2aca2848e71b3c9d5e0579",
+        "mobilesdk_app_id": "1:115204408365:android:67232fa5ad10008baa64a4",
         "android_client_info": {
           "package_name": "jamil.com.wolf_pack"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB2F6B1pRPR7030F_VbSdu9xIPLk3iidFo"
+          "current_key": "AIzaSyBuqnlD7bSAtwhMGtTCkUKbGT4TEM1A-aE"
         }
       ],
       "services": {

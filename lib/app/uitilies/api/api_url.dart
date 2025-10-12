@@ -17,12 +17,15 @@ class ApiUrl {
   static String resendEmail  = "$baseUrl/auth/forget-password";
 
   // Client
-  static String allClients= "$baseUrl/client?status=CLOSED";
+  static String allDeals= "$baseUrl/client?status=CLOSED";
+  static String myDeals= "$baseUrl/client/my-clients";
   static String myClients = "$baseUrl/client/my-clients?limit=3";
   // static String myAllClients = "$baseUrl/client/my-clients";
   static String closerCreate = "$baseUrl/closer/create";
   static String allPrizewinner = "$baseUrl/prize";
+  static String topPrizewinner = "$baseUrl/prize/winners";
   static String userPrizeWinner = "$baseUrl/user/prize-winner";
+  static String quaterPrizeWinner = "$baseUrl/quarter-prize/winners";
   static String topPerformers = "$baseUrl/user/top-performers";
   static String nextAchievements = "$baseUrl/user/next-achievement";
 

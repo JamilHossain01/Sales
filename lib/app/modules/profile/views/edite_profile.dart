@@ -18,11 +18,14 @@ import '../../edit_profile/controllers/edit_profile_controller.dart';
 import '../../edit_profile/controllers/edite_prifile_controller_sp.dart';
 import '../controllers/update_profile_controller.dart';
 
+
+
 class EditProfileView extends StatelessWidget {
   final String name;
   final String email;
   final String phone;
   final String about;
+  final String profileImage;
 
   EditProfileView({
     super.key,
@@ -30,12 +33,13 @@ class EditProfileView extends StatelessWidget {
     required this.email,
     required this.phone,
     required this.about,
+    required this.profileImage,
   });
 
   final EditProfileImageController _imageController =
-      Get.put(EditProfileImageController());
-  final ProfileUpdateController  _profileController = Get.put(ProfileUpdateController());
-
+  Get.put(EditProfileImageController());
+  final ProfileUpdateController _profileController =
+  Get.put(ProfileUpdateController());
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +58,20 @@ class EditProfileView extends StatelessWidget {
           children: [
             Center(
               child: Obx(() {
+                final localImage = _imageController.selectedImagePath.value;
+
                 return Stack(
                   alignment: Alignment.bottomRight,
                   children: [
                     CircleAvatar(
                       backgroundColor: AppColors.orangeColor,
                       radius: 55.r,
-                      backgroundImage:
-                          _imageController.selectedImagePath.value.isEmpty
-                              ? const AssetImage(AppImages.profile)
-                              : FileImage(File(
-                                      _imageController.selectedImagePath.value))
-                                  as ImageProvider,
+                      backgroundImage: localImage.isNotEmpty
+                          ? FileImage(File(localImage))
+                          : (profileImage.isNotEmpty
+                          ? NetworkImage(profileImage)
+                          : const AssetImage(AppImages.profile))
+                      as ImageProvider,
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -77,8 +83,8 @@ class EditProfileView extends StatelessWidget {
                                 ListTile(
                                   leading: const Icon(Icons.camera_alt),
                                   title: const Text('Camera'),
-                                  onTap: () => Navigator.pop(
-                                      context, ImageSource.camera),
+                                  onTap: () =>
+                                      Navigator.pop(context, ImageSource.camera),
                                 ),
                                 ListTile(
                                   leading: const Icon(Icons.photo_library),
@@ -90,8 +96,9 @@ class EditProfileView extends StatelessWidget {
                             ),
                           ),
                         );
-                        if (source != null)
+                        if (source != null) {
                           await _imageController.pickImage(source);
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),
@@ -116,15 +123,15 @@ class EditProfileView extends StatelessWidget {
             RowButtonWidgets(
               buttonName1: 'Cancel',
               buttonName2: 'Save Changes',
-              onTapCancel: () {
-                Get.back(); // Go back
-              },
+              onTapCancel: () => Get.back(),
               onTapSave: () {
                 _profileController.updateUserProfile(
                   name: nameController.text,
                   about: aboutController.text,
                   phoneNumber: phoneController.text,
-                  imagePath: _imageController.selectedImagePath.value,
+                  imagePath: _imageController.selectedImagePath.value.isNotEmpty
+                      ? _imageController.selectedImagePath.value
+                      : profileImage,
                 );
               },
             ),

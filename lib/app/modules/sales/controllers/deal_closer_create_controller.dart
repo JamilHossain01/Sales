@@ -72,7 +72,7 @@ class DealController extends GetxController {
         final decoded = jsonDecode(responseData.body);
         final message = decoded['message'] ?? 'Deal created successfully!';
         CustomSnackbar.showSuccess(message);
-        Get.offAllNamed(Routes.ONBOARDING);
+        Get.offAllNamed(Routes.DASHBOARD);
       } else {
         final decoded = jsonDecode(responseData.body);
         final message = decoded['message'] ?? 'Something went wrong!';

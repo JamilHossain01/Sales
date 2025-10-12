@@ -5,6 +5,12 @@ import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../model/profile_model.dart';
 
+import 'package:get/get.dart';
+import '../../../common widget/customSnackBar.dart';
+import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/base_client.dart';
+import '../model/profile_model.dart';
+
 class GetMyProfileController extends GetxController {
   var isLoading = false.obs;
   var profileData = ProfileModel().obs;
@@ -28,7 +34,6 @@ class GetMyProfileController extends GetxController {
       }
     } catch (e) {
       CustomSnackbar.showError(e.toString());
-      rethrow;
     } finally {
       isLoading(false);
     }

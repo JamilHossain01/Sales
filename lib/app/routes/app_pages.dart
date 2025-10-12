@@ -99,11 +99,11 @@ class AppPages {
       page: () => const ForumView(),
       binding: ForumBinding(),
     ),
-    GetPage(
-      name: _Paths.PROFILE,
-      page: () => ProfileView(),
-      binding: ProfileBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.PROFILE,
+    //   page: () => ProfileView(),
+    //   binding: ProfileBinding(),
+    // ),
     // GetPage(
     //   name: _Paths.PET_PROFILE,
     //   page: () => const PetProfileView(),

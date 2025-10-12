@@ -10,6 +10,18 @@ import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/local_storage.dart';
 
+import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
+
+import '../../../common widget/customSnackBar.dart';
+import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/app_constant.dart';
+import '../../../uitilies/api/local_storage.dart';
+import '../../profile/controllers/get_myProfile_controller.dart';
+
 class ProfileUpdateController extends GetxController {
   var isLoading = false.obs;
   final StorageService _storageService = Get.put(StorageService());
@@ -25,7 +37,7 @@ class ProfileUpdateController extends GetxController {
     try {
       final token = await _storageService.read(AppConstant.accessToken);
 
-      final uri = Uri.parse(ApiUrl.updateProfile); // Use your correct API URL
+      final uri = Uri.parse(ApiUrl.updateProfile);
       final request = http.MultipartRequest('PATCH', uri);
 
       request.headers.addAll({
@@ -33,16 +45,15 @@ class ProfileUpdateController extends GetxController {
         'Accept': 'application/json',
       });
 
-      // Add form-data text field (as JSON string inside `data` key)
+      // profile text data
       request.fields['data'] = jsonEncode({
         "name": name,
         "about": about,
         "phoneNumber": phoneNumber,
       });
 
-
-      // Add image file if path is provided
-      if (imagePath.isNotEmpty) {
+      // 🔥 শুধুমাত্র লোকাল ইমেজ হলে আপলোড হবে
+      if (imagePath.isNotEmpty && !imagePath.startsWith("http")) {
         final mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
         final mimeParts = mimeType.split('/');
 
@@ -61,9 +72,16 @@ class ProfileUpdateController extends GetxController {
 
       if (result.statusCode == 200) {
         CustomSnackbar.showSuccess("Profile updated successfully!");
-        Get.to(() => DashboardView());
+
+        // 🔥 প্রোফাইল আবার refresh করুন
+        final profileController = Get.find<GetMyProfileController>();
+        await profileController.refreshProfile();
+
+        // 🔥 Back করুন ProfilePage এ
+        Get.back();
       } else {
-        final message = body["message"] ?? body["error"] ?? "Something went wrong.";
+        final message =
+            body["message"] ?? body["error"] ?? "Something went wrong.";
         CustomSnackbar.showError(message);
       }
     } catch (e) {

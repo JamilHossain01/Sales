@@ -7,7 +7,7 @@ import '../modell/top_perfomer_model.dart';
 
 class TopPerformersGetController extends GetxController {
   var isLoading = false.obs;
-  var topPerformersData = TopPerformersModel(data: []).obs; // Observable for top performers data
+  var topPerformersData = TopPerformersModel(data: []).obs; // Observable for Hall of Fame data
 
   @override
   void onInit() {
@@ -24,7 +24,7 @@ class TopPerformersGetController extends GetxController {
         final data = await BaseClient.handleResponse(response);
         topPerformersData.value = TopPerformersModel.fromJson(data ?? {});
       } else {
-        throw "Failed to load top performers (${response.statusCode})";
+        throw "Failed to load Hall of Fame (${response.statusCode})";
       }
     } catch (e) {
       CustomSnackbar.showError(e.toString());
