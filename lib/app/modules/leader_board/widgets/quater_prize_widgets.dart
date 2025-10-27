@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_images.dart';
 import '../controllers/quater_prize_controller.dart';
 
-class TopQuaterClosersWidget extends StatelessWidget {
+class TopQuaterClosersWidget extends StatefulWidget {
   final AllQuaterPrizeWinnersController controller;
 
   const TopQuaterClosersWidget({super.key, required this.controller});
+
+  @override
+  State<TopQuaterClosersWidget> createState() => _TopQuaterClosersWidgetState();
+}
+
+class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
+  PrizeCardData? selectedCard;
 
   String _getQuarterName(int number) {
     switch (number) {
@@ -27,16 +33,46 @@ class TopQuaterClosersWidget extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Default: show first winner
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final activeData = widget.controller.userPrizeWinnerList.value.data
+          .where((d) => d.isActive == true)
+          .toList();
+      if (activeData.isNotEmpty) {
+        final data = activeData.first;
+        final entries = data.quarterPrizeEntries;
+        final topUsers = data.topUsers;
+        if (entries.isNotEmpty) {
+          final firstEntry = entries[0];
+          final firstUser = topUsers.isNotEmpty ? topUsers[0] : null;
+          setState(() {
+            selectedCard = PrizeCardData(
+              rank: firstEntry.rank.toInt(),
+              userName: firstUser?.name ?? 'TBA',
+              userImage: firstUser?.profilePicture ?? '',
+              prizeName: firstEntry.name ?? '',
+              prizeIcon: firstEntry.icon ?? '',
+            );
+          });
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isLoading.value) {
+      if (widget.controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
-      if (controller.userPrizeWinnerList.value.data.isEmpty) {
+
+      if (widget.controller.userPrizeWinnerList.value.data.isEmpty) {
         return const SizedBox.shrink();
       }
 
-      final activeData = controller.userPrizeWinnerList.value.data
+      final activeData = widget.controller.userPrizeWinnerList.value.data
           .where((d) => d.isActive == true)
           .toList()
         ..sort((a, b) {
@@ -47,311 +83,270 @@ class TopQuaterClosersWidget extends StatelessWidget {
 
       if (activeData.isEmpty) return const SizedBox.shrink();
 
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: activeData.length,
-        itemBuilder: (context, index) {
-          final data = activeData[index];
-          if (data.quarterPrizeEntries.length < 3) return const SizedBox.shrink();
+      final data = activeData.first;
+      final quarterName = _getQuarterName(data.number.toInt());
+      final entries = data.quarterPrizeEntries;
+      final topUsers = data.topUsers;
+      final isTopUsersEmpty = topUsers.isEmpty;
 
-          final entries = data.quarterPrizeEntries;
-          final topUsers = data.topUsers;
-          final isTopUsersEmpty = topUsers.isEmpty;
+      // Create PrizeCards dynamically
+      List<PrizeCardData> prizeCards = [];
+      for (int i = 0; i < entries.length; i++) {
+        final entry = entries[i];
+        final topUser = i < topUsers.length ? topUsers[i] : null;
+        prizeCards.add(PrizeCardData(
+          rank: entry.rank.toInt(),
+          userName: topUser?.name ?? 'TBA',
+          userImage: topUser?.profilePicture ?? '',
+          prizeName: entry.name ?? '',
+          prizeIcon: entry.icon ?? '',
+        ));
+      }
 
-          List<PrizeCardData> prizeCards = [];
-          for (int i = 0; i < 3; i++) {
-            final entry = entries[i];
-            final topUser = i < topUsers.length ? topUsers[i] : null;
-            prizeCards.add(PrizeCardData(
-              rank: entry.rank.toInt(),
-              userName: topUser?.name ?? 'TBA',
-              userImage: topUser?.profilePicture ?? '',
-              prizeName: entry.name ?? '',
-              prizeIcon: entry.icon ?? '',
-            ));
-          }
-
-          Color getColor(int rank) {
-            switch (rank) {
-              case 1:
-                return Colors.amber;
-              case 2:
-              case 3:
-                return const Color(0xFFFF7D00);
-              default:
-                return Colors.orange;
-            }
-          }
-
-          final quarterName = _getQuarterName(data.number.toInt());
-
-          return Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(bottom: 16.h),
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.amber.withOpacity(0.60),
-                  Colors.amber.withOpacity(0.1),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.amber.withOpacity(0.2)),
-            ),
-            child: Column(
+      return Container(
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFF8B7B4E).withOpacity(0.45),
+              const Color(0xFF5F4E2E).withOpacity(0.65),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      AppImages.badges,
-                      height: 34.h,
-                      width: 34.w,
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: CustomText(
-                        text: 'Top 3 $quarterName Prize Winners',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black87,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                if (isTopUsersEmpty)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: CustomText(
-                      text: 'Winners to be announced soon! 🎉',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
-                      textAlign: TextAlign.center,
-                    ),
+                Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
-                SizedBox(height: 24.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child:
+                  const Icon(Icons.workspace_premium, color: Colors.white),
+                ),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTopCloserCard(context, prizeCards[2], getColor(prizeCards[2].rank), prizeCards[2].rank == 1),
-                    _buildTopCloserCard(context, prizeCards[0], getColor(prizeCards[0].rank), true),
-                    _buildTopCloserCard(context, prizeCards[1], getColor(prizeCards[1].rank), prizeCards[1].rank == 1),
+                    CustomText(
+                      text: 'Top Quarter Closers',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                    CustomText(
+                      text: quarterName,
+                      fontSize: 14.sp,
+                      color: Colors.white70,
+                    ),
                   ],
                 ),
               ],
             ),
-          );
-        },
+            SizedBox(height: 20.h),
+
+            CustomText(
+              text: 'Top Prize Winners',
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white70,
+            ),
+            SizedBox(height: 16.h),
+
+            // Top winners row (first winner middle)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (prizeCards.length > 1)
+                  _buildTopWinnerCard(prizeCards[1], false),
+                if (prizeCards.isNotEmpty) _buildTopWinnerCard(prizeCards[0], true),
+                if (prizeCards.length > 2)
+                  _buildTopWinnerCard(prizeCards[2], false),
+              ],
+            ),
+
+            if (isTopUsersEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Center(
+                  child: CustomText(
+                    text: 'Winners to be announced soon! 🎉',
+                    fontSize: 14.sp,
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+
+            // Always show **selected prize info**
+            if (selectedCard != null) ...[
+              SizedBox(height: 20.h),
+              _buildPrizeInfoCard(selectedCard!),
+            ],
+          ],
+        ),
       );
     });
   }
 
-  Widget _buildTopCloserCard(BuildContext context, PrizeCardData card, Color color, bool isFirst) {
+  Widget _buildTopWinnerCard(PrizeCardData card, bool isMiddle) {
     final isTBA = card.userName == 'TBA';
-    return GestureDetector(
-      onTap: () {
-        _showPrizeDetailsDialog(
-          context: context,
-          rank: card.rank.toString(),
-          prizeName: card.prizeName,
-          winnerName: card.userName,
-          winnerImage: card.userImage,
-          prizeImage: card.prizeIcon,
-          isTBA: isTBA,
-        );
-      },
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              CircleAvatar(
-                radius: 40.r,
-                backgroundColor: Colors.white,
-                child: isTBA
-                    ? CircleAvatar(
-                  radius: 36.r,
-                  backgroundColor: Colors.grey[200],
-                  child: const Icon(
-                    Icons.hourglass_empty,
-                    color: Colors.grey,
-                    size: 28,
-                  ),
-                )
-                    : card.userImage.isNotEmpty
-                    ? CircleAvatar(
-                  radius: 36.r,
-                  backgroundImage: NetworkImage(card.userImage),
-                )
-                    : CircleAvatar(
-                  radius: 36.r,
-                  backgroundColor: Colors.grey[200],
-                  child: const Icon(
-                    Icons.person,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              if (isFirst)
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(4.r),
-                    decoration: const BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.star, color: Colors.white, size: 16),
-                  ),
-                ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Container(
-            width: 80.w,
-            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Column(
-              children: [
-                CustomText(
-                  text: card.userName,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: isTBA ? Colors.grey[600]! : Colors.black,
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  card.prizeName,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 2.h),
-                CustomText(
-                  text: '#${card.rank}',
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black54,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+    final isSelected = selectedCard?.rank == card.rank;
 
-  void _showPrizeDetailsDialog({
-    required BuildContext context,
-    required String rank,
-    required String prizeName,
-    required String winnerName,
-    required String winnerImage,
-    required String prizeImage,
-    required bool isTBA,
-  }) {
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        contentPadding: EdgeInsets.zero,
-        titlePadding: EdgeInsets.all(16.w),
-        title: CustomText(
-          text: 'Prize Details',
-          fontSize: 20.sp,
-          fontWeight: FontWeight.w700,
-          color: Colors.black87,
-        ),
-        content: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.7,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-          ),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    // Sizes
+    double radius = isMiddle ? 50.r : 38.r;
+    double imageRadius = isMiddle ? 46.r : 34.r;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedCard = card;
+          });
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: isMiddle ? 12.w : 6.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                alignment: Alignment.bottomRight,
                 children: [
-                  if (prizeImage.isNotEmpty)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: Image.network(
-                        prizeImage,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          height: 200.h,
-                          width: double.infinity,
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.image_not_supported,
-                              size: 50, color: Colors.grey),
-                        ),
-                      ),
+                  CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.white,
+                    child: isTBA
+                        ? CircleAvatar(
+                      radius: imageRadius,
+                      backgroundColor: Colors.grey[200],
+                      child: const Icon(Icons.hourglass_empty,
+                          color: Colors.grey, size: 30),
+                    )
+                        : card.userImage.isNotEmpty
+                        ? CircleAvatar(
+                      radius: imageRadius,
+                      backgroundImage: NetworkImage(card.userImage),
+                    )
+                        : CircleAvatar(
+                      radius: imageRadius,
+                      backgroundColor: Colors.grey[200],
+                      child:
+                      const Icon(Icons.person, color: Colors.grey),
                     ),
-                  SizedBox(height: 16.h),
-                  CustomText(
-                    text: 'Rank: $rank',
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
                   ),
-                  SizedBox(height: 8.h),
-                  CustomText(
-                    text: 'Prize: $prizeName',
-                    fontSize: 16.sp,
-                    color: Colors.black54,
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomText(
-                    text: 'Winner: ${isTBA ? 'To Be Announced' : winnerName}',
-                    fontSize: 16.sp,
-                    color: Colors.green,
-                  ),
-                  SizedBox(height: 16.h),
-                  if (!isTBA && winnerImage.isNotEmpty)
-                    Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.r),
-                        child: Image.network(
-                          winnerImage,
-                          height: 80.h,
-                          width: 80.w,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) =>
-                          const Icon(Icons.person, size: 40, color: Colors.grey),
+                  if (isMiddle)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(4.r),
+                        decoration: const BoxDecoration(
+                          color: Colors.amber,
+                          shape: BoxShape.circle,
                         ),
+                        child: const Icon(Icons.star,
+                            color: Colors.white, size: 16),
                       ),
                     ),
                 ],
               ),
-            ),
+              SizedBox(height: 8.h),
+              CustomText(
+                text: card.userName,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                textAlign: TextAlign.center,
+              ),
+              CustomText(
+                text: card.prizeName,
+                fontSize: 12.sp,
+                color: Colors.white70,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+            ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: CustomText(
-              text: 'Close',
-              fontSize: 16.sp,
-              color: Colors.amber,
-            ),
+      ),
+    );
+  }
+
+  Widget _buildPrizeInfoCard(PrizeCardData card) {
+    final isTBA = card.userName == 'TBA';
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: Colors.amber.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipOval(
+                child: card.userImage.isNotEmpty
+                    ? Image.network(
+                  card.userImage,
+                  height: 70.h,
+                  width: 70.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.person, color: Colors.white70),
+                )
+                    : const Icon(Icons.person, size: 40, color: Colors.white70),
+              ),
+              SizedBox(width: 16.w),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: card.prizeIcon.isNotEmpty
+                    ? Image.network(
+                  card.prizeIcon,
+                  height: 70.h,
+                  width: 70.w,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => const Icon(
+                      Icons.card_giftcard,
+                      size: 40,
+                      color: Colors.amber),
+                )
+                    : const Icon(Icons.card_giftcard,
+                    size: 40, color: Colors.amber),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          CustomText(
+            text: '🏆 ${card.prizeName}',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.amberAccent,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 6.h),
+          CustomText(
+            text: 'Rank: #${card.rank}',
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+          SizedBox(height: 6.h),
+          CustomText(
+            text: 'Winner: ${isTBA ? 'To Be Announced' : card.userName}',
+            fontSize: 14.sp,
+            color: Colors.greenAccent,
           ),
         ],
       ),

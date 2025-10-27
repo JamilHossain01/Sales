@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_images.dart';
 
 class TrendingProvidersSection extends StatelessWidget {

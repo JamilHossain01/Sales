@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 import '../uitilies/app_colors.dart';
+import 'custom text/custom_text_widget.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String? value;

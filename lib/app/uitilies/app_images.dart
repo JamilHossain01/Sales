@@ -4,7 +4,7 @@ class AppImages {
   static const String spalsh = "assets/images/spalsh.png";
   static const String spLogo = "assets/images/spLogo.png";
   static const String eyes = "assets/images/eye.png";
-  static const String noData = "assets/images/nodata.jpg";
+  static const String noData = "assets/images/nodata-removebg-preview.png";
 
   static const String E = "assets/images/E.png";
   static const String arrowBack = "assets/images/arrow-circle-left.png";

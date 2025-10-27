@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:wolf_pack/app/common%20widget/custom_button.dart';
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
+
 import 'package:wolf_pack/app/routes/app_pages.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/gradient.dart';
 import '../controllers/log_in_controller.dart';
 
 class LogInView extends GetView<LogInController> {

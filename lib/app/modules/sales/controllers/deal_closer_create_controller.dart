@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:wolf_pack/app/routes/app_pages.dart';
 import 'package:wolf_pack/app/uitilies/api/api_url.dart';
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/app_constant.dart';
 
 class DealController extends GetxController {

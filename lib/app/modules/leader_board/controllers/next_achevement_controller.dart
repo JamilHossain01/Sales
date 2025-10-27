@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../modell/next_achievement_model.dart'; // make sure this exists

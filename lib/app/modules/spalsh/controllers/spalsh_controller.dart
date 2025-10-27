@@ -52,7 +52,7 @@ class SplashController extends GetxController {
 
     if (accessToken == null || accessToken.isEmpty) {
       debugPrint("❌ No token found, going to SIGN_IN");
-      Get.offAllNamed(Routes.SIGN_IN);
+      Get.offAllNamed(Routes.ONBOARDING);
       return;
     }
 
@@ -63,7 +63,7 @@ class SplashController extends GetxController {
         break;
       case 'ADMIN':
         debugPrint("✅ Role ADMIN, going to DASHBOARD");
-        Get.offAllNamed(Routes.DASHBOARD);
+        Get.offAllNamed(Routes.ONBOARDING);
         break;
       case 'BUYER':
         debugPrint("✅ Role BUYER, going to ONBOARDING");
@@ -71,7 +71,7 @@ class SplashController extends GetxController {
         break;
       default:
         debugPrint("⚠️ Unknown role, going to SIGN_IN");
-        Get.offAllNamed(Routes.SIGN_IN);
+        Get.offAllNamed(Routes.ONBOARDING);
     }
   }
 

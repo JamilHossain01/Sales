@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:wolf_pack/app/common%20widget/custom_app_bar_widget.dart';
-import 'package:wolf_pack/app/common%20widget/nodata_wisgets.dart';
-import 'package:wolf_pack/app/modules/home/controllers/image_controller.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+
 import 'package:wolf_pack/app/modules/onboarding/widgets/row_button_widgets.dart';
 import 'package:wolf_pack/app/modules/profile/views/edite_profile.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 import 'package:wolf_pack/app/uitilies/custom_loader.dart';
 
-import '../../../common widget/custom_button.dart';
+import '../../../common_widget/custom_app_bar_widget.dart';
+import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/nodata_wisgets.dart';
 import '../../edit_profile/controllers/edit_profile_controller.dart';
 import '../../edit_profile/controllers/edite_prifile_controller_sp.dart';
 import '../../pet_profile/views/edit_pet_profile.dart';
@@ -29,9 +27,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../common widget/custom_app_bar_widget.dart';
-import '../../../common widget/nodata_wisgets.dart';
-import '../../../common widget/custom_button.dart';
+
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../../uitilies/custom_loader.dart';

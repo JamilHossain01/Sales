@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolf_pack/app/modules/home/widgets/pet_card.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
-import 'package:wolf_pack/app/common widget/custom text/custom_text_widget.dart'; // Update path as needed
+
+import 'custom text/custom_text_widget.dart';
 
 class AdoptionTabView extends StatefulWidget {
   const AdoptionTabView({super.key});

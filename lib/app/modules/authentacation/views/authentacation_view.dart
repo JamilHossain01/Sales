@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
 
+import '../../../common_widget/gradient.dart';
 import '../controllers/authentacation_controller.dart';
 
 class AuthentacationView extends GetView<AuthentacationController> {

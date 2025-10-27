@@ -3,14 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:wolf_pack/app/common%20widget/custom_opt_field.dart';
+
 import 'package:wolf_pack/app/modules/sign_in/views/new_password.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
-import '../../../common widget/custom_button.dart';
-import '../../../common widget/gradient.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/custom_opt_field.dart';
+import '../../../common_widget/gradient.dart';
+
 
 class OtpView extends GetView {
   const OtpView({super.key, required String email});

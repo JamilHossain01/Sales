@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/CustomBottomSheet.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:wolf_pack/app/common%20widget/custom_button.dart';
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
+
 import 'package:wolf_pack/app/modules/sign_in/views/otp_view.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
-import '../../../common widget/custom_text_filed.dart';
+import '../../../common_widget/CustomBottomSheet.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/custom_text_filed.dart';
+import '../../../common_widget/gradient.dart';
+
 
 class ForgetPasswordView extends GetView {
   const ForgetPasswordView({super.key});

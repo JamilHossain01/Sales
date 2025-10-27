@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/custom_loader.dart';
 import '../../profile/controllers/get_myProfile_controller.dart';
 import '../../profile/controllers/porfile_image_controller.dart';
@@ -46,7 +46,7 @@ class ProfileHeaderCard extends StatelessWidget {
       content: CustomText(text: "This is Leaderboards UI", color: Colors.white),
     ),
     NavItem(
-      label: 'Badges',
+      label: 'Achievements',
       iconPath: AppImages.badges,
       content: CustomText(text: "This is Badges UI", color: Colors.white),
     ),
@@ -56,7 +56,7 @@ class ProfileHeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 40.h),
+        SizedBox(height: 20.h),
         Center(
           child: Obx(() {
             final imageUrl = profileController.profileData.value.data?.profilePicture?? '';
@@ -65,7 +65,7 @@ class ProfileHeaderCard extends StatelessWidget {
             if (localImagePath.isNotEmpty) {
               // Local picked image
               return CircleAvatar(
-                radius: 55.r,
+                radius: 50.r,
                 backgroundColor: AppColors.orangeColor,
                 backgroundImage: FileImage(File(localImagePath)),
               );
@@ -74,8 +74,8 @@ class ProfileHeaderCard extends StatelessWidget {
               return ClipOval(
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
-                  width: 110.r,
-                  height: 110.r,
+                  width: 100.r,
+                  height: 100.r,
                   fit: BoxFit.cover,
 
                   errorWidget: (context, url, error) => const CircleAvatar(
@@ -94,7 +94,7 @@ class ProfileHeaderCard extends StatelessWidget {
             }
           }),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 10.h),
         SizedBox(
           width: 160.w,
           child: LeagueContainer(
@@ -103,14 +103,14 @@ class ProfileHeaderCard extends StatelessWidget {
             textColor: AppColors.orangeColor,
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 8.h),
         CustomText(
           text: username,
           fontSize: 18.sp,
           fontWeight: FontWeight.w700,
           color: Colors.white,
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 8.h),
         Obx(() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(navItems.length, (index) {
@@ -123,7 +123,7 @@ class ProfileHeaderCard extends StatelessWidget {
             );
           }),
         )),
-        SizedBox(height: 20.h),
+        SizedBox(height: 4.h),
       ],
     );
   }

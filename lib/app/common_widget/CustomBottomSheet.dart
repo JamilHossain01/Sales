@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart'; // make sure this package is added
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/common%20widget/custom_button.dart';
 
 import 'custom text/custom_text_widget.dart';
+import 'custom_button.dart';
 
 // Your custom widgets import placeholders:
 // import 'path_to_custom_button.dart';

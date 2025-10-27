@@ -8,8 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
-import 'package:wolf_pack/app/common%20widget/show_alert_dialog.dart';
+
 import 'package:wolf_pack/app/modules/profile/views/chnage_password.dart';
 import 'package:wolf_pack/app/modules/profile/views/privacy_policy.dart';
 import 'package:wolf_pack/app/modules/setting/views/contact_support_view.dart';
@@ -17,8 +16,11 @@ import 'package:wolf_pack/app/modules/setting/views/terms_of_use_view.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
-import '../../../common widget/custom_app_bar_widget.dart';
-import '../../../common widget/menue_item.dart';
+import '../../../common_widget/custom_app_bar_widget.dart';
+import '../../../common_widget/menue_item.dart';
+import '../../../common_widget/show_alert_dialog.dart';
+import '../../../uitilies/api/app_constant.dart';
+import '../../../uitilies/api/local_storage.dart';
 import '../../setting/views/privacy_policy_view.dart';
 import '../controllers/get_myProfile_controller.dart';
 import '../controllers/porfile_image_controller.dart';
@@ -36,7 +38,7 @@ class _SettingViewState extends State<SettingView> {
   final GetMyProfileController profileController =
   Get.put(GetMyProfileController());
   final HomeImageController _imageController = Get.put(HomeImageController());
-
+  final storage = Get.put(StorageService());
 
 
   Future<void> _launchURL() async {
@@ -46,6 +48,8 @@ class _SettingViewState extends State<SettingView> {
       throw Exception('Could not launch $_staticUrl');
     }
   }
+
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -127,10 +131,8 @@ class _SettingViewState extends State<SettingView> {
               borderRadius: BorderRadius.circular(6.r),
               title: 'Contact Support',
               textColor: AppColors.white,
-
               onTap: () {
                 _launchURL();
-
               },
             ),  Gap(20.h),
             MenuItem(
@@ -165,16 +167,15 @@ class _SettingViewState extends State<SettingView> {
 
               onTap: () {
                 showDialog(
-
                   context:context,
                   barrierDismissible: false,
                   builder: (_) => SignOutDialog(
                     title: 'Do you want to your Log Out profile?',
-                    onConfirm: () {
+                    onConfirm: (){
                       // Sign out logic here
+                      profileController.logout();
                     },
                     onCancel: () {
-                      // Optional cancel logic
                     },
                   ),
                 );              },

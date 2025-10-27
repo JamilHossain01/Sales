@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
-import 'package:wolf_pack/app/common%20widget/custom_header_widgets.dart';
+
 import 'package:wolf_pack/app/modules/home/widgets/perform_card_wigets.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_header_widgets.dart';
 import '../../../uitilies/app_colors.dart';
 
 class LeaderboardCard extends StatelessWidget {
@@ -49,8 +50,7 @@ class LeaderboardCard extends StatelessWidget {
                   AppImages.leaderboards,
                   height: 20.h,
                   width: 20.w,
-                  color:  AppColors.orangeColor,
-
+                  color: AppColors.orangeColor,
                 ),
               ),
             ],
@@ -79,26 +79,9 @@ class LeaderboardCard extends StatelessWidget {
             width: double.infinity,
             margin: EdgeInsets.only(bottom: 10.h),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Color(0xFF00D1FF).withOpacity(0.13),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomText(
-                  text: motivationLine1,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF00D1FF),
-                ),
-                CustomText(
-                  text: motivationLine2,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF00D1FF),
-                ),
-              ],
+              children: [],
             ),
           ),
         ],

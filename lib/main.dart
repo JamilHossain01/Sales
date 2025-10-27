@@ -32,7 +32,10 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize local storage
+  final storage = Get.put(StorageService());
   await StorageService.initStorage();
+  debugPrint('Access Token => ${storage.read(AppConstant.accessToken)}');
+
 
   // Setup Firebase Messaging
   await _setupFirebaseMessaging();

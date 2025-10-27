@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'package:wolf_pack/app/common%20widget/custom_calender.dart';
 import 'package:wolf_pack/app/modules/home/widgets/target_widgets.dart';
 import 'package:wolf_pack/app/modules/home/widgets/rececnt_deatils_widgets.dart';
 import 'package:wolf_pack/app/modules/home/controllers/ny_clients_controller.dart';
@@ -14,6 +13,8 @@ import 'package:wolf_pack/app/uitilies/date_time_formate.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/modules/home/model/my_clients_model.dart';
 
+import '../../../common_widget/custom_calender.dart';
+import '../../../common_widget/nodata_wisgets.dart';
 import '../../home/model/all_my_cleints_model.dart';
 
 import 'package:flutter/material.dart';
@@ -232,7 +233,11 @@ class _SalesContentState extends State<SalesContent> {
                 ),
               ),
             filteredClients.isEmpty
-                ? Center(child: Text('No matching results'))
+                ?Center(
+            child: GestureDetector(
+      child:NoDataWidget(text: 'No matching results'),
+      )
+      )
                 : ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

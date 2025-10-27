@@ -1,30 +1,65 @@
-import 'package:get/get.dart';
-import 'package:wolf_pack/app/modules/leader_board/modell/all_prize_model.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/uitilies/app_images.dart';
-import '../../../uitilies/app_colors.dart';
-import '../../../common widget/custom text/custom_text_widget.dart';
+import 'package:wolf_pack/app/common_widget/custom text/custom_text_widget.dart';
 import '../../leader_board/modell/prizew_winner_model.dart';
 
-class TopClosersWidget extends StatelessWidget {
+class TopClosersWidget extends StatefulWidget {
   final AllPrizeWinnerController controller;
 
   const TopClosersWidget({super.key, required this.controller});
 
   @override
+  State<TopClosersWidget> createState() => _TopClosersWidgetState();
+}
+
+class _TopClosersWidgetState extends State<TopClosersWidget> {
+  PrizeCardData? selectedCard;
+
+  @override
+  void initState() {
+    super.initState();
+    // Default: First prize winner always shown
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.controller.allPrizeList.value.data.isNotEmpty) {
+        final activeData = widget.controller.allPrizeList.value.data
+            .where((d) => d.isActive == true)
+            .toList();
+        if (activeData.isNotEmpty && activeData.first.entries.isNotEmpty) {
+          final data = activeData.first;
+          final entries = data.entries;
+          final topUsers = data.topUsers;
+
+          final firstEntry = entries[0];
+          final firstUser = topUsers.isNotEmpty ? topUsers[0] : null;
+
+          setState(() {
+            selectedCard = PrizeCardData(
+              rank: firstEntry.rank.toInt(),
+              userName: firstUser?.name ?? 'TBA',
+              userImage: firstUser?.profilePicture ?? '',
+              prizeName: firstEntry.name ?? '',
+              prizeIcon: firstEntry.icon ?? '',
+            );
+          });
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isLoading.value) {
+      if (widget.controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      if (controller.allPrizeList.value.data.isEmpty) {
+      if (widget.controller.allPrizeList.value.data.isEmpty) {
         return const SizedBox.shrink();
       }
 
-      final activeData = controller.allPrizeList.value.data
+      final activeData = widget.controller.allPrizeList.value.data
           .where((d) => d.isActive == true)
           .toList()
         ..sort((a, b) {
@@ -33,333 +68,302 @@ class TopClosersWidget extends StatelessWidget {
           return (b.month as int).compareTo(a.month as int);
         });
 
-      if (activeData.isEmpty) {
-        return const SizedBox.shrink();
+      if (activeData.isEmpty) return const SizedBox.shrink();
+
+      final data = activeData.first;
+      final monthName =
+      DateFormat('MMMM yyyy').format(DateTime(data.year, data.month));
+
+      if (data.entries.length < 3) return const SizedBox.shrink();
+
+      final entries = data.entries;
+      final topUsers = data.topUsers;
+      final isTopUsersEmpty = topUsers.isEmpty;
+
+      List<PrizeCardData> prizeCards = [];
+      for (int i = 0; i < 3; i++) {
+        final entry = entries[i];
+        final topUser = i < topUsers.length ? topUsers[i] : null;
+        prizeCards.add(PrizeCardData(
+          rank: entry.rank.toInt(),
+          userName: topUser?.name ?? 'TBA',
+          userImage: topUser?.profilePicture ?? '',
+          prizeName: entry.name ?? '',
+          prizeIcon: entry.icon ?? '',
+        ));
       }
 
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: activeData.length,
-        itemBuilder: (context, index) {
-          final data = activeData[index];
-          if (data.entries.length < 3) return const SizedBox.shrink();
-
-          final entries = data.entries;
-          final topUsers = data.topUsers;
-          final isTopUsersEmpty = topUsers.isEmpty;
-
-          List<PrizeCardData> prizeCards = [];
-          for (int i = 0; i < 3; i++) {
-            final entry = entries[i];
-            final topUser = i < topUsers.length ? topUsers[i] : null;
-            prizeCards.add(PrizeCardData(
-              rank: entry.rank.toInt(),
-              userName: topUser?.name ?? 'TBA',
-              userImage: topUser?.profilePicture ?? '',
-              prizeName: entry.name ?? '',
-              prizeIcon: entry.icon ?? '',
-            ));
-          }
-
-          Color getColor(int rank) {
-            switch (rank) {
-              case 1:
-                return Colors.amber;
-              case 2:
-                return const Color(0xFFFF7D00);
-              case 3:
-                return const Color(0xFFFF7D00);
-              default:
-                return Colors.orange;
-            }
-          }
-
-          final monthName = DateFormat('MMMM').format(
-            DateTime(data.year.toInt(), data.month.toInt(), 1),
-          );
-
-          return Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(bottom: 16.h),
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.amber.withOpacity(0.60),
-                  Colors.amber.withOpacity(0.1),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.amber.withOpacity(0.2)),
-            ),
-            child: Column(
+      return Container(
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFF8B7B4E).withOpacity(0.45),
+              const Color(0xFF5F4E2E).withOpacity(0.65),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ===== HEADER =====
+            Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(AppImages.badges, height: 34.h, width: 34.w),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: CustomText(
-                        text: 'Top 3 $monthName Prize Winners',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black87,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                if (isTopUsersEmpty)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: CustomText(
-                      text: 'Winners to be announced soon! 🎉',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
-                      textAlign: TextAlign.center,
-                    ),
+                Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
-                SizedBox(height: 24.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: const Icon(Icons.emoji_events, color: Colors.white),
+                ),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Rank 3
-                    _buildTopCloserCard(
-                      context: context,
-                      name: prizeCards[2].userName,
-                      prize: prizeCards[2].prizeName,
-                      rank: '#${prizeCards[2].rank}',
-                      imageUrl: prizeCards[2].userImage,
-                      color: getColor(prizeCards[2].rank),
-                      isFirst: prizeCards[2].rank == 1,
-                      isTBA: prizeCards[2].userName == 'TBA',
-                      prizeIcon: prizeCards[2].prizeIcon,
+                    CustomText(
+                      text: 'Top Closers',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
-                    // Rank 1 (center)
-                    _buildTopCloserCard(
-                      context: context,
-                      name: prizeCards[0].userName,
-                      prize: prizeCards[0].prizeName,
-                      rank: '#${prizeCards[0].rank}',
-                      imageUrl: prizeCards[0].userImage,
-                      color: getColor(prizeCards[0].rank),
-                      isFirst: true,
-                      isTBA: prizeCards[0].userName == 'TBA',
-                      prizeIcon: prizeCards[0].prizeIcon,
-                    ),
-                    // Rank 2
-                    _buildTopCloserCard(
-                      context: context,
-                      name: prizeCards[1].userName,
-                      prize: prizeCards[1].prizeName,
-                      rank: '#${prizeCards[1].rank}',
-                      imageUrl: prizeCards[1].userImage,
-                      color: getColor(prizeCards[1].rank),
-                      isFirst: prizeCards[1].rank == 1,
-                      isTBA: prizeCards[1].userName == 'TBA',
-                      prizeIcon: prizeCards[1].prizeIcon,
+                    CustomText(
+                      text: monthName,
+                      fontSize: 14.sp,
+                      color: Colors.white70,
                     ),
                   ],
                 ),
               ],
             ),
-          );
-        },
+            SizedBox(height: 20.h),
+
+            CustomText(
+              text: 'Top 3 Prize Winners',
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white70,
+            ),
+            SizedBox(height: 16.h),
+
+            // ===== TOP 3 WINNERS (avatars) =====
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildTopWinnerCard(prizeCards[1], false),
+                _buildTopWinnerCard(prizeCards[0], true),
+                _buildTopWinnerCard(prizeCards[2], false),
+              ],
+            ),
+
+            if (isTopUsersEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Center(
+                  child: CustomText(
+                    text: 'Winners to be announced soon! 🎉',
+                    fontSize: 14.sp,
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+
+            /// ===== EXPANDED CARD (always first visible) =====
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: selectedCard != null
+                  ? Padding(
+                key: ValueKey(selectedCard!.rank),
+                padding: EdgeInsets.only(top: 20.h),
+                child: _buildPrizeInfoCard(selectedCard!),
+              )
+                  : const SizedBox.shrink(),
+            ),
+          ],
+        ),
       );
     });
   }
 
-  Widget _buildTopCloserCard({
-    required BuildContext context,
-    required String name,
-    required String prize,
-    required String rank,
-    required String imageUrl,
-    required Color color,
-    required bool isFirst,
-    required bool isTBA,
-    required String prizeIcon,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        /// 👇 FIXED: Use context directly for dialog (ensures proper overlay)
-        showDialog(
-          context: context,
-          builder: (_) => _buildPrizeDialog(
-            rank: rank,
-            prizeName: prize,
-            winnerName: name,
-            winnerImage: imageUrl,
-            prizeImage: prizeIcon,
-            isTBA: isTBA,
+  Widget _buildTopWinnerCard(PrizeCardData card, bool isFirst) {
+    final isTBA = card.userName == 'TBA';
+    final isSelected = selectedCard?.rank == card.rank;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedCard = card;
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          padding: EdgeInsets.all(isSelected ? 4.w : 0),
+          decoration: BoxDecoration(
+            border: isSelected
+                ? Border.all(color: Colors.amber, width: 2)
+                : null,
+            borderRadius: BorderRadius.circular(50.r),
           ),
-        );
-      },
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 40.r,
-                backgroundColor: Colors.white,
-                child: isTBA
-                    ? const Icon(Icons.hourglass_empty,
-                    color: Colors.grey, size: 28)
-                    : imageUrl.isNotEmpty
-                    ? CircleAvatar(
-                  radius: 36.r,
-                  backgroundImage: NetworkImage(imageUrl),
-                )
-                    : const Icon(Icons.person, color: Colors.grey),
-              ),
-              if (isFirst)
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(4.r),
-                    decoration: const BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle,
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  CircleAvatar(
+                    radius: isFirst ? 45.r : 38.r,
+                    backgroundColor: Colors.white,
+                    child: isTBA
+                        ? CircleAvatar(
+                      radius: isFirst ? 41.r : 34.r,
+                      backgroundColor: Colors.grey[200],
+                      child: const Icon(Icons.hourglass_empty,
+                          color: Colors.grey, size: 30),
+                    )
+                        : card.userImage.isNotEmpty
+                        ? CircleAvatar(
+                      radius: isFirst ? 41.r : 34.r,
+                      backgroundImage: NetworkImage(card.userImage),
+                    )
+                        : CircleAvatar(
+                      radius: isFirst ? 41.r : 34.r,
+                      backgroundColor: Colors.grey[200],
+                      child: const Icon(Icons.person,
+                          color: Colors.grey),
                     ),
-                    child: const Icon(Icons.star,
-                        color: Colors.white, size: 16),
                   ),
+                  if (isFirst)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(4.r),
+                        decoration: const BoxDecoration(
+                          color: Colors.amber,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.star,
+                            color: Colors.white, size: 16),
+                      ),
+                    ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              CustomText(
+                text: card.userName,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 4.h),
+              CustomText(
+                text: card.prizeName,
+                fontSize: 12.sp,
+                color: Colors.white70,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+              SizedBox(height: 4.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color:
+                  isFirst ? Colors.amber : Colors.blueGrey.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
+                child: CustomText(
+                  text: '#${card.rank}',
+                  fontSize: 12.sp,
+                  color: isFirst ? Colors.black : Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 12.h),
-          Container(
-            width: 80.w,
-            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Column(
-              children: [
-                CustomText(
-                  text: name,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: isTBA ? Colors.grey[600]! : Colors.black,
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  prize,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 2.h),
-                CustomText(
-                  text: rank,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black54,
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildPrizeDialog({
-    required String rank,
-    required String prizeName,
-    required String winnerName,
-    required String winnerImage,
-    required String prizeImage,
-    required bool isTBA,
-  }) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      title: CustomText(
-        text: 'Prize Details',
-        fontSize: 20.sp,
-        fontWeight: FontWeight.w700,
-        color: Colors.black87,
+  /// ===== EXPANDED CARD =====
+  Widget _buildPrizeInfoCard(PrizeCardData card) {
+    final isTBA = card.userName == 'TBA';
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: Colors.amber.withOpacity(0.5)),
       ),
-      content: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (prizeImage.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12.r),
-                child: Image.network(
-                  prizeImage,
-                  height: 200.h,
-                  width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipOval(
+                child: card.userImage.isNotEmpty
+                    ? Image.network(
+                  card.userImage,
+                  height: 70.h,
+                  width: 70.w,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    height: 200.h,
-                    color: Colors.grey[200],
-                    child: const Icon(Icons.image_not_supported,
-                        size: 50, color: Colors.grey),
-                  ),
-                ),
+                  errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.person, color: Colors.white70),
+                )
+                    : const Icon(Icons.person,
+                    size: 40, color: Colors.white70),
               ),
-            SizedBox(height: 16.h),
-            CustomText(
-              text: 'Rank: $rank',
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-            SizedBox(height: 8.h),
-            CustomText(
-              text: 'Prize: $prizeName',
-              fontSize: 16.sp,
-              color: Colors.black54,
-            ),
-            SizedBox(height: 8.h),
-            CustomText(
-              text: 'Winner: ${isTBA ? 'To Be Announced' : winnerName}',
-              fontSize: 16.sp,
-              color: Colors.green,
-            ),
-            SizedBox(height: 16.h),
-            if (!isTBA && winnerImage.isNotEmpty)
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.r),
-                  child: Image.network(
-                    winnerImage,
-                    height: 80.h,
-                    width: 80.w,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.person,
-                        size: 40, color: Colors.grey),
-                  ),
-                ),
+              SizedBox(width: 16.w),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: card.prizeIcon.isNotEmpty
+                    ? Image.network(
+                  card.prizeIcon,
+                  height: 70.h,
+                  width: 70.w,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => const Icon(
+                      Icons.card_giftcard,
+                      size: 40,
+                      color: Colors.amber),
+                )
+                    : const Icon(Icons.card_giftcard,
+                    size: 40, color: Colors.amber),
               ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Get.back(),
-          child: CustomText(
-            text: 'Close',
-            fontSize: 16.sp,
-            color: Colors.amber,
+            ],
           ),
-        ),
-      ],
+          SizedBox(height: 12.h),
+          CustomText(
+            text: '🏆 ${card.prizeName}',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.amberAccent,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 6.h),
+          CustomText(
+            text: 'Rank: #${card.rank}',
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+          SizedBox(height: 6.h),
+          CustomText(
+            text: 'Winner: ${isTBA ? 'To Be Announced' : card.userName}',
+            fontSize: 14.sp,
+            color: Colors.greenAccent,
+          ),
+        ],
+      ),
     );
   }
 }

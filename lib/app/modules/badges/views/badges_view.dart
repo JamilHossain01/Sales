@@ -71,7 +71,7 @@ class BadgesView extends GetView<BadgesController> {
 
         return BadgeProgressCard(
           iconPath: AppImages.milestone,
-          title: 'Your Upcoming Badge',
+          // title: 'Your Upcoming Badge',
 
           progressText:
           "Your upcoming achievement",

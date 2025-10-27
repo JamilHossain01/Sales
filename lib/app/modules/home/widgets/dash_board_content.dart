@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:wolf_pack/app/modules/home/controllers/my_clients_controller.dart';
 import 'package:wolf_pack/app/modules/home/widgets/perform_card_wigets.dart';
 import 'package:wolf_pack/app/modules/home/widgets/rececnt_deatils_widgets.dart';
@@ -12,6 +11,8 @@ import 'package:wolf_pack/app/modules/leader_board/controllers/next_achevement_c
 import 'package:wolf_pack/app/modules/leader_board/controllers/quater_prize_controller.dart';
 import 'package:wolf_pack/app/modules/leader_board/modell/prizew_winner_model.dart';
 import 'package:wolf_pack/app/uitilies/custom_loader.dart';
+import '../../../common_widget/common_listview_builder.dart';
+import '../../../common_widget/custom_header_widgets.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../badges/widgets/next_achive_widgets.dart';
@@ -21,8 +22,7 @@ import '../../leader_board/widgets/quater_prize_widgets.dart';
 import '../../leader_board/controllers/leader_board_controller.dart';
 import '../../sales/views/sales_screen.dart';
 import '../../open_deal/views/new_deal_view.dart';
-import '../../../common widget/common_listview_builder.dart';
-import '../../../common widget/custom_header_widgets.dart';
+
 import '../../../uitilies/date_time_formate.dart';
 import '../model/badget_model_data.dart';
 import '../widgets/stat_card_wigets.dart';
@@ -145,10 +145,9 @@ class DashboardContent extends StatelessWidget {
                       earnings: '€${performer.salesCount ?? '0'}',
                       rankColor: AppColors.orangeColor,
                     );
-                  }).toList(),
-                  motivationLine1:
-                  "You're in Jupiler League. Keep pushing for Europa League! 🏅",
-                  motivationLine2: "",
+                  }).toList(), motivationLine1: '', motivationLine2: '',
+
+
                 );
               }),
 
@@ -160,68 +159,68 @@ class DashboardContent extends StatelessWidget {
                 quarterController: quarterController,
               ),
 
-              SizedBox(height: 20.h),
-              HeaderWidgets(title: 'Badge Milestone', subTitle: 'View All'),
-              const SizedBox(height: 10),
-
-              Obx(() {
-                if (profileController.isLoading.value || nextController.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final profileData = profileController.profileData.value.data;
-                if (profileData == null) {
-                  return const Center(child: Text("No profile data available"));
-                }
-
-                final achievements = profileData.myAchievements ?? [];
-                final salesCount = profileData.salesCount ?? 0;
-                final monthlyTarget = profileData.monthlyTarget ?? 0;
-
-                final navButtons = achievements.map((myAch) {
-                  return NavButtonData(
-                    label: myAch.achievement?.name ?? "N/A",
-                    assetPath: AppImages.milestone,
-                    color: Colors.white.withOpacity(0.08),
-                    textColor: const Color(0xFFFFB400),
-                  );
-                }).toList();
-
-                /// Build horizontal list of next achievements dynamically
-                Widget nextAchievementsWidget = nextController.nextAchievementsData.value.data.isEmpty
-                    ? const Center(
-                  child: Text(
-                    "No Next Achievements",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-                    : SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: nextController.nextAchievementsData.value.data.map((datum) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: NextAchievementCard(
-                          title: datum.name ?? "N/A",
-                          iconUrl: AppImages.milestone, // Replace with specific icon if available
-                          bgColor: Colors.white.withOpacity(0.08),
-                          textColor: const Color(0xFFFFB400),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                );
-
-                return BadgeProgressCard(
-                  iconPath: AppImages.milestone,
-                  title: 'Your Upcoming Badge',
-
-                  progressText:
-                  "Your upcoming achievement",
-                  targetCard: nextAchievementsWidget,
-                  navButtons: navButtons,
-                );
-              }),
+              // SizedBox(height: 20.h),
+              // HeaderWidgets(title: 'Badge Milestone', subTitle: 'View All'),
+              // const SizedBox(height: 10),
+              //
+              // Obx(() {
+              //   if (profileController.isLoading.value || nextController.isLoading.value) {
+              //     return const Center(child: CircularProgressIndicator());
+              //   }
+              //
+              //   final profileData = profileController.profileData.value.data;
+              //   if (profileData == null) {
+              //     return const Center(child: Text("No profile data available"));
+              //   }
+              //
+              //   final achievements = profileData.myAchievements ?? [];
+              //   final salesCount = profileData.salesCount ?? 0;
+              //   final monthlyTarget = profileData.monthlyTarget ?? 0;
+              //
+              //   final navButtons = achievements.map((myAch) {
+              //     return NavButtonData(
+              //       label: myAch.achievement?.name ?? "N/A",
+              //       assetPath: AppImages.milestone,
+              //       color: Colors.white.withOpacity(0.08),
+              //       textColor: const Color(0xFFFFB400),
+              //     );
+              //   }).toList();
+              //
+              //   /// Build horizontal list of next achievements dynamically
+              //   Widget nextAchievementsWidget = nextController.nextAchievementsData.value.data.isEmpty
+              //       ? const Center(
+              //     child: Text(
+              //       "No Next Achievements",
+              //       style: TextStyle(color: Colors.white),
+              //     ),
+              //   )
+              //       : SingleChildScrollView(
+              //     scrollDirection: Axis.horizontal,
+              //     child: Row(
+              //       children: nextController.nextAchievementsData.value.data.map((datum) {
+              //         return Padding(
+              //           padding: const EdgeInsets.only(right: 8.0),
+              //           child: NextAchievementCard(
+              //             title: datum.name ?? "N/A",
+              //             iconUrl: AppImages.milestone, // Replace with specific icon if available
+              //             bgColor: Colors.white.withOpacity(0.06),
+              //             textColor: const Color(0xFFFFB400),
+              //           ),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   );
+              //
+              //   return BadgeProgressCard(
+              //     iconPath: AppImages.milestone,
+              //     title: 'Your Upcoming Badge',
+              //
+              //     progressText:
+              //     "Your upcoming achievement",
+              //     targetCard: nextAchievementsWidget,
+              //     navButtons: navButtons,
+              //   );
+              // }),
               SizedBox(height: 15.h),
 
               /// ---------- Recent Deals ----------

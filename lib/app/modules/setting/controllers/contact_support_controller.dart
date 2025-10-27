@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../common widget/customSnackBar.dart';
-import '../../../common widget/support_screen.dart';
+
+import '../../../common_widget/customSnackBar.dart';
+import '../../../common_widget/support_screen.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/local_storage.dart';

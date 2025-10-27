@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wolf_pack/app/common_widget/nodata_wisgets.dart';
 
 class ReusableListView<T> extends StatelessWidget {
   final RxBool isLoading;
@@ -28,7 +29,7 @@ class ReusableListView<T> extends StatelessWidget {
         return Center(
           child: GestureDetector(
             onTap: onRetry,
-            child: const Text("No data available. Tap to retry."),
+            child:NoDataWidget(text: ''),
           ),
         );
       }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
-import '../../../common widget/heart_conatiner.dart';
+
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_colors.dart';
 
 class InfoRow extends StatelessWidget {

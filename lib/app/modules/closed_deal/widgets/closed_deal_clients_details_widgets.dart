@@ -6,14 +6,13 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/custom_loader.dart';
 import '../../../uitilies/date_time_formate.dart';
 import '../../view_details/widgets/location_tile.dart';
 import '../controllers/get_single_client.dart';
 
 import 'package:get/get.dart';
-import '../../../common widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../model/single_client_model.dart';

@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
-import '../../../common widget/custom_button.dart';
-import '../../../common widget/custom_dropdown_controller.dart';
-import '../../../common widget/custom_text_filed.dart';
+
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_text_filed.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../onboarding/widgets/row_button_widgets.dart';

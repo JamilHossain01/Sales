@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:wolf_pack/app/modules/open_deal/widgets/export_widgets.dart';
 import 'package:wolf_pack/app/modules/view_details/widgets/location_tile.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/date_time_formate.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/custom_loader.dart';
 import '../controllers/get_single_client.dart';
 

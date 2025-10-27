@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/noitification_item.dart';
-import '../../../common widget/custom_app_bar_widget.dart';
+
+import '../../../common_widget/custom_app_bar_widget.dart';
+import '../../../common_widget/noitification_item.dart';
 import '../../notification/notification_controller.dart';
 
 class NotificationView extends StatelessWidget {

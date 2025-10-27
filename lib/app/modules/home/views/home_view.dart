@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:wolf_pack/app/modules/badges/views/badges_view.dart';
 
 import 'package:wolf_pack/app/modules/home/widgets/customConainerLinaer.dart';
@@ -28,7 +27,7 @@ class HomeView extends GetView<HomeController> {
 
   final List<NavItem> navItems = [
     NavItem(
-      label: 'Dashboard',
+      label: 'Dashboards',
       iconPath: AppImages.dashboard,
       content: DashboardContent(),
     ),
@@ -43,7 +42,7 @@ class HomeView extends GetView<HomeController> {
       content: LeaderBoardView(),
     ),
     NavItem(
-      label: 'Badges',
+      label: 'Achievements',
       iconPath: AppImages.badges,
       content: BadgesView(),
     ),
@@ -54,6 +53,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
+      extendBody: true,
       body: Obx(() {
         if (profileController.isLoading.value) {
           return CustomLoader();  // Show loader while profile is loading

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/local_storage.dart';
 import '../../sign_in/views/new_password.dart';

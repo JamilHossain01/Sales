@@ -19,7 +19,7 @@ class CustomGradientContainer extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Color(0xFFFCB806).withOpacity(0.050),
-                Color(0xFFFCB806).withOpacity(0.050),
+                Color(0xFFFCB806).withOpacity(0.2),
               ],
               stops: [0.0, 1.0],
             ),

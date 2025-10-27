@@ -38,7 +38,7 @@ class PrizeTabsWidget extends StatelessWidget {
 
           /// ✅ Fixed height + scrollable child
           SizedBox(
-            height: 400.h, // you can tweak as needed
+            height: 580.h, // you can tweak as needed
             child: TabBarView(
               physics: const BouncingScrollPhysics(),
               children: [

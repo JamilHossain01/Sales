@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/custom_app_bar_widget.dart';
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
-import 'package:wolf_pack/app/common%20widget/menue_item.dart';
-import 'package:wolf_pack/app/common%20widget/show_alert_dialog.dart';
+
 import 'package:wolf_pack/app/modules/profile/views/chnage_password.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
+import '../../../common_widget/custom_app_bar_widget.dart';
+import '../../../common_widget/gradient.dart';
+import '../../../common_widget/menue_item.dart';
+import '../../../common_widget/show_alert_dialog.dart';
 import '../controllers/setting_controller.dart';
 
 class SettingView extends GetView<SettingController> {

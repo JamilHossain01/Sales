@@ -34,7 +34,7 @@ class NavController extends GetxController {
       ),
     ),
     NavItem(
-      label: 'Badges',
+      label: 'Achievements',
       iconPath: AppImages.badges,
       content: const Text(
         "This is Badges UI",

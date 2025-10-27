@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
 
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/base_client.dart';
+import '../../../uitilies/api/local_storage.dart';
+import '../../sign_in/views/sign_in_view.dart';
 import '../model/profile_model.dart';
 
 import 'package:get/get.dart';
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../model/profile_model.dart';
@@ -14,6 +17,7 @@ import '../model/profile_model.dart';
 class GetMyProfileController extends GetxController {
   var isLoading = false.obs;
   var profileData = ProfileModel().obs;
+  final storage = Get.put(StorageService());
 
   @override
   void onInit() {
@@ -41,5 +45,11 @@ class GetMyProfileController extends GetxController {
 
   Future<void> refreshProfile() async {
     await fetchMyProfile();
+  }
+  void logout(){
+    storage.remove(AppConstant.accessToken);
+    storage.remove(AppConstant.refreshToken);
+    storage.remove(AppConstant.role);
+    Get.offAll(()=> SignInView());
   }
 }

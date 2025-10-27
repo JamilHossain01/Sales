@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 import 'package:wolf_pack/app/uitilies/container_icon.dart';
 
-import '../../../common widget/heart_conatiner.dart';
 
 class AdoptionCard extends StatelessWidget {
   final String type;

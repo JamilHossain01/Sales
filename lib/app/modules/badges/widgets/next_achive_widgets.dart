@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
+
 
 class NextAchievementCard extends StatelessWidget {
   final String title;

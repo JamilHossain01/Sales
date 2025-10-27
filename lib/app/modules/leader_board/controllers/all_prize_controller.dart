@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wolf_pack/app/modules/leader_board/modell/all_prize_model.dart';
-import '../../../common widget/customSnackBar.dart';
+import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../modell/all_user_prize_winner_model.dart';

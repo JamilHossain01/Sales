@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:wolf_pack/app/common%20widget/custom_calender.dart';
+import 'package:wolf_pack/app/common_widget/custom_app_bar_widget.dart';
 import 'package:wolf_pack/app/modules/home/controllers/ny_clients_controller.dart';
 import 'package:wolf_pack/app/modules/home/widgets/target_widgets.dart';
 import 'package:wolf_pack/app/modules/open_deal/views/new_deal_view.dart';
 import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
+import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/custom_calender.dart';
 import '../../../uitilies/date_time_formate.dart';
 import '../../home/model/all_my_cleints_model.dart';
 import '../../home/widgets/rececnt_deatils_widgets.dart';
@@ -16,11 +18,9 @@ import '../../home/widgets/rececnt_deatils_widgets.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:wolf_pack/app/common%20widget/custom_app_bar_widget.dart';
 import 'package:wolf_pack/app/modules/closed_deal/views/closed_deal_view.dart';
 import 'package:wolf_pack/app/modules/home/controllers/allDeals_controller.dart';
 import 'package:wolf_pack/app/modules/open_deal/views/open_deal_view.dart';
-import '../../../common widget/custom_button.dart';
 import '../../home/model/all_deal_model.dart';
 
 import 'package:flutter/material.dart';

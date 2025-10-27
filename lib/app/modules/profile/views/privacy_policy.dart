@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:wolf_pack/app/common%20widget/gradient.dart';
-
-import '../../../common widget/custom_app_bar_widget.dart';
+import '../../../common_widget/custom_app_bar_widget.dart';
+import '../../../common_widget/gradient.dart';
 import '../widgets/about_section_widgets.dart';
 
 class PrivacyPolicyView extends StatefulWidget {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:wolf_pack/app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:get/get.dart';
+import 'custom text/custom_text_widget.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
 import 'custom_button.dart';
@@ -27,7 +28,6 @@ class SignOutDialog extends StatelessWidget {
         side: BorderSide(color: AppColors.orangeColor, width: 1.5),
       ),
       child: Container(
-        height: 170.h,
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),

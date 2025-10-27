@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolf_pack/app/common%20widget/custom_button.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
-import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../common_widget/custom_button.dart';
 import '../../../uitilies/app_colors.dart';
 
 class RecentDetails extends StatelessWidget {
