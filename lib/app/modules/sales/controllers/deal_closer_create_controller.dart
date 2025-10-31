@@ -11,10 +11,18 @@ import '../../../uitilies/api/app_constant.dart';
 class DealController extends GetxController {
   final isLoading = false.obs;
 
+  // ← এই ফাংশন যোগ করুন
+  String _formatDateForApi(String inputDate) {
+    final parts = inputDate.split('-');
+    if (parts.length != 3) return inputDate;
+    return '${parts[2]}-${parts[1].padLeft(2, '0')}-${parts[0].padLeft(2, '0')}';
+  }
+
   Future<void> createDeal({
     required String proposition,
     required String dealDate,
     required String clientId,
+    required int cashCollected,
     required int amount,
     required String notes,
     required String filePath,
@@ -29,25 +37,20 @@ class DealController extends GetxController {
         throw Exception('Access token not found');
       }
 
-      // 📦 Bundle all required data into the `data` field
       String dataJson = jsonEncode({
         'proposition': proposition,
         'clientId': clientId,
-        'dealDate': dealDate,
+        'cashCollected': cashCollected,
+        'dealDate': _formatDateForApi(dealDate), // ← এই লাইন চেঞ্জ
         'amount': amount,
         'notes': notes,
       });
 
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(ApiUrl.closerCreate),
-      );
-
+      var request = http.MultipartRequest('POST', Uri.parse(ApiUrl.closerCreate));
       request.headers.addAll({
         'Authorization': 'Bearer $accessToken',
         'Accept': 'application/json',
       });
-
       request.fields['data'] = dataJson;
 
       if (filePath.isNotEmpty) {
@@ -55,34 +58,21 @@ class DealController extends GetxController {
         request.files.add(file);
       }
 
-      print('--- REQUEST ---');
-      print('URL: ${request.url}');
-      print('Headers: ${request.headers}');
-      print('Fields: ${request.fields}');
-      print('Files: ${request.files.map((f) => f.filename).toList()}');
-
       var response = await request.send();
       var responseData = await http.Response.fromStream(response);
 
-      print('--- RESPONSE ---');
-      print('Status Code: ${response.statusCode}');
-      print('Body: ${responseData.body}');
-
       if (responseData.statusCode == 200 || responseData.statusCode == 201) {
         final decoded = jsonDecode(responseData.body);
-        final message = decoded['message'] ?? 'Deal created successfully!';
-        CustomSnackbar.showSuccess(message);
+        CustomSnackbar.showSuccess(decoded['message'] ?? 'Deal created!');
         Get.offAllNamed(Routes.DASHBOARD);
       } else {
         final decoded = jsonDecode(responseData.body);
-        final message = decoded['message'] ?? 'Something went wrong!';
-        CustomSnackbar.showError(message);
+        CustomSnackbar.showError(decoded['message'] ?? 'Failed!');
       }
     } catch (e) {
-      CustomSnackbar.showError('An error occurred: $e');
+      CustomSnackbar.showError('Error: $e');
     } finally {
       isLoading(false);
     }
   }
-
 }

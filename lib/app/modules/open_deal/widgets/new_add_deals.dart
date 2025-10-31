@@ -34,6 +34,7 @@ class _NewAddDealsFormState extends State<NewAddDealsForm> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _clienNameController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _cashCollectedController = TextEditingController();
   final ImagePickerController imagePickerController = Get.put(ImagePickerController());
 
 
@@ -46,7 +47,7 @@ class _NewAddDealsFormState extends State<NewAddDealsForm> {
         amount: int.tryParse(_amountController.text) ?? 0,
         clientId: widget.clientId,
         notes: _noteController.text,
-        filePath: selectedImagePath ?? '',
+        filePath: selectedImagePath ?? '', cashCollected: int.tryParse(_cashCollectedController.text) ?? 0,
       );
     }
   }
@@ -84,6 +85,18 @@ class _NewAddDealsFormState extends State<NewAddDealsForm> {
               hintText: "Enter proposition",
               showObscure: false,
               controller: _propositionController,
+            ),
+SizedBox(height: 10.h),
+            CustomText(
+              text: 'Cash Collected',
+              fontSize: 16.sp,
+              color: Colors.white.withOpacity(0.82),
+            ),
+            SizedBox(height: 10.h),
+            CustomTextField(
+              hintText: "Enter cash collected",
+              showObscure: false,
+              controller: _cashCollectedController,
             ),
 
             SizedBox(height: 10.h),

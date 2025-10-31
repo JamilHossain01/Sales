@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
-   static const String baseUrl = "http://10.10.10.3:4003/api/v1";
- // static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
+  //  static const String baseUrl = "http://10.10.10.3:4003/api/v1";
+ static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
 
@@ -27,12 +27,14 @@ class ApiUrl {
   static String userPrizeWinner = "$baseUrl/user/prize-winner";
   static String quaterPrizeWinner = "$baseUrl/quarter-prize/winners";
   static String topPerformers = "$baseUrl/user/top-performers";
+  static String leaderBoard = "$baseUrl/user/top-users";
   static String nextAchievements = "$baseUrl/user/next-achievement";
 
 
 
   //leaderboard
   static String leaderboard = "$baseUrl/user/leaderboard";
+ static String leaderboardTop = "$baseUrl/user/top-users";
   static String top3 = "$baseUrl/user/leaderboard?limit=3";
 
   static String singleClients({required dynamic clientId}) {

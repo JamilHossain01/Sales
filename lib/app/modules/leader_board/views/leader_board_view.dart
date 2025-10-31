@@ -1,388 +1,306 @@
+// lib/app/modules/leader_board/views/leader_board_view.dart
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'package:wolf_pack/app/modules/home/widgets/target_widgets.dart';
-import 'package:wolf_pack/app/modules/leader_board/controllers/all_prize_winner.dart';
-import 'package:wolf_pack/app/modules/leader_board/widgets/prizw_badge.dart';
-import 'package:wolf_pack/app/uitilies/app_colors.dart';
-import 'package:wolf_pack/app/uitilies/app_images.dart';
-import 'package:wolf_pack/app/uitilies/custom_loader.dart';
-
 import '../../../common_widget/custom text/custom_text_widget.dart';
-import '../../../common_widget/custom_button.dart';
-import '../../../common_widget/nodata_wisgets.dart';
-import '../../home/controllers/my_clients_controller.dart';
-import '../../profile/controllers/get_myProfile_controller.dart';
-import '../controllers/leader_board_controller.dart';
-import '../controllers/top_perfomer_controller.dart';
-import '../widgets/new_leader_board_card.dart';
+import '../../../uitilies/app_colors.dart';
+import '../../../uitilies/custom_loader.dart';
+import '../controllers/leader_borad_get.dart';
 
-class LeaderBoardView extends GetView<LeaderBoardController> {
-  LeaderBoardView({super.key});
-
-  final LeaderBoardController controller = Get.put(LeaderBoardController());
-  final MyClientGetController dealController = Get.put(MyClientGetController());
-  final RxBool isLiveRankingActive = true.obs;
-  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+class LeaderBoardView extends StatelessWidget {
+  const LeaderBoardView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (dealController.isLoading.value || controller.isLoading.value) {
-        return Center(child: CustomLoader());
-      }
-
-      final leaderBoardData = controller.leaderBoardData.value.data;
-      final dealData = dealController.dealData.value.data?.data ?? [];
-
-      if (leaderBoardData == null) {
-        return Center(child: Text("No leaderboard data available"));
-      }
-
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Toggle Buttons
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      isGradient: false,
-                      buttonColor: isLiveRankingActive.value
-                          ? const Color(0XFFFCB806).withOpacity(0.30)
-                          : const Color(0XFFFCB806).withOpacity(0.15),
-                      titleColor: isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-                      title: 'Live Ranking',
-                      onTap: () => isLiveRankingActive.value = true,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: CustomButton(
-                      isGradient: false,
-                      buttonColor: !isLiveRankingActive.value
-                          ? const Color(0XFFFCB806).withOpacity(0.30)
-                          : const Color(0XFFFCB806).withOpacity(0.15),
-                      titleColor: !isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-                      title: 'Prize',
-                      onTap: () => isLiveRankingActive.value = false,
-                    ),
-                  ),
-                ],
-              ),
-              Gap(20.h),
-
-              // Content based on toggle selection
-              isLiveRankingActive.value
-                  ? _buildLiveRankingContent()
-                  : _buildPrizeContent(dealData, leaderBoardData),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
-  // ------------------ LIVE RANKING ------------------
-  Widget _buildLiveRankingContent() {
-    final TopPerformersGetController topPerformersGetController =
-    Get.put(TopPerformersGetController());
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomText(
-          text: 'Live Rankings',
-          fontWeight: FontWeight.w600,
-          fontSize: 18.sp,
-          color: AppColors.white,
-        ),
-        Gap(12.h),
-        TargetProgressCard(
-          title: 'Progress',
-          progressValue: (profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100,
-          achievedText:
-          'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
-              'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
-          percentageLabel:
-          '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
-          footerMessage: "You're halfway there! 🎉",
-        ),
-        Gap(12.h),
-        _buildYourRankSection(),
-        Gap(12.h),
-        CustomText(
-          text: 'Hall of Fame',
-          fontWeight: FontWeight.w600,
-          fontSize: 18.sp,
-          color: AppColors.white,
-        ),
-        Obx(() {
-          final topPerformers = topPerformersGetController.topPerformersData.value.data;
-
-          if (topPerformers == null) {
-            return Center(
-              child: GestureDetector(
-                onTap: () => topPerformersGetController.fetchTopPerformers(),
-                child: NoDataWidget(text: 'No data available. Tap to retry.'),
-              ),
-            );
-          }
-
-          if (topPerformers.isEmpty) {
-            return Center(child: CustomLoader());
-          }
-
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: topPerformers.length,
-            itemBuilder: (context, index) {
-              final performer = topPerformers[index];
-              if (performer.value == null || performer.value?.name == null || performer.value?.name!.isEmpty == true) {
-                return const SizedBox.shrink();
-              }
-              return NewLeaderBoardCard(
-                profileImage: performer.value?.profilePicture ?? '',
-                totalAmount: '\$${performer.value?.totalAmount ?? 0}',
-                name: performer.value?.name ?? "Unknown",
-                value: performer.label?.replaceAll('_', ' ') ?? "",
-              );
-            },
-          );
-        }),
-      ],
-    );
-  }
-
-  // ------------------ PRIZE TAB ------------------
-  Widget _buildPrizeContent(List<dynamic> dealData, dynamic leaderBoardData) {
-    return Column(
-      children: [
-        Gap(20.h),
-        _buildTopPrizeSection(),
-        Gap(20.h),
-        PrizeAndBadgeSection(),
-      ],
-    );
-  }
-
-  Widget _buildTopPrizeSection() {
-    final AllPrizeWinnersController controller = Get.put(AllPrizeWinnersController());
+    final controller = Get.put(LeaderBoardGetController());
 
     return Obx(() {
       if (controller.isLoading.value) {
-        return Center(child: CircularProgressIndicator());
+        return  Center(child: CustomLoader());
       }
 
-      final winnersData = controller.userPrizeWinnerList.value.data;
-      if (winnersData == null || winnersData.isEmpty) {
-        return Center(
-          child: GestureDetector(
-            onTap: () => controller.fetchPrizeWinners(),
-            child: NoDataWidget(text: 'No winners found. Tap to retry.'),
+      final users = controller.rawData;
+      if (users.isEmpty) {
+        return const Center(
+          child: Text(
+            'No data available',
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         );
       }
 
-      // Sort by position
-      final allWinners = winnersData..sort((a, b) => (a.position ?? 0).compareTo(b.position ?? 0));
-      final topWinners = allWinners.take(3).toList();
+      // Top User (max salesCount)
+      final topUser = users.reduce((a, b) =>
+      (a['salesCount'] ?? 0) > (b['salesCount'] ?? 0) ? a : b);
 
-      return Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.orangeColor),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFFCB806).withOpacity(0.5), Color(0xFFFCB806)],
-          ),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x29000000),
-              offset: Offset(0, 4),
-              blurRadius: 13,
-            ),
-          ],
-        ),
+      return SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _TopCloserCard(user: topUser),
+            Gap(24.h),
             CustomText(
-              text: 'Top ${topWinners.length} Potential Closers — Prizes',
-              fontWeight: FontWeight.w500,
+              text: 'Leaderboard',
+              fontWeight: FontWeight.w600,
+              fontSize: 18.sp,
               color: AppColors.white,
-              fontSize: 16,
             ),
-            SizedBox(height: 10),
-            LayoutBuilder(builder: (context, constraints) {
-              final cardWidth = constraints.maxWidth / 3 - 16;
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < topWinners.length; i++)
-                      Container(
-                        width: cardWidth,
-                        margin: EdgeInsets.symmetric(horizontal: 8),
-                        child: _buildTopPrizeCard(
-                          topWinners[i].user?.name ?? 'Unknown',
-                          '\$${topWinners[i].prize?.name ?? 'Prize'}',
-                          '#${topWinners[i].prize?.tierLevel ?? i + 1}',
-                          topWinners[i].user?.profilePicture ?? AppImages.profile,
-                          topWinners.length == 3 ? i == 1 : false, // Middle winner highlight
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            }),
+            Gap(12.h),
+            _LeaderBoardList(users: users, topUserId: topUser['id']),
           ],
         ),
       );
     });
   }
+}
 
-  Widget _buildTopPrizeCard(String name, String prize, String rank, String imagePath, bool isMiddle) {
-    return Column(
-      children: [
-        ClipOval(
-          child: Container(
-            padding: EdgeInsets.all(1),
-            decoration: BoxDecoration(
-              color: AppColors.orangeColor,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: CircleAvatar(
-              radius: isMiddle ? 35 : 30,
-              child: imagePath.startsWith('http')
-                  ? CachedNetworkImage(
-                imageUrl: imagePath,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                  ),
-                ),
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.person),
-              )
-                  : CircleAvatar(backgroundImage: AssetImage(imagePath)),
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          height: 70,
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.orangeColor),
-            color: isMiddle ? const Color(0xFFFCB806) : const Color(0xFFFF7D00),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomText(text: name, fontWeight: FontWeight.w500, color: AppColors.white, fontSize: 16),
-              CustomText(text: prize, fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-              CustomText(text: rank, fontWeight: FontWeight.w400, color: AppColors.white.withOpacity(0.72), fontSize: 12),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+// TOP CLOSER CARD
+class _TopCloserCard extends StatelessWidget {
+  final dynamic user;
+  const _TopCloserCard({required this.user});
 
-  // ------------------ YOUR RANK ------------------
-  Widget _buildYourRankSection() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12.w),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.orangeColor),
         gradient: LinearGradient(
-          colors: [Color(0xFFFCB806).withOpacity(0.07), Color(0xFFFCB806).withOpacity(0.07)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFFCB806).withOpacity(0.050),
+            Color(0xFFFCB806).withOpacity(0.2),
+          ],
+          stops: [0.0, 1.0],
         ),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 12, offset: Offset(0, 4))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              Container(
+                padding: EdgeInsets.all(6.r),
+                decoration: BoxDecoration(
+                  color: AppColors.orangeColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: const Icon(Icons.emoji_events, color: Colors.white, size: 20),
+              ),
+              Gap(8.w),
+              const Text(
+                'Top Closer',
+                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              const Spacer(),
+              const Icon(Icons.star, color: Colors.amber, size: 28),
+            ],
+          ),
+          Gap(12.h),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 32.r,
+                backgroundImage: (user['profilePicture'] as String?)?.startsWith('http') == true
+                    ? CachedNetworkImageProvider(user['profilePicture'])
+                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
+              ),
+              Gap(12.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: profileController.profileData.value.data?.rank.toString() ?? "N/A",
+                    text: user['name'] ?? '—',
                     fontWeight: FontWeight.w700,
-                    color: AppColors.orangeColor,
                     fontSize: 20.sp,
+                    color: Colors.white,
                   ),
-                  Gap(10.w),
-                  CustomText(
-                    text: profileController.profileData.value.data?.name ?? "N/A",
+                   CustomText(
+                    text: 'Sales Champion',
                     fontWeight: FontWeight.w500,
-                    color: AppColors.white,
-                    fontSize: 18.sp,
+                    fontSize: 14,
+                    color: Colors.white70,
                   ),
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.orangeColor,
-                  borderRadius: BorderRadius.circular(50.r),
+            ],
+          ),
+          Gap(16.h),
+          Row(
+            children: [
+              Expanded(child: _StatBox(label: 'Total Amount', value: '\$${user['salesCount'] ?? 0}')),
+              Gap(12.w),
+              Expanded(child: _StatBox(label: 'Deals Closed', value: '${user['dealCount'] ?? 0}')),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatBox extends StatelessWidget {
+  final String label, value;
+  const _StatBox({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        children: [
+          CustomText(text: label, fontWeight: FontWeight.w500, fontSize: 12.sp, color: Colors.white70),
+          Gap(4.h),
+          CustomText(text: value, fontWeight: FontWeight.w700, fontSize: 18.sp, color: Colors.white),
+        ],
+      ),
+    );
+  }
+}
+
+// LEADERBOARD LIST
+class _LeaderBoardList extends StatelessWidget {
+  final List<dynamic> users;
+  final String? topUserId;
+  const _LeaderBoardList({required this.users, this.topUserId});
+
+  double _percentChange(int? current, int? previous) {
+    if (previous == null || previous == 0) return 0;
+    return ((current ?? 0) - previous) / previous * 100;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sorted = List<dynamic>.from(users)
+      ..sort((a, b) => (b['salesCount'] ?? 0).compareTo(a['salesCount'] ?? 0));
+
+    return ListView.builder(
+      shrinkWrap: true, // এই লাইন যোগ করুন
+      physics: const NeverScrollableScrollPhysics(), // এই লাইন যোগ করুন
+      itemCount: sorted.length,
+      itemBuilder: (context, i) {
+        final user = sorted[i];
+        final prev = i > 0 ? sorted[i - 1]['salesCount'] : null;
+        final change = _percentChange(user['salesCount'], prev);
+        final isMe = user['id'] == topUserId;
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 12.h),
+          padding: EdgeInsets.all(12.r),
+          decoration: BoxDecoration(
+            color: isMe ? AppColors.orangeColor.withOpacity(0.15) : Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12.r),
+            border: isMe ? Border.all(color: AppColors.orangeColor) : null,
+          ),
+          child: Row(
+            children: [
+              _RankBadge(rank: i + 1),
+              Gap(12.w),
+              CircleAvatar(
+                radius: 20.r,
+                backgroundImage: (user['profilePicture'] as String?)?.startsWith('http') == true
+                    ? CachedNetworkImageProvider(user['profilePicture'])
+                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
+              ),
+              Gap(12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: user['name'] ?? 'Unknown',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.sp,
+                      color: AppColors.white,
+                    ),
+                    CustomText(
+                      text: '${user['dealCount'] ?? 0} deal${user['dealCount'] == 1 ? '' : 's'}',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: AppColors.white,
+                    ),
+                  ],
                 ),
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: CustomText(
-                  text: 'Your Rank',
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  fontSize: 14.sp,
-                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  CustomText(
+                    text: '\$${user['salesCount'] ?? 0}',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16.sp,
+                    color: AppColors.white,
+                  ),
+                  Gap(2.h),
+                  Row(
+                    children: [
+                      Icon(
+                        change > 0 ? Icons.trending_up : change < 0 ? Icons.trending_down : Icons.remove,
+                        size: 14.r,
+                        color: change > 0 ? Colors.green : change < 0 ? Colors.red : Colors.grey,
+                      ),
+                      Gap(2.w),
+                      CustomText(
+                        text: '${change.abs().toStringAsFixed(0)}%',
+                        fontSize: 12.sp,
+                        color: change > 0 ? Colors.green : change < 0 ? Colors.red : Colors.grey,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
-          Gap(10.h),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Row(
-              children: [
-                CustomText(
-                  text: "€${profileController.profileData.value.data?.salesCount ?? "N/A"}",
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.white,
-                  fontSize: 16.sp,
-                ),
-                Gap(10.w),
-                CustomText(
-                  text: ' ${profileController.profileData.value.data?.dealCount ?? "N/A"} Deals',
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.white.withOpacity(0.72),
-                  fontSize: 14.sp,
-                ),
-              ],
-            ),
-          ),
-          Gap(8.h),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: CustomText(
-              text: 'Silver League',
-              fontWeight: FontWeight.w700,
-              color: AppColors.orangeColor,
-              fontSize: 14.sp,
-            ),
-          ),
-        ],
+        );
+      },
+    );
+  }
+}
+
+class _RankBadge extends StatelessWidget {
+  final int rank;
+  const _RankBadge({required this.rank});
+
+  @override
+  Widget build(BuildContext context) {
+    Color bg;
+    switch (rank) {
+      case 1:
+        bg = const Color(0xFFFFD700);
+        break;
+      case 2:
+        bg = const Color(0xFFC0C0C0);
+        break;
+      case 3:
+        bg = const Color(0xFFCD7F32);
+        break;
+      default:
+        bg = Colors.grey.shade700;
+    }
+    return Container(
+      width: 32.r,
+      height: 32.r,
+      decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
+      alignment: Alignment.center,
+      child: CustomText(
+        text: rank.toString(),
+        fontWeight: FontWeight.w700,
+        fontSize: 14.sp,
+        color: Colors.white,
       ),
     );
   }
