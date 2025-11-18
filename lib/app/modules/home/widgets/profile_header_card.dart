@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:wolf_pack/app/modules/edit_profile/views/edit_profile_view.dart';
+import 'package:wolf_pack/app/modules/profile/views/view.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
@@ -71,16 +73,25 @@ class ProfileHeaderCard extends StatelessWidget {
               );
             } else if (imageUrl.isNotEmpty) {
               // Network image with cache
-              return ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 100.r,
-                  height: 100.r,
-                  fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  Get.to(ProfilePage(),transition: Transition.noTransition);
+                },
+                child: CircleAvatar(
+                  radius: 54.r,
+                  backgroundColor: AppColors.orangeColor,
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      width: 100.r,
+                      height: 100.r,
+                      fit: BoxFit.cover,
 
-                  errorWidget: (context, url, error) => const CircleAvatar(
-                    radius: 55,
-                    backgroundImage: AssetImage(AppImages.profile),
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        radius: 55,
+                        backgroundImage: AssetImage(AppImages.profile),
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -94,7 +105,7 @@ class ProfileHeaderCard extends StatelessWidget {
             }
           }),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 16.h),
         SizedBox(
           width: 160.w,
           child: LeagueContainer(

@@ -2,6 +2,7 @@ class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
   //  static const String baseUrl = "http://10.10.10.3:4003/api/v1";
  static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
+
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
 
@@ -25,7 +26,8 @@ class ApiUrl {
   static String allPrizewinner = "$baseUrl/prize";
   static String topPrizewinner = "$baseUrl/prize/winners";
   static String userPrizeWinner = "$baseUrl/user/prize-winner";
-  static String quaterPrizeWinner = "$baseUrl/quarter-prize/winners";
+  // static String quaterPrizeWinner = "$baseUrl/quarter-prize/winners";
+ static String quaterPrizeWinner({required int year}) => "$baseUrl/quarter-prize?year=$year";
   static String topPerformers = "$baseUrl/user/top-performers";
   static String leaderBoard = "$baseUrl/user/top-users";
   static String nextAchievements = "$baseUrl/user/next-achievement";

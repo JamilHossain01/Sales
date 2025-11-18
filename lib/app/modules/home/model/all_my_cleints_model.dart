@@ -1,8 +1,8 @@
 class AllMyClientModel {
   AllMyClientModel({
-    this.success,
-    this.message,
-    this.data,
+     this.success,
+     this.message,
+     this.data,
   });
 
   final bool? success;
@@ -42,11 +42,8 @@ class Datum {
     required this.id,
     required this.name,
     required this.offer,
-    required this.userId,
-    required this.targetAudience,
-    required this.contact,
-    required this.location,
-    required this.revenueTarget,
+    required this.accountNumber,
+    required this.agencyRate,
     required this.commissionRate,
     required this.createdAt,
     required this.updatedAt,
@@ -56,30 +53,24 @@ class Datum {
   final String? id;
   final String? name;
   final String? offer;
-  final String? userId;
-  final String? targetAudience;
-  final String? contact;
-  final String? location;
-  final dynamic revenueTarget;
+  final String? accountNumber;
+  final dynamic agencyRate;
   final dynamic commissionRate;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final Closer? closer;
+  final List<Closer> closer;
 
   factory Datum.fromJson(Map<String, dynamic> json){
     return Datum(
       id: json["id"],
       name: json["name"],
       offer: json["offer"],
-      userId: json["userId"],
-      targetAudience: json["targetAudience"],
-      contact: json["contact"],
-      location: json["location"],
-      revenueTarget: json["revenueTarget"],
+      accountNumber: json["accountNumber"],
+      agencyRate: json["agencyRate"],
       commissionRate: json["commissionRate"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      closer: json["closer"] == null ? null : Closer.fromJson(json["closer"]),
+      closer: json["closer"] == null ? [] : List<Closer>.from(json["closer"]!.map((x) => Closer.fromJson(x))),
     );
   }
 
@@ -94,6 +85,7 @@ class Closer {
     required this.dealDate,
     required this.status,
     required this.amount,
+    required this.cashCollected,
     required this.notes,
     required this.createdAt,
     required this.updatedAt,
@@ -107,6 +99,7 @@ class Closer {
   final DateTime? dealDate;
   final String? status;
   final dynamic amount;
+  final dynamic cashCollected;
   final String? notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -121,6 +114,7 @@ class Closer {
       dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
       status: json["status"],
       amount: json["amount"],
+      cashCollected: json["cashCollected"],
       notes: json["notes"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),

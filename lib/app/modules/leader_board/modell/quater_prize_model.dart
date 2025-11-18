@@ -104,7 +104,7 @@ class TopUser {
 
   final String? id;
   final String? name;
-  final String? profilePicture;
+  final dynamic profilePicture;
   final List<Closer> closer;
 
   factory TopUser.fromJson(Map<String, dynamic> json){
@@ -127,6 +127,7 @@ class Closer {
     required this.dealDate,
     required this.status,
     required this.amount,
+    required this.cashCollected,
     required this.notes,
     required this.createdAt,
     required this.updatedAt,
@@ -139,6 +140,7 @@ class Closer {
   final DateTime? dealDate;
   final String? status;
   final dynamic amount;
+  final dynamic cashCollected;
   final String? notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -152,6 +154,7 @@ class Closer {
       dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
       status: json["status"],
       amount: json["amount"],
+      cashCollected: json["cashCollected"],
       notes: json["notes"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),

@@ -8,6 +8,8 @@ class ReusableListView<T> extends StatelessWidget {
   final Future<void> Function()? onRetry;
   final Widget Function(BuildContext, T) itemBuilder;
   final double height;
+  final EdgeInsets? padding;
+  final bool isFlex;
 
   const ReusableListView({
     Key? key,
@@ -16,6 +18,21 @@ class ReusableListView<T> extends StatelessWidget {
     required this.itemBuilder,
     this.onRetry,
     this.height = 300,
+    this.isFlex = false, this.padding,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }) : super(key: key);
 
   @override
@@ -34,10 +51,23 @@ class ReusableListView<T> extends StatelessWidget {
         );
       }
 
+      if(isFlex){
+        return ListView.builder(
+          itemCount: dataList.length,
+          shrinkWrap: true,
+          primary: false,
+          padding: padding,
+          itemBuilder: (context, index) {
+            return itemBuilder(context, dataList[index]);
+          },
+        );
+      }
+
       return SizedBox(
         height: height,
         child: ListView.builder(
           itemCount: dataList.length,
+          padding: padding,
           itemBuilder: (context, index) {
             return itemBuilder(context, dataList[index]);
           },

@@ -36,7 +36,6 @@ Future<void> main() async {
   await StorageService.initStorage();
   debugPrint('Access Token => ${storage.read(AppConstant.accessToken)}');
 
-
   // Setup Firebase Messaging
   await _setupFirebaseMessaging();
 
@@ -64,7 +63,6 @@ class MyApp extends StatelessWidget {
           title: "Application",
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
-          builder: (context, widget) => widget ?? const SizedBox.shrink(),
         );
       },
     );
@@ -87,7 +85,7 @@ Future<void> _setupFirebaseMessaging() async {
 
     // Listen for token refresh
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      print("♻ Token refreshed: $newToken");
+      print("♻️ Token refreshed: $newToken");
       await LocalStorage.saveData(key: AppConstant.fcmToken, data: newToken);
     });
 

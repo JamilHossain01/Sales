@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
-
+import 'package:intl/intl.dart';
 import 'package:wolf_pack/app/modules/home/controllers/my_clients_controller.dart';
+import 'package:wolf_pack/app/modules/home/widgets/hall_of_fram_widget.dart';
 import 'package:wolf_pack/app/modules/home/widgets/perform_card_wigets.dart';
 import 'package:wolf_pack/app/modules/home/widgets/rececnt_deatils_widgets.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/leader_board_controller.dart';
+import 'package:wolf_pack/app/modules/leader_board/views/leader_board_view.dart';
 import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
 import 'package:wolf_pack/app/modules/badges/controllers/badges_controller.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/next_achevement_controller.dart';
@@ -22,6 +24,7 @@ import '../../../common_widget/custom_header_widgets.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../common_widget/nodata_wisgets.dart';
+import '../../../common_widget/custom_calender.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../../uitilies/date_time_formate.dart';
@@ -31,16 +34,24 @@ import '../../leader_board/widgets/price_tabs.dart';
 import '../../leader_board/widgets/quater_prize_widgets.dart';
 import '../../sales/views/sales_screen.dart';
 import '../../open_deal/views/new_deal_view.dart';
+import '../../open_deal/views/open_deal_view.dart';
+import '../../closed_deal/views/closed_deal_view.dart';
 import '../model/badget_model_data.dart';
 import '../widgets/stat_card_wigets.dart';
 import '../widgets/target_widgets.dart';
 import '../widgets/badge_card_widgets.dart';
 import '../widgets/leader_board_widgets.dart';
 import '../../view_details/views/view_details_view.dart';
+import '../model/all_my_cleints_model.dart';
 
-class DashboardContent extends StatelessWidget {
+class DashboardContent extends StatefulWidget {
   DashboardContent({super.key});
 
+  @override
+  State<DashboardContent> createState() => _DashboardContentState();
+}
+
+class _DashboardContentState extends State<DashboardContent> {
   final GetMyProfileController profileController = Get.put(GetMyProfileController());
   final MyClientGetController dealController = Get.put(MyClientGetController());
   final LeaderBoardController controller = Get.put(LeaderBoardController());
@@ -52,12 +63,55 @@ class DashboardContent extends StatelessWidget {
   final AllPrizeWinnersController allPrizeWinnersController = Get.put(AllPrizeWinnersController());
   final RxBool isLiveRankingActive = true.obs;
 
+  // Format currency with proper decimals
+  String _formatCurrencyDropDecimals(dynamic value) {
+    if (value == null) return '0';
+    double v;
+    if (value is String) {
+      v = double.tryParse(value) ?? 0.0;
+    } else if (value is num) {
+      v = value.toDouble();
+    } else {
+      return '0';
+    }
+    final intInt = v.truncate();
+    return NumberFormat.decimalPattern().format(intInt);
+  }
+
+  // Get color for status
+  Color _getStatusColor(String status) {
+    switch (status.toUpperCase()) {
+      case 'NEW':
+        return const Color(0xFF16A34A);
+      case 'OPEN':
+        return Color(0Xff0094B5);
+      case 'CLOSED':
+        return const Color(0xFFE12728);
+      default:
+        return Colors.grey;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    profileController.fetchMyProfile();
+    dealController.fetchMyProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       if (profileController.isLoading.value || dealController.isLoading.value) {
         return CustomLoader();
       }
+
+      final dataList = topPerformersGetController.topPerformersData.value.data;
+      final dayData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_day')?.value;
+      final weekData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_week')?.value;
+      final monthData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_month')?.value;
+      final quarterData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_quarter')?.value;
+      final yearData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_year')?.value;
 
       return SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -76,7 +130,6 @@ class DashboardContent extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10.h),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -94,20 +147,53 @@ class DashboardContent extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(height: 20.h),
-
               TargetProgressCard(
                 title: "Monthly Target",
                 progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
-                achievedText:
-                'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+                achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
                 percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
               ),
-
-              SizedBox(height: 20.h),
-
               /// ---------- Leaderboard ----------
+              LeaderBoardView(),
+              SizedBox(height: 8.h),
+              CustomText(
+                text: 'Hall of Fame',
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+              Column(
+                children: [
+                  buildHallOfFameSection(
+                    timePeriod: 'THIS DAY',
+                    data: dayData,
+                    emptyText: 'No daily performer data found',
+                  ),
+                  buildHallOfFameSection(
+                    timePeriod: 'THIS WEEK',
+                    data: weekData,
+                    emptyText: 'No weekly performer data found',
+                  ),
+                  buildHallOfFameSection(
+                    timePeriod: 'THIS MONTH',
+                    data: monthData,
+                    emptyText: 'No monthly performer data found',
+                  ),
+                  buildHallOfFameSection(
+                    timePeriod: 'THIS QUARTER',
+                    data: quarterData,
+                    emptyText: 'No quarterly performer data found',
+                  ),
+                  buildHallOfFameSection(
+                    timePeriod: 'THIS YEAR',
+                    data: yearData,
+                    emptyText: 'No yearly performer data found',
+                  ),
+                ],
+              ),
+              /// ---- your rank -----------
+              SizedBox(height: 16.h),
               Obx(() {
                 if (controller.isLoading.value) {
                   return Center(child: CustomLoader());
@@ -119,16 +205,13 @@ class DashboardContent extends StatelessWidget {
                 }
 
                 final top3 = data.leaderBoard.take(3).toList();
-
                 return LeaderboardCard(
                   rank: '#${profileController.profileData.value.data?.rank ?? "N/A"}',
                   performers: top3.asMap().entries.map((entry) {
                     final index = entry.key;
                     final performer = entry.value;
                     return PerformerCard(
-                      backroundColor: index == 0
-                          ? Colors.blueAccent.withOpacity(0.15)
-                          : Colors.orangeAccent.withOpacity(0.15),
+                      backroundColor: index == 0 ? Colors.blueAccent.withOpacity(0.15) : Colors.orangeAccent.withOpacity(0.15),
                       rank: index + 1,
                       name: performer.name ?? 'N/A',
                       earnings: '€${performer.salesCount ?? '0'}',
@@ -139,89 +222,160 @@ class DashboardContent extends StatelessWidget {
                   motivationLine2: '',
                 );
               }),
-
               SizedBox(height: 20.h),
-
               /// ---------- Monthly & Quarter Tabs ----------
               PrizeTabsWidget(
                 monthController: monthController,
                 quarterController: quarterController,
               ),
-
               SizedBox(height: 15.h),
-
               /// ---------- Recent Deals ----------
               HeaderWidgets(
                 title: "Recent Deals",
                 subTitle: "View All",
                 onSubTitleTap: () => Get.to(() => SalesScreen()),
               ),
-              SizedBox(height: 10.h),
-              ReusableListView(
-                isLoading: dealController.isLoading,
-                dataList: RxList(dealController.dealData.value.data?.data ?? []),
-                onRetry: () => dealController.fetchMyProfile(),
-                itemBuilder: (context, client) {
-                  if (client.closer == null) return const SizedBox.shrink();
-                  return RecentDetails(
-                    color: const Color(0xFFE12728),
-                    tagLabel: (client.closer?.status ?? '').toUpperCase() == 'CLOSED'
-                        ? 'Closed'
-                        : (client.closer?.status ?? '').toUpperCase() == 'OPEN'
-                        ? 'Open'
-                        : 'New',
-                    companyName: client.name ?? 'N/A',
-                    startDate: DateUtil.formatTimeAgo(client.createdAt?.toLocal()),
-                    endDate: DateUtil.formatTimeAgo(client.updatedAt?.toLocal()),
-                    revenueTarget: '€${client.revenueTarget ?? 0}',
-                    revenueClosed: '€${client.closer?.amount ?? 0}',
-                    commissionEarned: '€${client.commissionRate ?? 0}',
-                    onViewDetailsTap: () => Get.to(() => NewDealView(clientId: client.id ?? '')),
+              SizedBox(height: 16.h),
+              Obx(() {
+                if (dealController.isLoading.value) {
+                  // Show shimmer/redacted placeholders
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 4,
+                      itemBuilder: (context, index) => RecentDetails(
+                        color: Colors.grey.shade800,
+                        tagLabel: 'Loading',
+                        companyName: 'Loading',
+                        assignDate: 'Loading',
+                        offer: '0',
+                        commissionRate: '0%',
+                        onViewDetailsTap: () {},
+                      ),
+                    ),
                   );
-                },
-              ),
-
+                }
+                final clients = (dealController.dealData.value.data?.data as List?)?.cast<Datum>() ?? [];
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  child: clients.isEmpty
+                      ? Center(
+                    child: NoDataWidget(
+                      text: 'No data available',
+                    ),
+                  )
+                      : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: clients.length,
+                    itemBuilder: (context, index) {
+                      final client = clients[index];
+                      if (client.closer.isEmpty) return const SizedBox.shrink();
+                      final hasCloser = client.closer.isNotEmpty;
+                      final currentStatus = hasCloser ? client.closer.last.status ?? 'New' : 'New';
+                      final tagLabel = currentStatus.toUpperCase();
+                      final tagColor = _getStatusColor(tagLabel);
+                      final assignDate = client.createdAt != null ? DateFormat('yyyy-MM-dd hh:mm a').format(client.createdAt!) : 'N/A';                      return RecentDetails(
+                        color: tagColor,
+                        tagLabel: tagLabel,
+                        companyName: client.name ?? 'N/A',
+                        assignDate: assignDate,
+                        // offer: '€${_formatCurrencyDropDecimals(client.offer)}',
+                        offer:  client.offer ?? 'N/A',
+                        commissionRate: '${client.commissionRate ?? 0}%',
+                        onViewDetailsTap: () {
+                          switch (tagLabel.toUpperCase()) {
+                            case "NEW":
+                              Get.to(() => NewDealView(clientId: client.id ?? ''));
+                              break;
+                            case "OPEN":
+                              Get.to(() => OpenDealView(clientId: client.id ?? ''));
+                              break;
+                            case "CLOSED":
+                              Get.to(() => ClosedDealView(clientID: client.id ?? ''));
+                              break;
+                          }
+                        },
+                      );
+                    },
+                  ),
+                );
+              }),
               /// ---------- LeaderBoard Section (Added Below) ----------
               Gap(20.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      isGradient: false,
-                      buttonColor: isLiveRankingActive.value
-                          ? const Color(0XFFFCB806).withOpacity(0.30)
-                          : const Color(0XFFFCB806).withOpacity(0.15),
-                      titleColor: isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-                      title: 'Live Ranking',
-                      onTap: () => isLiveRankingActive.value = true,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: CustomButton(
-                      isGradient: false,
-                      buttonColor: !isLiveRankingActive.value
-                          ? const Color(0XFFFCB806).withOpacity(0.30)
-                          : const Color(0XFFFCB806).withOpacity(0.15),
-                      titleColor: !isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-                      title: 'Prize',
-                      onTap: () => isLiveRankingActive.value = false,
-                    ),
-                  ),
-                ],
-              ),
-              Gap(20.h),
-
-              Obx(() {
-                return isLiveRankingActive.value
-                    ? _buildLiveRankingContent()
-                    : _buildPrizeContent();
-              }),
+              // Row(
+              // children: [
+              // Expanded(
+              // child: CustomButton(
+              // isGradient: false,
+              // buttonColor: isLiveRankingActive.value
+              // ? const Color(0XFFFCB806).withOpacity(0.30)
+              // : const Color(0XFFFCB806).withOpacity(0.15),
+              // titleColor: isLiveRankingActive.value ? Colors.white : AppColors.textGray,
+              // title: 'Live Ranking',
+              // onTap: () => isLiveRankingActive.value = true,
+              // ),
+              // ),
+              // SizedBox(width: 20),
+              // Expanded(
+              // child: CustomButton(
+              // isGradient: false,
+              // buttonColor: !isLiveRankingActive.value
+              // ? const Color(0XFFFCB806).withOpacity(0.30)
+              // : const Color(0XFFFCB806).withOpacity(0.15),
+              // titleColor: !isLiveRankingActive.value ? Colors.white : AppColors.textGray,
+              // title: 'Prize',
+              // onTap: () => isLiveRankingActive.value = false,
+              // ),
+              // ),
+              // ],
+              // ),
+              // Gap(20.h),
+              // Obx(() {
+              // return isLiveRankingActive.value
+              // ? _buildLiveRankingContent()
+              // : _buildPrizeContent();
+              // }),
             ],
           ),
         ),
       );
     });
+  }
+
+  Widget buildHallOfFameSection({
+    required String timePeriod,
+    required dynamic data,
+    required String emptyText,
+  }) {
+    return data != null
+        ? HallOfFameWidget(
+      timePeriod: timePeriod,
+      name: data.name ?? 'Unknown',
+      imageUrl: data.profilePicture ?? '',
+      commission: data.totalRevenue ?? 0,
+      dealAmount: data.totalAmount ?? 0,
+      dealsClosed: data.totalDealCount ?? 0,
+      isNotEmty: data != null,
+    )
+        : Center(
+      child: Container(
+        width: double.maxFinite,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(top: 10.0),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          emptyText,
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+      ),
+    );
   }
 
   // ------------------ LIVE RANKING ------------------
@@ -239,11 +393,9 @@ class DashboardContent extends StatelessWidget {
         TargetProgressCard(
           title: 'Progress',
           progressValue: (profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100,
-          achievedText:
-          'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
+          achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} '
               'of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
-          percentageLabel:
-          '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
+          percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
           footerMessage: "You're halfway there! 🎉",
         ),
         Gap(12.h),
@@ -257,7 +409,6 @@ class DashboardContent extends StatelessWidget {
         ),
         Obx(() {
           final topPerformers = topPerformersGetController.topPerformersData.value.data;
-
           if (topPerformers == null) {
             return Center(
               child: GestureDetector(
@@ -266,11 +417,9 @@ class DashboardContent extends StatelessWidget {
               ),
             );
           }
-
           if (topPerformers.isEmpty) {
             return Center(child: CustomLoader());
           }
-
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -282,7 +431,7 @@ class DashboardContent extends StatelessWidget {
               }
               return NewLeaderBoardCard(
                 profileImage: performer.value?.profilePicture ?? '',
-                totalAmount: '\$${performer.value?.totalAmount ?? 0}',
+                totalAmount: '€${performer.value?.totalAmount ?? 0}',
                 name: performer.value?.name ?? "Unknown",
                 value: performer.label?.replaceAll('_', ' ') ?? "",
               );
@@ -365,7 +514,7 @@ class DashboardContent extends StatelessWidget {
                         margin: EdgeInsets.symmetric(horizontal: 8),
                         child: _buildTopPrizeCard(
                           topWinners[i].user?.name ?? 'Unknown',
-                          '\$${topWinners[i].prize?.name ?? 'Prize'}',
+                          '€${topWinners[i].prize?.name ?? 'Prize'}',
                           '#${topWinners[i].prize?.tierLevel ?? i + 1}',
                           topWinners[i].user?.profilePicture ?? AppImages.profile,
                           topWinners.length == 3 ? i == 1 : false,

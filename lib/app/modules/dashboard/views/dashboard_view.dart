@@ -26,7 +26,7 @@ class DashboardView extends StatelessWidget {
 
   static final List<Widget> _pages = <Widget>[
     HomeView(),
-    ProfilePage(),
+    // ProfilePage(),
     SettingView(),
     NotificationView(),
   ];
@@ -37,11 +37,11 @@ class DashboardView extends StatelessWidget {
       'selectedIcon': AppImages.navHomeSelected,
       'label': 'Home',
     },
-    {
-      'icon': AppImages.navExploreSelected,
-      'selectedIcon':AppImages.navExploreUnselected ,
-      'label': 'Profile',
-    },
+    // {
+    //   'icon': AppImages.navExploreSelected,
+    //   'selectedIcon':AppImages.navExploreUnselected ,
+    //   'label': 'Profile',
+    // },
     {
       'icon':  AppImages.navServiceSelected,
       'selectedIcon':  AppImages.navServiceUnselected,
@@ -62,62 +62,68 @@ class DashboardView extends StatelessWidget {
       bottomNavigationBar: Obx(() {
         final currentIndex = controller.selectedIndex.value;
 
-        return Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.symmetric(horizontal: 8, ),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1C1C1E),
-            borderRadius: BorderRadius.circular(60.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              )
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(navItems.length, (index) {
-              final isSelected = index == currentIndex;
-              final item = navItems[index];
-              final iconPath = isSelected ? item['selectedIcon']! : item['icon']!;
+        return SafeArea(
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 8,
+              left: 36,
+              right: 36,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, ),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1C1C1E),
+              borderRadius: BorderRadius.circular(60.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                )
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(navItems.length, (index) {
+                final isSelected = index == currentIndex;
+                final item = navItems[index];
+                final iconPath = isSelected ? item['selectedIcon']! : item['icon']!;
 
-              return GestureDetector(
-                onTap: () => controller.changeIndex(index),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: isSelected ? Colors.amber : Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        iconPath,
-                        height: 20,
-                        width: 19,
-                      ),
-                      if (isSelected)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            item['label']!,
-                            style:  TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                return GestureDetector(
+                  onTap: () => controller.changeIndex(index),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.amber : Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          iconPath,
+                          height: 20,
+                          width: 19,
+                        ),
+                        if (isSelected)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              item['label']!,
+                              style:  TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
 
-                              fontSize: 8.sp,
+                                fontSize: 8.sp,
+                              ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
         );
       }),

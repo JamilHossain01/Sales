@@ -265,11 +265,12 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
               ),
               SizedBox(height: 4.h),
               CustomText(
-                text: card.prizeName,
-                fontSize: 12.sp,
+                text: _getFirstTwoWords(card.prizeName ?? ''),
+                fontSize: 10.sp,
                 color: Colors.white70,
                 textAlign: TextAlign.center,
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis, // optional: adds ... if somehow still longer
               ),
               SizedBox(height: 4.h),
               Container(
@@ -292,7 +293,18 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
       ),
     );
   }
+  String _getFirstTwoWords(String text) {
+    if (text.isEmpty) return '';
 
+    // Split by space and take maximum 2 words
+    final words = text.trim().split(' ');
+
+    if (words.length <= 2) {
+      return text.trim(); // return as-is if 1 or 2 words
+    }
+
+    return '${words[0]} ${words[1]}';
+  }
   /// ===== EXPANDED CARD =====
   Widget _buildPrizeInfoCard(PrizeCardData card) {
     final isTBA = card.userName == 'TBA';

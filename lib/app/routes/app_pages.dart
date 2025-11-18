@@ -10,12 +10,9 @@ import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
-
 import '../modules/forum/bindings/forum_binding.dart';
 import '../modules/forum/views/forum_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/leader_board/bindings/leader_board_binding.dart';
 import '../modules/leader_board/views/leader_board_view.dart';
@@ -25,18 +22,14 @@ import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/open_deal/bindings/open_deal_binding.dart';
 import '../modules/open_deal/views/new_deal_view.dart';
-
-
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/sales/bindings/sales_binding.dart';
 import '../modules/sales/views/sales_view.dart';
-
 import '../modules/setting/bindings/setting_binding.dart';
 import '../modules/setting/views/setting_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
-
 import '../modules/spalsh/bindings/spalsh_binding.dart';
 import '../modules/spalsh/views/spalsh_view.dart';
 import '../modules/view_details/bindings/view_details_binding.dart';
@@ -54,13 +47,7 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
-      children: [
-        GetPage(
-          name: _Paths.HOME,
-          page: () => HomeView(),
-          binding: HomeBinding(),
-        ),
-      ],
+      // REMOVED THE DUPLICATE CHILDREN
     ),
     GetPage(
       name: _Paths.AUTHENTACATION,
@@ -87,29 +74,16 @@ class AppPages {
       page: () => const SignInView(),
       binding: SignInBinding(),
     ),
-
     GetPage(
       name: _Paths.DASHBOARD,
       page: () => DashboardView(),
       binding: DashboardBinding(),
     ),
-
     GetPage(
       name: _Paths.FORUM,
       page: () => const ForumView(),
       binding: ForumBinding(),
     ),
-    // GetPage(
-    //   name: _Paths.PROFILE,
-    //   page: () => ProfileView(),
-    //   binding: ProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: _Paths.PET_PROFILE,
-    //   page: () => const PetProfileView(),
-    //   binding: PetProfileBinding(),
-    // ),
-
     GetPage(
       name: _Paths.SALES,
       page: () => SalesContent(),
@@ -122,17 +96,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OPEN_DEAL,
-      page: () =>  NewDealView(clientId: '',),
+      page: () => NewDealView(clientId: ''),
       binding: OpenDealBinding(),
     ),
     GetPage(
       name: _Paths.CLOSED_DEAL,
-      page: () =>  ClosedDealView(clientID: '',),
+      page: () => ClosedDealView(clientID: ''),
       binding: ClosedDealBinding(),
     ),
     GetPage(
       name: _Paths.LEADER_BOARD,
-      page: () =>  LeaderBoardView(),
+      page: () => LeaderBoardView(),
       binding: LeaderBoardBinding(),
     ),
     GetPage(

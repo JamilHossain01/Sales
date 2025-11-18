@@ -52,6 +52,7 @@ class Value {
     required this.count,
     required this.totalAmount,
     required this.totalRevenue,
+    required this.totalDealCount,
   });
 
   final String? id;
@@ -67,6 +68,7 @@ class Value {
   final Count? count;
   final dynamic totalAmount;
   final dynamic totalRevenue;
+  final dynamic totalDealCount;
 
   factory Value.fromJson(Map<String, dynamic> json){
     return Value(
@@ -83,6 +85,7 @@ class Value {
       count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
       totalAmount: json["totalAmount"],
       totalRevenue: json["totalRevenue"],
+      totalDealCount: json["totalDealCount"],
     );
   }
 

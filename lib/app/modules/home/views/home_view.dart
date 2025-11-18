@@ -39,7 +39,10 @@ class HomeView extends GetView<HomeController> {
     NavItem(
       label: 'Leaderboards',
       iconPath: AppImages.leaderboards,
-      content: LeaderBoardView(),
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: LeaderBoardView(),
+      ),
     ),
     NavItem(
       label: 'Achievements',
