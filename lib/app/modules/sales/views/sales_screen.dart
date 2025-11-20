@@ -205,7 +205,7 @@ class _SalesScreenState extends State<SalesScreen> {
                     title: 'All Deals',
                     onTap: () {
                       isAllDeals.value = true;
-                      // allDealController.fetchAllDeals(); // Corrected API call
+                      allDealController.myAllClientData(); // Corrected API call
                     },
                   )),
                 ),

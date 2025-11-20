@@ -7,6 +7,7 @@ import 'package:wolf_pack/app/routes/app_pages.dart';
 import 'package:wolf_pack/app/uitilies/api/api_url.dart';
 import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/app_constant.dart';
+import '../../dashboard/views/dashboard_view.dart';
 
 class DealController extends GetxController {
   final isLoading = false.obs;
@@ -64,7 +65,7 @@ class DealController extends GetxController {
       if (responseData.statusCode == 200 || responseData.statusCode == 201) {
         final decoded = jsonDecode(responseData.body);
         CustomSnackbar.showSuccess(decoded['message'] ?? 'Deal created!');
-        Get.offAllNamed(Routes.DASHBOARD);
+        Get.to(()=>DashboardView());
       } else {
         final decoded = jsonDecode(responseData.body);
         CustomSnackbar.showError(decoded['message'] ?? 'Failed!');
