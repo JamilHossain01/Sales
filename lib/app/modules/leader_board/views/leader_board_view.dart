@@ -1,11 +1,8 @@
-// lib/app/modules/leader_board/views/leader_board_view.dart
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/custom_loader.dart';
@@ -20,14 +17,13 @@ class LeaderBoardView extends StatelessWidget {
 
     return Obx(() {
       if (controller.isLoading.value) {
-        return Center(child: CustomLoader());
+        return  Center(child: CustomLoader());
       }
 
       final users = controller.sortedUsers;
       if (users.isEmpty) {
         return const Center(
-          child:
-              Text('No data available', style: TextStyle(color: Colors.white)),
+          child: Text('No data available', style: TextStyle(color: Colors.white)),
         );
       }
 
@@ -40,7 +36,6 @@ class LeaderBoardView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(15.h),
-
             _TopCloserCard(user: topUser),
             Gap(20.h),
             CustomText(
@@ -58,7 +53,6 @@ class LeaderBoardView extends StatelessWidget {
   }
 }
 
-
 class _TopCloserCard extends StatelessWidget {
   final dynamic user;
 
@@ -67,7 +61,7 @@ class _TopCloserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalAmount = (user['totalAmount'] ?? 0).toString();
-    final deals = (user['closer']?.length ?? 0).toString();
+    final deals = (user['totalDeals'] ?? 0).toString();
 
     return Container(
       width: double.infinity,
@@ -117,11 +111,9 @@ class _TopCloserCard extends StatelessWidget {
                 radius: 32.r,
                 backgroundColor: AppColors.orangeColor,
                 backgroundImage:
-                    (user['profilePicture'] as String?)?.startsWith('http') ==
-                            true
-                        ? CachedNetworkImageProvider(user['profilePicture'])
-                        : const AssetImage('assets/images/default_avatar.png')
-                            as ImageProvider,
+                (user['profilePicture'] as String?)?.startsWith('http') == true
+                    ? CachedNetworkImageProvider(user['profilePicture'])
+                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
               ),
               Gap(12.w),
               Column(
@@ -196,7 +188,7 @@ class _StatBox extends StatelessWidget {
 }
 
 // ======================
-// 🧾 Leaderboard List (Rank 2–10)
+// 🏆 Leaderboard List (Rank 2–10)
 // ======================
 class _LeaderBoardList extends StatelessWidget {
   final List<dynamic> users;
@@ -234,11 +226,9 @@ class _LeaderBoardList extends StatelessWidget {
               CircleAvatar(
                 radius: 20.r,
                 backgroundImage:
-                    (user['profilePicture'] as String?)?.startsWith('http') ==
-                            true
-                        ? CachedNetworkImageProvider(user['profilePicture'])
-                        : const AssetImage('assets/images/default_avatar.png')
-                            as ImageProvider,
+                (user['profilePicture'] as String?)?.startsWith('http') == true
+                    ? CachedNetworkImageProvider(user['profilePicture'])
+                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
               ),
               Gap(12.w),
               Expanded(
@@ -252,7 +242,7 @@ class _LeaderBoardList extends StatelessWidget {
                       color: Colors.white,
                     ),
                     CustomText(
-                      text: '${user['closer']?.length ?? 0} deals',
+                      text: '${user['totalDeals'] ?? 0} deals',
                       fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                       color: Colors.white70,

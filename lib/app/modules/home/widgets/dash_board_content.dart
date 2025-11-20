@@ -95,7 +95,7 @@ class _DashboardContentState extends State<DashboardContent> {
   @override
   void initState() {
     super.initState();
-    profileController.fetchMyProfile();
+    // profileController.fetchMyProfile();
     dealController.fetchMyProfile();
   }
 
@@ -214,7 +214,7 @@ class _DashboardContentState extends State<DashboardContent> {
                       backroundColor: index == 0 ? Colors.blueAccent.withOpacity(0.15) : Colors.orangeAccent.withOpacity(0.15),
                       rank: index + 1,
                       name: performer.name ?? 'N/A',
-                      earnings: '€${performer.salesCount ?? '0'}',
+                      earnings: '€${performer.salesCount ?? '10'}',
                       rankColor: AppColors.orangeColor,
                     );
                   }).toList(),
