@@ -12,14 +12,16 @@ import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../uitilies/app_colors.dart';
 
+// lib/app/modules/home/widgets/rececnt_deatils_widgets.dart
+
 class RecentDetails extends StatelessWidget {
   final String tagLabel;
   final String companyName;
-  final String assignDate; // Formatted as "YYYY HH:MM"
+  final String assignDate;
   final String offer;
   final String commissionRate;
   final Color? color;
-  final VoidCallback onViewDetailsTap;
+  final VoidCallback? onViewDetailsTap; // nullable
 
   const RecentDetails({
     Key? key,
@@ -28,8 +30,8 @@ class RecentDetails extends StatelessWidget {
     required this.assignDate,
     required this.offer,
     required this.commissionRate,
-    required this.onViewDetailsTap,
     this.color,
+    this.onViewDetailsTap,
   }) : super(key: key);
 
   @override
@@ -39,44 +41,36 @@ class RecentDetails extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10.h),
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF).withOpacity(0.09),
+        color: const Color(0xFFFFFFFF).withOpacity(0.09),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Tag
           Container(
             width: 100.w,
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(50.r),
-            ),
-            child: CustomText(
-              text: tagLabel,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.white,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(50.r)),
+            child: CustomText(text: tagLabel, fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.white),
           ),
           SizedBox(height: 8.h),
-          CustomText(
-            text: companyName,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: AppColors.white,
-          ),
+          CustomText(text: companyName, fontSize: 16.sp, fontWeight: FontWeight.w600, color: AppColors.white),
           SizedBox(height: 8.h),
           _rowText(text: 'Offer -', text1: offer),
           _rowText(text: 'Commission Rate -', text1: commissionRate),
           _rowText(text: 'Assign Date -', text1: assignDate),
-          SizedBox(height: 12.h),
-          CustomButton(
-            leftIcon: Icon(Icons.remove_red_eye_outlined, color: AppColors.white,),
-            border: Border.all(color: AppColors.white, width: 0.25),
-            title: 'View Details',
-            onTap: onViewDetailsTap,
-          ),
+
+          // বাটন শুধু তখনই দেখাবে যদি onViewDetailsTap না null হয়
+          if (onViewDetailsTap != null) ...[
+            SizedBox(height: 12.h),
+            CustomButton(
+              leftIcon:  Icon(Icons.remove_red_eye_outlined, color: AppColors.white),
+              border: Border.all(color: AppColors.white, width: 0.25),
+              title: 'View Details',
+              onTap: onViewDetailsTap!,
+            ),
+          ],
         ],
       ),
     );
@@ -88,25 +82,13 @@ class RecentDetails extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(
-            text: text,
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w400,
-            color: AppColors.white,
-          ),
-          CustomText(
-            text: text1,
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w400,
-            color: AppColors.white,
-          ),
+          CustomText(text: text, fontSize: 11.sp, fontWeight: FontWeight.w400, color: AppColors.white),
+          CustomText(text: text1, fontSize: 11.sp, fontWeight: FontWeight.w400, color: AppColors.white),
         ],
       ),
     );
   }
-}
-
-// class RecentDetails extends StatelessWidget {
+}// class RecentDetails extends StatelessWidget {
 //   final String tagLabel;
 //   final String companyName;
 //   final String startDate;
