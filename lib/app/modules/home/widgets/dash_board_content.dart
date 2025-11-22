@@ -196,34 +196,34 @@ class _DashboardContentState extends State<DashboardContent> {
               ),
               /// ---- your rank -----------
               SizedBox(height: 16.h),
-              Obx(() {
-                if (controller.isLoading.value) {
-                  return Center(child: CustomLoader());
-                }
-
-                final data = controller.leaderBoardData.value.data;
-                if (data == null || data.leaderBoard.isEmpty) {
-                  return const Center(child: Text("No leaderboard data found"));
-                }
-
-                final top3 = data.leaderBoard.take(3).toList();
-                return LeaderboardCard(
-                  rank: '#${profileController.profileData.value.data?.rank ?? "N/A"}',
-                  performers: top3.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final performer = entry.value;
-                    return PerformerCard(
-                      backroundColor: index == 0 ? Colors.blueAccent.withOpacity(0.15) : Colors.orangeAccent.withOpacity(0.15),
-                      rank: index + 1,
-                      name: performer.name ?? 'N/A',
-                      earnings: '€${performer.salesCount ?? '10'}',
-                      rankColor: AppColors.orangeColor,
-                    );
-                  }).toList(),
-                  motivationLine1: '',
-                  motivationLine2: '',
-                );
-              }),
+              // Obx(() {
+              //   if (controller.isLoading.value) {
+              //     return Center(child: CustomLoader());
+              //   }
+              //
+              //   final data = controller.leaderBoardData.value.data;
+              //   if (data == null || data.leaderBoard.isEmpty) {
+              //     return const Center(child: Text("No leaderboard data found"));
+              //   }
+              //
+              //   final top3 = data.leaderBoard.take(3).toList();
+              //   return LeaderboardCard(
+              //     rank: '#${profileController.profileData.value.data?.rank ?? "N/A"}',
+              //     performers: top3.asMap().entries.map((entry) {
+              //       final index = entry.key;
+              //       final performer = entry.value;
+              //       return PerformerCard(
+              //         backroundColor: index == 0 ? Colors.blueAccent.withOpacity(0.15) : Colors.orangeAccent.withOpacity(0.15),
+              //         rank: index + 1,
+              //         name: performer.name ?? 'N/A',
+              //         earnings: '€${performer.salesCount ?? '10'}',
+              //         rankColor: AppColors.orangeColor,
+              //       );
+              //     }).toList(),
+              //     motivationLine1: '',
+              //     motivationLine2: '',
+              //   );
+              // }),
               SizedBox(height: 20.h),
               /// ---------- Monthly & Quarter Tabs ----------
               PrizeTabsWidget(

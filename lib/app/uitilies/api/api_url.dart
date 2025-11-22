@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
-  //  static const String baseUrl = "http://10.10.10.3:4003/api/v1";
- static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
+   static const String baseUrl = "http://10.10.10.3:4003/api/v1";
+ // static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
 
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
@@ -35,8 +35,19 @@ class ApiUrl {
 
 
   //leaderboard
-  static String leaderboard = "$baseUrl/user/leaderboard";
- static String leaderboardTop = "$baseUrl/user/top-users";
+  // static String leaderboard = "$baseUrl/user/leaderboard";
+ // static String leaderboardTop = "$baseUrl/user/top-users";
+ //   static String leaderboardTop({dynamic? month, dynamic? year, dynamic? quarter}) {
+ //     final params = [
+ //       if (month != null) "month=$month",
+ //       if (year != null) "year=$year",
+ //       if (quarter != null) "quarter=$quarter",
+ //     ].join("&");
+ //
+ //     return "$baseUrl/user/top-users?$params";
+ //   }
+   // api_url.dart
+
   static String top3 = "$baseUrl/user/leaderboard?limit=3";
 
   static String singleClients({required dynamic clientId}) {

@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/base_client.dart';
+import '../modell/filter_leader_board_model.dart';
 import '../modell/leader_board_model.dart';
 
 class LeaderBoardController extends GetxController {
   var isLoading = false.obs;
-  var leaderBoardData = LeaderBoardModel().obs;
+  var leaderBoardData = LeaderBoardModel(data: []).obs;
   var othersVisibleCount = 5.obs; // 👈 for other performers pagination
 
 
@@ -20,7 +21,7 @@ class LeaderBoardController extends GetxController {
   Future<void> fetchMyProfile() async {
     try {
       isLoading(true);
-      final response = await BaseClient.getRequest(api: ApiUrl.leaderboard);
+      final response = await BaseClient.getRequest(api: ApiUrl.leaderBoard);
 
       if (response.statusCode == 200) {
         final data = await BaseClient.handleResponse(response);
