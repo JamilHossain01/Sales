@@ -7,6 +7,7 @@ import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/custom_loader.dart';
 import '../controllers/leader_borad_get.dart';
+import '../modell/filter_leader_board_model.dart';
 
 class LeaderBoardView extends StatelessWidget {
   const LeaderBoardView({super.key});
@@ -17,13 +18,39 @@ class LeaderBoardView extends StatelessWidget {
 
     return Obx(() {
       if (controller.isLoading.value) {
-        return  Center(child: CustomLoader());
+        return Center(child: CustomLoader());
       }
 
       final users = controller.sortedUsers;
       if (users.isEmpty) {
-        return const Center(
-          child: Text('No data available', style: TextStyle(color: Colors.white)),
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('No data available',
+                  style: TextStyle(color: Colors.white)),
+              Gap(16.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: controller.fetchLeaderBoard,
+                    child: const Text('Refresh'),
+                  ),
+                  SizedBox(width: 12.w),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.selectedMonth.value = null;
+                      controller.selectedYear.value = null;
+                      controller.selectedQuarter.value = null;
+                      controller.applyFilters();
+                    },
+                    child: const Text('Clear'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       }
 
@@ -32,11 +59,13 @@ class LeaderBoardView extends StatelessWidget {
       final currentUserId = controller.currentUserId.value;
 
       return SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(15.h),
-            _TopCloserCard(user: topUser),
+            _FilterBar(),
+            Gap(20.h),
+            if (topUser != null) _TopCloserCard(user: topUser),
             Gap(20.h),
             CustomText(
               text: 'Leaderboard',
@@ -46,6 +75,7 @@ class LeaderBoardView extends StatelessWidget {
             ),
             Gap(12.h),
             _LeaderBoardList(users: others, currentUserId: currentUserId),
+            Gap(30.h),
           ],
         ),
       );
@@ -53,32 +83,157 @@ class LeaderBoardView extends StatelessWidget {
   }
 }
 
-class _TopCloserCard extends StatelessWidget {
-  final dynamic user;
+class _FilterBar extends StatelessWidget {
+  _FilterBar({super.key});
 
+  final List<String> _monthNames = [
+    "Months",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+  final List<Map<String, dynamic>> quarters = [
+    {"name": "Quarters", "value": null},
+    {"name": "Jan - Mar", "value": 1},
+    {"name": "Apr - Jun", "value": 2},
+    {"name": "Jul - Sep", "value": 3},
+    {"name": "Oct - Dec", "value": 4},
+  ];
+
+  final List<int> years = [2022, 2023, 2024, 2025, 2026];
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<LeaderBoardGetController>();
+
+    return Row(
+      children: [
+        Flexible(
+          child: Obx(() => DropdownButtonFormField<int?>(
+                value: controller.selectedMonth.value,
+                decoration: _dropdownDecoration("Month"),
+                dropdownColor: const Color(0xFF1E1E1E),
+                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                icon: const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white70,
+                  size: 12,
+                ),
+                items: List.generate(13, (index) {
+                  return DropdownMenuItem<int?>(
+                    value: index == 0 ? null : index,
+                    child: Text(_monthNames[index],
+                        overflow: TextOverflow.ellipsis),
+                  );
+                }),
+                onChanged: (val) {
+                  controller.selectedMonth.value = val;
+                  controller.selectedQuarter.value = null;
+                  controller.applyFilters();
+                },
+              )),
+        ),
+        SizedBox(width: 10.w),
+        Flexible(
+          child: Obx(() => DropdownButtonFormField<int?>(
+                value: controller.selectedYear.value,
+                decoration: _dropdownDecoration("Year"),
+                dropdownColor: const Color(0xFF1E1E1E),
+                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                icon: const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white70,
+                  size: 12,
+                ),
+                items: years
+                    .map((year) => DropdownMenuItem<int?>(
+                          value: year,
+                          child: Text(year.toString(),
+                              overflow: TextOverflow.ellipsis),
+                        ))
+                    .toList(),
+                onChanged: (val) {
+                  controller.selectedYear.value = val;
+                  controller.applyFilters();
+                },
+              )),
+        ),
+        SizedBox(width: 10.w),
+        Flexible(
+          child: Obx(() => DropdownButtonFormField<int?>(
+                value: controller.selectedQuarter.value,
+                decoration: _dropdownDecoration("Quarter"),
+                dropdownColor: const Color(0xFF1E1E1E),
+                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                icon: const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white70,
+                  size: 12,
+                ),
+                items: quarters
+                    .map((q) => DropdownMenuItem<int?>(
+                          value: q["value"] as int?,
+                          child:
+                              Text(q["name"], overflow: TextOverflow.ellipsis),
+                        ))
+                    .toList(),
+                onChanged: (val) {
+                  controller.selectedQuarter.value = val;
+                  controller.selectedMonth.value = null;
+                  controller.applyFilters();
+                },
+              )),
+        ),
+      ],
+    );
+  }
+
+  InputDecoration _dropdownDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(color: Colors.white70, fontSize: 14.sp),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.r),
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 16.h),
+    );
+  }
+}
+
+// Top Closer Card
+class _TopCloserCard extends StatelessWidget {
+  final Datum user;
   const _TopCloserCard({required this.user});
 
   @override
   Widget build(BuildContext context) {
-    final totalAmount = (user['totalAmount'] ?? 0).toString();
-    final deals = (user['totalDeals'] ?? 0).toString();
+    final totalAmount = (user.totalRevenue ?? 0).toStringAsFixed(1);
+    final deals = (user.totalDeals ?? 0).toString();
 
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
           colors: [
             const Color(0xFFFCB806).withOpacity(0.15),
             const Color(0xFFFCB806).withOpacity(0.3),
           ],
         ),
         borderRadius: BorderRadius.circular(16.r),
-        boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,26 +266,25 @@ class _TopCloserCard extends StatelessWidget {
                 radius: 32.r,
                 backgroundColor: AppColors.orangeColor,
                 backgroundImage:
-                (user['profilePicture'] as String?)?.startsWith('http') == true
-                    ? CachedNetworkImageProvider(user['profilePicture'])
-                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
+                    (user.profilePicture?.startsWith('http') == true)
+                        ? CachedNetworkImageProvider(user.profilePicture!)
+                        : const AssetImage('assets/images/default_avatar.png')
+                            as ImageProvider,
               ),
               Gap(12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: user['name'] ?? '—',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20.sp,
-                    color: Colors.white,
-                  ),
+                      text:  '—',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20.sp,
+                      color: Colors.white),
                   CustomText(
-                    text: 'Sales Champion',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.white70,
-                  ),
+                      text: 'Sales Champion',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Colors.white70),
                 ],
               ),
             ],
@@ -139,12 +293,10 @@ class _TopCloserCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _StatBox(label: 'Total Amount', value: '€$totalAmount'),
-              ),
+                  child:
+                      _StatBox(label: 'Total Amount', value: '€$totalAmount')),
               Gap(12.w),
-              Expanded(
-                child: _StatBox(label: 'Deals Closed', value: deals),
-              ),
+              Expanded(child: _StatBox(label: 'Deals Closed', value: deals)),
             ],
           ),
         ],
@@ -155,7 +307,6 @@ class _TopCloserCard extends StatelessWidget {
 
 class _StatBox extends StatelessWidget {
   final String label, value;
-
   const _StatBox({required this.label, required this.value});
 
   @override
@@ -169,35 +320,28 @@ class _StatBox extends StatelessWidget {
       child: Column(
         children: [
           CustomText(
-            text: label,
-            fontWeight: FontWeight.w500,
-            fontSize: 12.sp,
-            color: Colors.white70,
-          ),
+              text: label,
+              fontWeight: FontWeight.w500,
+              fontSize: 12.sp,
+              color: Colors.white70),
           Gap(4.h),
           CustomText(
-            text: value,
-            fontWeight: FontWeight.w700,
-            fontSize: 18.sp,
-            color: Colors.white,
-          ),
+              text: value,
+              fontWeight: FontWeight.w700,
+              fontSize: 18.sp,
+              color: Colors.white),
         ],
       ),
     );
   }
 }
 
-// ======================
-// 🏆 Leaderboard List (Rank 2–10)
-// ======================
+// Leaderboard List
 class _LeaderBoardList extends StatelessWidget {
-  final List<dynamic> users;
+  final List<Datum> users;
   final String currentUserId;
 
-  const _LeaderBoardList({
-    required this.users,
-    required this.currentUserId,
-  });
+  const _LeaderBoardList({required this.users, required this.currentUserId});
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +351,7 @@ class _LeaderBoardList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, i) {
         final user = users[i];
-        final isMe = user['id'] == currentUserId;
+        final isMe = user.id == currentUserId;
 
         return Container(
           margin: EdgeInsets.only(bottom: 10.h),
@@ -221,14 +365,15 @@ class _LeaderBoardList extends StatelessWidget {
           ),
           child: Row(
             children: [
-              _RankBadge(rank: i + 2), // Rank 2 থেকে শুরু
+              _RankBadge(rank: i + 2),
               Gap(12.w),
               CircleAvatar(
                 radius: 20.r,
                 backgroundImage:
-                (user['profilePicture'] as String?)?.startsWith('http') == true
-                    ? CachedNetworkImageProvider(user['profilePicture'])
-                    : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
+                    (user.profilePicture?.startsWith('http') == true)
+                        ? CachedNetworkImageProvider(user.profilePicture!)
+                        : const AssetImage('assets/images/default_avatar.png')
+                            as ImageProvider,
               ),
               Gap(12.w),
               Expanded(
@@ -236,26 +381,23 @@ class _LeaderBoardList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: user['name'] ?? 'Unknown',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp,
-                      color: Colors.white,
-                    ),
+                        text: user.name ?? 'Unknown',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.sp,
+                        color: Colors.white),
                     CustomText(
-                      text: '${user['totalDeals'] ?? 0} deals',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                      color: Colors.white70,
-                    ),
+                        text: '${user.totalDeals ?? 0} deals',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                        color: Colors.white70),
                   ],
                 ),
               ),
               CustomText(
-                text: '€${user['totalAmount'] ?? 0}',
-                fontWeight: FontWeight.w700,
-                fontSize: 16.sp,
-                color: Colors.white,
-              ),
+                  text: '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp,
+                  color: Colors.white),
             ],
           ),
         );
@@ -264,12 +406,8 @@ class _LeaderBoardList extends StatelessWidget {
   }
 }
 
-// ======================
-// 🎖 Rank Badge
-// ======================
 class _RankBadge extends StatelessWidget {
   final int rank;
-
   const _RankBadge({required this.rank});
 
   @override
@@ -294,11 +432,10 @@ class _RankBadge extends StatelessWidget {
       decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
       alignment: Alignment.center,
       child: CustomText(
-        text: rank.toString(),
-        fontWeight: FontWeight.w700,
-        fontSize: 14.sp,
-        color: Colors.white,
-      ),
+          text: rank.toString(),
+          fontWeight: FontWeight.w700,
+          fontSize: 14.sp,
+          color: Colors.white),
     );
   }
 }

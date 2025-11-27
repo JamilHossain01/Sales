@@ -103,8 +103,7 @@ class DashboardView extends StatelessWidget {
                         Image.asset(
                           iconPath,
                           height: 20,
-                          width: 19,
-                        ),
+                          width: 19,                        ),
                         if (isSelected)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),

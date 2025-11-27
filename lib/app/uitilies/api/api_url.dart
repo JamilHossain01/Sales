@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
-  //  static const String baseUrl = "http://10.10.10.3:4003/api/v1";
- static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
+   static const String baseUrl = "http://10.10.10.3:4003/api/v1";
+ // static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
 
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
@@ -36,7 +36,7 @@ class ApiUrl {
 
   //leaderboard
   static String leaderboard = "$baseUrl/user/leaderboard";
- static String leaderboardTop = "$baseUrl/user/top-users";
+ // static String leaderboardTop = "$baseUrl/user/top-users";
   static String top3 = "$baseUrl/user/leaderboard?limit=3";
 
   static String singleClients({required dynamic clientId}) {
@@ -44,7 +44,15 @@ class ApiUrl {
   } static String singlePrize({required dynamic clientId}) {
     return '$baseUrl/prize$clientId'; // Ensure BASE_URL is prepended
   }
+   static String leaderboardTop({int? month, int? year, int? quarter}) {
+     final params = <String>[];
+     if (month != null) params.add("month=$month");
+     if (year != null) params.add("year=$year");
+     if (quarter != null) params.add("quarter=$quarter");
 
+     final query = params.isEmpty ? "" : "?${params.join("&")}";
+     return "$baseUrl/user/top-users$query";
+   }
   static String supportCreate = "$baseUrl/settings/send-support-message";
 
 

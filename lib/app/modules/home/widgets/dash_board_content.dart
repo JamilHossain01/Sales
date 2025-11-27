@@ -36,6 +36,8 @@ import '../../sales/views/sales_screen.dart';
 import '../../open_deal/views/new_deal_view.dart';
 import '../../open_deal/views/open_deal_view.dart';
 import '../../closed_deal/views/closed_deal_view.dart';
+import '../controllers/allDeals_controller.dart';
+import '../model/all_closed_model.dart';
 import '../model/badget_model_data.dart';
 import '../widgets/stat_card_wigets.dart';
 import '../widgets/target_widgets.dart';
@@ -237,8 +239,10 @@ class _DashboardContentState extends State<DashboardContent> {
               ),
               SizedBox(height: 16.h),
               Obx(() {
-                if (dealController.isLoading.value) {
-                  // Show shimmer/redacted placeholders
+                final AllDealController allDealController = Get.put(AllDealController());
+
+                // Loading state - show shimmer
+                if (allDealController.isLoading.value) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                     child: ListView.builder(
@@ -248,8 +252,8 @@ class _DashboardContentState extends State<DashboardContent> {
                       itemBuilder: (context, index) => RecentDetails(
                         color: Colors.grey.shade800,
                         tagLabel: 'Loading',
-                        companyName: 'Loading',
-                        assignDate: 'Loading',
+                        companyName: 'Loading...',
+                        assignDate: 'Loading...',
                         offer: '0',
                         commissionRate: '0%',
                         onViewDetailsTap: () {},
@@ -257,52 +261,68 @@ class _DashboardContentState extends State<DashboardContent> {
                     ),
                   );
                 }
-                final clients = (dealController.dealData.value.data?.data as List?)?.cast<Datum>() ?? [];
+
+                // Get raw list from your controller (List<AllDealDatum>)
+                final List<AllDealDatum> allDeals = allDealController.myAllClientData.value?.data?.data ?? [];
+
+                // Filter only CLOSED deals (last closer status = "Closed" or "closed")
+                final closedDeals = allDeals.where((deal) {
+                  if (deal.closer.isEmpty) return false;
+                  final lastStatus = deal.closer.last.status?.toLowerCase();
+                  return lastStatus == 'closed';
+                }).toList();
+
+                // Sort by dealDate (most recent first) - optional but recommended
+                closedDeals.sort((a, b) {
+                  final dateA = a.closer.last.dealDate ?? DateTime(1970);
+                  final dateB = b.closer.last.dealDate ?? DateTime(1970);
+                  return dateB.compareTo(dateA);
+                });
+
+                // Take only first 3
+                final latestThree = closedDeals.take(3).toList();
+
+                // No closed deals found
+                if (latestThree.isEmpty) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 40.h),
+                    child: Center(
+                      child: Text(
+                        "No closed deals yet",
+                        style: TextStyle(color: Colors.white70, fontSize: 16.sp),
+                      ),
+                    ),
+                  );
+                }
+
+                // Show only 3 closed deals
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.h),
-                  child: clients.isEmpty
-                      ? Center(
-                    child: NoDataWidget(
-                      text: 'No data available',
-                    ),
-                  )
-                      : ListView.builder(
+                  child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: clients.length,
+                    itemCount: latestThree.length,
                     itemBuilder: (context, index) {
-                      final client = clients[index];
-                      if (client.closer.isEmpty) return const SizedBox.shrink();
-                      final hasCloser = client.closer.isNotEmpty;
-                      final currentStatus = hasCloser ? client.closer.last.status ?? 'New' : 'New';
-                      final tagLabel = currentStatus.toUpperCase();
-                      final tagColor = _getStatusColor(tagLabel);
-                      final assignDate = client.createdAt != null ? DateFormat('yyyy-MM-dd hh:mm a').format(client.createdAt!) : 'N/A';                      return RecentDetails(
-                        color: tagColor,
-                        tagLabel: tagLabel,
-                        companyName: client.name ?? 'N/A',
-                        assignDate: assignDate,
-                        // offer: '€${_formatCurrencyDropDecimals(client.offer)}',
-                        offer:  client.offer ?? 'N/A',
-                        commissionRate: '${client.commissionRate ?? 0}%',
+                      final deal = latestThree[index];
+                      final lastCloser = deal.closer.last;
+
+                      return RecentDetails(
+                        color: Colors.red,
+                        tagLabel: "CLOSED",
+                        companyName: deal.name ?? 'Unknown Client',
+                        assignDate: deal.createdAt != null
+                            ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
+                            : 'N/A',
+                        offer: deal.offer?.toString() ?? 'N/A',
+                        commissionRate: '${deal.commissionRate ?? 0}%',
                         onViewDetailsTap: () {
-                          switch (tagLabel.toUpperCase()) {
-                            case "NEW":
-                              Get.to(() => NewDealView(clientId: client.id ?? ''));
-                              break;
-                            case "OPEN":
-                              Get.to(() => OpenDealView(clientId: client.id ?? ''));
-                              break;
-                            case "CLOSED":
-                              Get.to(() => ClosedDealView(clientID: client.id ?? ''));
-                              break;
-                          }
+                          Get.to(() => ClosedDealView(clientID: deal.id ?? ''));
                         },
                       );
                     },
                   ),
                 );
-              }),
+              }),              Gap(20.h),
               /// ---------- LeaderBoard Section (Added Below) ----------
               Gap(20.h),
               // Row(
