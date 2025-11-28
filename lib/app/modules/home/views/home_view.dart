@@ -12,6 +12,7 @@ import 'package:wolf_pack/app/uitilies/app_images.dart';
 
 import '../../../uitilies/custom_loader.dart';
 import '../../profile/controllers/porfile_image_controller.dart';
+import '../../sales/views/sales_screen.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/nav_controller.dart';
 import '../widgets/dash_board_content.dart';

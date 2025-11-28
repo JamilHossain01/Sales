@@ -16,7 +16,7 @@ import '../model/all_deal_model.dart';
 
 class AllDealController extends GetxController {
   var isLoading = false.obs;
-  var myAllClientData = Rxn<ClosedAllDealModel>(); // সঠিক মডেল
+  var myClosedAllClientData = Rxn<ClosedAllDealModel>(); // সঠিক মডেল
 
   @override
   void onInit() {
@@ -31,8 +31,8 @@ class AllDealController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonData = await BaseClient.handleResponse(response);
-        myAllClientData.value = ClosedAllDealModel.fromJson(jsonData);
-        print("All Deals লোড হয়েছে: ${myAllClientData.value?.data?.data?.length ?? 0} টি");
+        myClosedAllClientData.value = ClosedAllDealModel.fromJson(jsonData);
+        print("All Deals লোড হয়েছে: ${myClosedAllClientData.value?.data?.data?.length ?? 0} টি");
       } else {
         throw "Failed to load All Deals (${response.statusCode})";
       }

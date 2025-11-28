@@ -88,7 +88,12 @@ class RecentDetails extends StatelessWidget {
       ),
     );
   }
-}// class RecentDetails extends StatelessWidget {
+}
+
+
+
+
+// class RecentDetails extends StatelessWidget {
 //   final String tagLabel;
 //   final String companyName;
 //   final String startDate;

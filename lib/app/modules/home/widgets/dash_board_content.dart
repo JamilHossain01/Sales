@@ -36,6 +36,7 @@ import '../../sales/views/sales_screen.dart';
 import '../../open_deal/views/new_deal_view.dart';
 import '../../open_deal/views/open_deal_view.dart';
 import '../../closed_deal/views/closed_deal_view.dart';
+import '../../sales/views/sales_view.dart';
 import '../controllers/allDeals_controller.dart';
 import '../model/all_closed_model.dart';
 import '../model/badget_model_data.dart';
@@ -241,7 +242,7 @@ class _DashboardContentState extends State<DashboardContent> {
               Obx(() {
                 final AllDealController allDealController = Get.put(AllDealController());
 
-                // Loading state - show shimmer
+                // 🔹 Loading state - show shimmer
                 if (allDealController.isLoading.value) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -256,33 +257,34 @@ class _DashboardContentState extends State<DashboardContent> {
                         assignDate: 'Loading...',
                         offer: '0',
                         commissionRate: '0%',
-                        onViewDetailsTap: () {},
+                        onViewDetailsTap: null, // 🔹 Null here hides the button
                       ),
                     ),
                   );
                 }
 
-                // Get raw list from your controller (List<AllDealDatum>)
-                final List<AllDealDatum> allDeals = allDealController.myAllClientData.value?.data?.data ?? [];
+                // 🔹 Get raw list from controller
+                final allDeals = allDealController.myClosedAllClientData.value?.data?.data ?? [];
 
-                // Filter only CLOSED deals (last closer status = "Closed" or "closed")
+                // 🔹 Filter only CLOSED deals (check last closer status)
                 final closedDeals = allDeals.where((deal) {
-                  if (deal.closer.isEmpty) return false;
-                  final lastStatus = deal.closer.last.status?.toLowerCase();
+                  final closers = deal.userClients.expand((u) => u.closers).toList();
+                  if (closers.isEmpty) return false;
+                  final lastStatus = closers.last.status?.toLowerCase();
                   return lastStatus == 'closed';
                 }).toList();
 
-                // Sort by dealDate (most recent first) - optional but recommended
+                // 🔹 Sort by dealDate (most recent first)
                 closedDeals.sort((a, b) {
-                  final dateA = a.closer.last.dealDate ?? DateTime(1970);
-                  final dateB = b.closer.last.dealDate ?? DateTime(1970);
+                  final dateA = a.userClients.expand((u) => u.closers).last.dealDate ?? DateTime(1970);
+                  final dateB = b.userClients.expand((u) => u.closers).last.dealDate ?? DateTime(1970);
                   return dateB.compareTo(dateA);
                 });
 
-                // Take only first 3
+                // 🔹 Take only first 3
                 final latestThree = closedDeals.take(3).toList();
 
-                // No closed deals found
+                // 🔹 No closed deals found
                 if (latestThree.isEmpty) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 40.h),
@@ -295,7 +297,7 @@ class _DashboardContentState extends State<DashboardContent> {
                   );
                 }
 
-                // Show only 3 closed deals
+                // 🔹 Show the latest 3 closed deals (onViewDetailsTap null for All Deals)
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: ListView.builder(
@@ -304,25 +306,25 @@ class _DashboardContentState extends State<DashboardContent> {
                     itemCount: latestThree.length,
                     itemBuilder: (context, index) {
                       final deal = latestThree[index];
-                      final lastCloser = deal.closer.last;
+                      final closers = deal.userClients.expand((u) => u.closers).toList();
+                      final lastCloser = closers.last;
 
                       return RecentDetails(
                         color: Colors.red,
                         tagLabel: "CLOSED",
                         companyName: deal.name ?? 'Unknown Client',
-                        assignDate: deal.createdAt != null
-                            ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
+                        assignDate: lastCloser.dealDate != null
+                            ? DateFormat('yyyy-MM-dd hh:mm a').format(lastCloser.dealDate!)
                             : 'N/A',
-                        offer: deal.offer?.toString() ?? 'N/A',
+                        offer: deal.offer ?? 'N/A',
                         commissionRate: '${deal.commissionRate ?? 0}%',
-                        onViewDetailsTap: () {
-                          Get.to(() => ClosedDealView(clientID: deal.id ?? ''));
-                        },
+                        onViewDetailsTap: null, // 🔹 Null here hides the button for All Deals
                       );
                     },
                   ),
                 );
-              }),              Gap(20.h),
+              }),
+              Gap(20.h),
               /// ---------- LeaderBoard Section (Added Below) ----------
               Gap(20.h),
               // Row(

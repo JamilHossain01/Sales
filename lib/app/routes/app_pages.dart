@@ -86,7 +86,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SALES,
-      page: () => SalesContent(),
+      page: () => SalesScreen(),
       binding: SalesBinding(),
     ),
     GetPage(
