@@ -15,105 +15,140 @@ import '../../../common_widget/custom_calender.dart';
 import '../../home/model/all_closed_model.dart' as allDeals;
 import '../../home/model/all_my_cleints_model.dart' as myClients;
 import '../../home/widgets/rececnt_deatils_widgets.dart';
+import '../model/recentview_model.dart';
+
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
-
   @override
   State<SalesScreen> createState() => _SalesScreenState();
 }
-
 class _SalesScreenState extends State<SalesScreen> {
   final AllDealController allDealController = Get.put(AllDealController());
-  final MyAllClientsGetController myDealController =
-  Get.put(MyAllClientsGetController());
-  final GetMyProfileController profileController =
-  Get.put(GetMyProfileController());
-
+  final MyAllClientsGetController myDealController = Get.put(MyAllClientsGetController());
+  final GetMyProfileController profileController = Get.put(GetMyProfileController());
   DateTime? _selectedDate;
   String _searchQuery = '';
   String _selectedStatus = 'All';
   var isAllDeals = true.obs;
-
   @override
   void initState() {
     super.initState();
     profileController.fetchMyProfile();
     allDealController.fetchAllDeals();
   }
-
   String _formatCurrency(dynamic value) {
     if (value == null) return '0';
-    double v =
-    value is String ? double.tryParse(value) ?? 0.0 : value.toDouble();
+    double v = value is String ? double.tryParse(value) ?? 0.0 : value.toDouble();
     return NumberFormat.decimalPattern().format(v.truncate());
   }
-
-  List<dynamic> _getClosersList(dynamic client, bool allDealsTab) {
-    if (allDealsTab) {
-      return (client as allDeals.AllDealDatum)
-          .userClients
-          .expand((uc) => uc.closers)
-          .toList();
+  List<AllRecentDealDatum> _getActiveList() {
+    if (isAllDeals.value) {
+      return allDealController.myClosedAllClientData.value?.data ?? [];
     } else {
-      return (client as myClients.Datum)
-          .userClients
-          .expand((uc) => uc.closers)
-          .toList();
+      return _getMyDealsFlattened();
     }
   }
-
-  List<dynamic> _getActiveList() {
-    return isAllDeals.value
-        ? allDealController.myClosedAllClientData.value?.data?.data ?? []
-        : myDealController.myAllClientData.value?.data?.data ?? [];
+  List<AllRecentDealDatum> _getMyDealsFlattened() {
+    final myData = myDealController.myAllClientData.value?.data;
+    if (myData == null || myData.data.isEmpty) return [];
+    List<AllRecentDealDatum> deals = <AllRecentDealDatum>[];
+    for (final client in myData.data) {
+      final clientObj = Client(
+        id: client.id,
+        name: client.name,
+        offer: client.offer,
+        accountNumber: client.accountNumber,
+        agencyRate: client.agencyRate,
+        commissionRate: client.commissionRate,
+        createdAt: client.createdAt,
+        updatedAt: client.updatedAt,
+      );
+      for (final uc in client.userClients) {
+        final allUserClient = UserClient(
+          id: uc.id,
+          userId: uc.userId,
+          clientId: uc.clientId,
+          createdAt: uc.createdAt,
+          updatedAt: uc.updatedAt,
+          client: clientObj,
+        );
+        if (uc.closers.isEmpty) {
+          // Add a dummy NEW deal if no closers exist
+          deals.add(
+            AllRecentDealDatum(
+              id: 'dummy-${uc.id}',
+              userId: uc.userId,
+              userClientId: uc.id,
+              proposition: '',
+              dealDate: null,
+              status: 'NEW',
+              amount: 0,
+              cashCollected: 0,
+              notes: '',
+              createdAt: uc.createdAt,
+              updatedAt: uc.updatedAt,
+              userClient: allUserClient,
+              closerDocuments: [],
+              user: null,
+            ),
+          );
+        } else {
+          for (final closer in uc.closers) {
+            deals.add(
+              AllRecentDealDatum(
+                id: closer.id,
+                userId: closer.userId,
+                userClientId: closer.userClientId,
+                proposition: closer.proposition,
+                dealDate: closer.dealDate,
+                status: closer.status,
+                amount: closer.amount,
+                cashCollected: closer.cashCollected,
+                notes: closer.notes,
+                createdAt: closer.createdAt,
+                updatedAt: closer.updatedAt,
+                userClient: allUserClient,
+                closerDocuments: List<dynamic>.from(closer.closerDocuments),
+                user: null,
+              ),
+            );
+          }
+        }
+      }
+    }
+    print("Flattened deals count: ${deals.length}");
+    return deals;
   }
-
-  List<dynamic> _applyFilters(List<dynamic> clients, bool allDealsTab) {
-    var filtered = clients;
-
+  List<AllRecentDealDatum> _applyFilters(List<AllRecentDealDatum> deals, bool allDealsTab) {
+    var filtered = deals;
     // Search filter
     if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((client) {
-        final name = allDealsTab
-            ? (client as allDeals.AllDealDatum).name ?? ''
-            : (client as myClients.Datum).name ?? '';
+      filtered = filtered.where((deal) {
+        final name = deal.userClient?.client?.name ?? '';
         return name.toLowerCase().contains(_searchQuery.toLowerCase());
       }).toList();
     }
-
     // Status filter
-    filtered = filtered.where((client) {
-      final closers = _getClosersList(client, allDealsTab);
-
-      if (allDealsTab) {
-        // Only show CLOSED deals in All Deals
-        return closers.any((c) => (c.status ?? '').toUpperCase() == 'CLOSED');
-      } else {
-        // My Deals tab: filter by selected status
-        if (_selectedStatus == 'All') return true;
-        if (_selectedStatus == 'New') return closers.isEmpty;
-        return closers.isNotEmpty &&
-            (closers.last.status ?? '').toUpperCase() ==
-                _selectedStatus.toUpperCase();
-      }
+    filtered = filtered.where((deal) {
+      final status = deal.status?.toUpperCase() ?? 'NEW';
+      if (allDealsTab) return status == 'CLOSED';
+      if (_selectedStatus == 'All') return true;
+      if (_selectedStatus == 'New') return status == 'NEW';
+      return status == _selectedStatus.toUpperCase();
     }).toList();
-
     // Date filter
     if (_selectedDate != null) {
-      filtered = filtered.where((client) {
-        final closers = _getClosersList(client, allDealsTab);
-        final dealDate = closers.isNotEmpty ? closers.last.dealDate : null;
+      filtered = filtered.where((deal) {
+        final dealDate = deal.dealDate;
         if (dealDate == null) return false;
         return dealDate.year == _selectedDate!.year &&
             dealDate.month == _selectedDate!.month &&
             dealDate.day == _selectedDate!.day;
       }).toList();
     }
-
     return filtered;
   }
-
   Color _getStatusColor(String status) {
     switch (status.toUpperCase()) {
       case 'NEW':
@@ -126,7 +161,6 @@ class _SalesScreenState extends State<SalesScreen> {
         return Colors.grey;
     }
   }
-
   Widget _buildLoadingList() {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
@@ -139,23 +173,18 @@ class _SalesScreenState extends State<SalesScreen> {
         assignDate: 'Loading...',
         offer: '0',
         commissionRate: '0%',
-        onViewDetailsTap: () {},
       ),
     );
   }
-
   Widget _buildDealsList(bool allDealsTab) {
     final list = _getActiveList();
     final filteredList = _applyFilters(list, allDealsTab);
-
     if (filteredList.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.only(top: 50),
           child: Text(
-            _searchQuery.isNotEmpty ||
-                _selectedDate != null ||
-                _selectedStatus != 'All'
+            _searchQuery.isNotEmpty || _selectedDate != null || _selectedStatus != 'All'
                 ? "No matching results found"
                 : "No deals available",
             style: const TextStyle(color: Colors.white70, fontSize: 16),
@@ -163,41 +192,28 @@ class _SalesScreenState extends State<SalesScreen> {
         ),
       );
     }
-
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: filteredList.length,
       itemBuilder: (context, index) {
-        final client = filteredList[index];
-        final closers = _getClosersList(client, allDealsTab);
-        final hasCloser = closers.isNotEmpty;
-        final String status =
-        hasCloser ? (closers.last.status ?? "New") : "New";
-        final String tagLabel = status.toUpperCase();
-
-        final companyName = allDealsTab
-            ? (client as allDeals.AllDealDatum).name ?? 'Unknown'
-            : (client as myClients.Datum).name ?? 'Unknown';
-        final offer = allDealsTab
-            ? (client as allDeals.AllDealDatum).offer ?? '0'
-            : (client as myClients.Datum).offer ?? '0';
-        final commissionRate = allDealsTab
-            ? '${(client as allDeals.AllDealDatum).commissionRate ?? 0}%'
-            : '${(client as myClients.Datum).commissionRate ?? 0}%';
-        final assignDate = allDealsTab
-            ? (client as allDeals.AllDealDatum).createdAt != null
-            ? DateFormat('yyyy-MM-dd hh:mm a')
-            .format((client as allDeals.AllDealDatum).createdAt!)
-            : 'N/A'
-            : (client as myClients.Datum).createdAt != null
-            ? DateFormat('yyyy-MM-dd hh:mm a')
-            .format((client as myClients.Datum).createdAt!)
-            : 'N/A';
-        final clientId = allDealsTab
-            ? (client as allDeals.AllDealDatum).id ?? ''
-            : (client as myClients.Datum).id ?? '';
-
+        final deal = filteredList[index];
+        final status = deal.status?.toUpperCase() ?? 'NEW';
+        final tagLabel = status;
+        final companyName = deal.userClient?.client?.name;
+        final offer = deal.userClient?.client?.offer;
+        final commissionPercent = deal.userClient?.client?.commissionRate ?? 0;
+        final offerAmount = deal.amount ?? 0;
+        final commissionAmount = (offerAmount * commissionPercent / 100);
+        final assignDate = deal.createdAt != null
+            ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
+            : null;
+        final clientId = deal.userClient?.id ?? '';
+        final userName = deal.userClient?.client?.name;
+        final profileImage = deal.user?.profilePicture;
+        final cashCollected = deal.cashCollected != null ? _formatCurrency(deal.cashCollected) : null;
+        final amount = deal.amount != null ? _formatCurrency(deal.amount) : null;
+        final commission = commissionAmount != null ? _formatCurrency(commissionAmount) : null;
         // Only assign onTap for My Deals
         VoidCallback? onTap;
         if (!allDealsTab) {
@@ -213,20 +229,22 @@ class _SalesScreenState extends State<SalesScreen> {
               break;
           }
         }
-
         return RecentDetails(
           color: _getStatusColor(tagLabel),
           tagLabel: tagLabel,
-          companyName: companyName,
+          // companyName: companyName,
           assignDate: assignDate,
-          offer: _formatCurrency(offer),
-          commissionRate: commissionRate,
-          onViewDetailsTap: onTap, // null for All Deals → hides button
+          offer: offer,
+          amount: amount,
+          commissionRate: commission,
+          userName: userName,
+          profileImage: profileImage,
+          cashCollected: cashCollected,
+          onViewDetailsTap: onTap,
         );
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,15 +257,9 @@ class _SalesScreenState extends State<SalesScreen> {
           children: [
             TargetProgressCard(
               title: "Deals Closed",
-              progressValue: ((profileController.profileData.value.data
-                  ?.monthlyTargetPercentage ??
-                  0) /
-                  100)
-                  .toDouble(),
-              achievedText:
-              'Achieved: €${profileController.profileData.value.data?.salesCount ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
-              percentageLabel:
-              '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "0"}%',
+              progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
+              achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
+              percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "0"}%',
             ),
             const Gap(20),
             CustomCalendarWidget(
@@ -263,8 +275,9 @@ class _SalesScreenState extends State<SalesScreen> {
                     height: 45,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.amber),
-                        borderRadius: BorderRadius.circular(8)),
+                      border: Border.all(color: Colors.amber),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.search, color: Colors.amber, size: 20),
@@ -275,9 +288,10 @@ class _SalesScreenState extends State<SalesScreen> {
                             style: const TextStyle(color: Colors.white),
                             cursorColor: Colors.amber,
                             decoration: const InputDecoration(
-                                hintText: 'Search here..',
-                                hintStyle: TextStyle(color: Colors.amber),
-                                border: InputBorder.none),
+                              hintText: 'Search here..',
+                              hintStyle: TextStyle(color: Colors.amber),
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ],
@@ -289,22 +303,21 @@ class _SalesScreenState extends State<SalesScreen> {
                   height: 45,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                      color: const Color(0xFF6C4D0C),
-                      borderRadius: BorderRadius.circular(8)),
+                    color: const Color(0xFF6C4D0C),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       dropdownColor: const Color(0xFF6C4D0C),
                       value: _selectedStatus,
-                      icon: const Icon(Icons.keyboard_arrow_down,
-                          color: Colors.white),
+                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
                       items: ['All', 'New', 'Open', 'Closed']
                           .map((s) => DropdownMenuItem(
-                          value: s,
-                          child: Text(s,
-                              style: const TextStyle(color: Colors.white))))
+                        value: s,
+                        child: Text(s, style: const TextStyle(color: Colors.white)),
+                      ))
                           .toList(),
-                      onChanged: (v) =>
-                          setState(() => _selectedStatus = v ?? 'All'),
+                      onChanged: (v) => setState(() => _selectedStatus = v ?? 'All'),
                     ),
                   ),
                 ),
@@ -316,11 +329,8 @@ class _SalesScreenState extends State<SalesScreen> {
                 Expanded(
                   child: Obx(() => CustomButton(
                     isGradient: false,
-                    buttonColor: isAllDeals.value
-                        ? Colors.amber
-                        : Colors.grey.shade900,
-                    titleColor:
-                    isAllDeals.value ? Colors.black : Colors.white,
+                    buttonColor: isAllDeals.value ? Colors.amber : Colors.grey.shade900,
+                    titleColor: isAllDeals.value ? Colors.black : Colors.white,
                     title: 'All Deals',
                     onTap: () {
                       if (!isAllDeals.value) {
@@ -334,11 +344,8 @@ class _SalesScreenState extends State<SalesScreen> {
                 Expanded(
                   child: Obx(() => CustomButton(
                     isGradient: false,
-                    buttonColor: !isAllDeals.value
-                        ? Colors.amber
-                        : Colors.grey.shade900,
-                    titleColor:
-                    !isAllDeals.value ? Colors.black : Colors.white,
+                    buttonColor: !isAllDeals.value ? Colors.amber : Colors.grey.shade900,
+                    titleColor: !isAllDeals.value ? Colors.black : Colors.white,
                     title: 'My Deals',
                     onTap: () {
                       if (isAllDeals.value) {
@@ -355,9 +362,7 @@ class _SalesScreenState extends State<SalesScreen> {
               final loading = isAllDeals.value
                   ? allDealController.isLoading.value
                   : myDealController.isLoading.value;
-
               if (loading) return _buildLoadingList();
-
               return _buildDealsList(isAllDeals.value);
             }),
           ],
@@ -366,6 +371,8 @@ class _SalesScreenState extends State<SalesScreen> {
     );
   }
 }
+
+
 
 
 // import 'package:flutter/material.dart';

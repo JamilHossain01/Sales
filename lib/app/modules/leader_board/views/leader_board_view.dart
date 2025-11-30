@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/custom_loader.dart';
@@ -262,21 +263,26 @@ class _TopCloserCard extends StatelessWidget {
           Gap(12.h),
           Row(
             children: [
-              CircleAvatar(
+              user.profilePicture != null && user.profilePicture!.startsWith('http')
+                  ? CircleAvatar(
                 radius: 32.r,
+                backgroundImage: CachedNetworkImageProvider(user.profilePicture!),
                 backgroundColor: AppColors.orangeColor,
-                backgroundImage:
-                    (user.profilePicture?.startsWith('http') == true)
-                        ? CachedNetworkImageProvider(user.profilePicture!)
-                        : const AssetImage('assets/images/default_avatar.png')
-                            as ImageProvider,
+              )
+                  : Shimmer.fromColors(
+                baseColor: Colors.grey.shade700,
+                highlightColor: Colors.grey.shade500,
+                child: CircleAvatar(
+                  radius: 32.r,
+                  backgroundColor: Colors.grey.shade700,
+                ),
               ),
               Gap(12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      text:  '—',
+                      text: user.name ?? "N/A",
                       fontWeight: FontWeight.w700,
                       fontSize: 20.sp,
                       color: Colors.white),
@@ -337,74 +343,77 @@ class _StatBox extends StatelessWidget {
 }
 
 // Leaderboard List
-class _LeaderBoardList extends StatelessWidget {
-  final List<Datum> users;
-  final String currentUserId;
-
-  const _LeaderBoardList({required this.users, required this.currentUserId});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: users.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, i) {
-        final user = users[i];
-        final isMe = user.id == currentUserId;
-
-        return Container(
-          margin: EdgeInsets.only(bottom: 10.h),
-          padding: EdgeInsets.all(12.r),
-          decoration: BoxDecoration(
-            color: isMe
-                ? AppColors.orangeColor.withOpacity(0.15)
-                : Colors.white.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12.r),
-            border: isMe ? Border.all(color: AppColors.orangeColor) : null,
-          ),
-          child: Row(
-            children: [
-              _RankBadge(rank: i + 2),
-              Gap(12.w),
-              CircleAvatar(
-                radius: 20.r,
-                backgroundImage:
-                    (user.profilePicture?.startsWith('http') == true)
-                        ? CachedNetworkImageProvider(user.profilePicture!)
-                        : const AssetImage('assets/images/default_avatar.png')
-                            as ImageProvider,
-              ),
-              Gap(12.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                        text: user.name ?? 'Unknown',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                        color: Colors.white),
-                    CustomText(
-                        text: '${user.totalDeals ?? 0} deals',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: Colors.white70),
-                  ],
-                ),
-              ),
-              CustomText(
-                  text: '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16.sp,
-                  color: Colors.white),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+// class _LeaderBoardList extends StatelessWidget {
+//   final List<Datum> users;
+//   final String currentUserId;
+//
+//   const _LeaderBoardList({required this.users, required this.currentUserId});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       itemCount: users.length,
+//       shrinkWrap: true,
+//       physics: const NeverScrollableScrollPhysics(),
+//       itemBuilder: (context, i) {
+//         final user = users[i];
+//         final isMe = user.id == currentUserId;
+//
+//         return Container(
+//           margin: EdgeInsets.only(bottom: 10.h),
+//           padding: EdgeInsets.all(12.r),
+//           decoration: BoxDecoration(
+//             color: isMe
+//                 ? AppColors.orangeColor.withOpacity(0.15)
+//                 : Colors.white.withOpacity(0.05),
+//             borderRadius: BorderRadius.circular(12.r),
+//             border: isMe ? Border.all(color: AppColors.orangeColor) : null,
+//           ),
+//           child: Row(
+//             children: [
+//               _RankBadge(rank: i + 2),
+//               Gap(12.w),
+//               CircleAvatar(
+//                 radius: 20.r,
+//                 backgroundImage:
+//                     (user.profilePicture?.startsWith('http') == true)
+//                         ? CachedNetworkImageProvider(user.profilePicture!)
+//                         : const AssetImage('assets/images/default_avatar.png')
+//                             as ImageProvider,
+//               ),
+//               Gap(12.w),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     CustomText(
+//                       // maxLines: 1,
+//                         overflow: TextOverflow.ellipsis,
+//
+//                         text: user.name ?? 'Unknown',
+//                         fontWeight: FontWeight.w600,
+//                         fontSize: 14.sp,
+//                         color: Colors.white),
+//                     CustomText(
+//                         text: '${user.totalDeals ?? 0} deals',
+//                         fontWeight: FontWeight.w400,
+//                         fontSize: 12.sp,
+//                         color: Colors.white70),
+//                   ],
+//                 ),
+//               ),
+//               CustomText(
+//                   text: '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
+//                   fontWeight: FontWeight.w700,
+//                   fontSize: 16.sp,
+//                   color: Colors.white),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _RankBadge extends StatelessWidget {
   final int rank;
@@ -436,6 +445,178 @@ class _RankBadge extends StatelessWidget {
           fontWeight: FontWeight.w700,
           fontSize: 14.sp,
           color: Colors.white),
+    );
+  }
+}
+
+
+class _LeaderBoardList extends StatelessWidget {
+  final List<Datum> users;
+  final String currentUserId;
+  final bool isLoading;
+
+  const _LeaderBoardList({
+    required this.users,
+    required this.currentUserId,
+    this.isLoading = false, // add a flag to show shimmer
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      // Show shimmer placeholders
+      return ListView.builder(
+        itemCount: 6, // number of shimmer items
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, i) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 10.h),
+            padding: EdgeInsets.all(12.r),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade800.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Row(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade700,
+                  highlightColor: Colors.grey.shade500,
+                  child: Container(
+                    width: 24.r,
+                    height: 24.r,
+                    decoration:
+                    BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                  ),
+                ),
+                Gap(12.w),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade700,
+                  highlightColor: Colors.grey.shade500,
+                  child: CircleAvatar(
+                    radius: 20.r,
+                    backgroundColor: Colors.grey.shade700,
+                  ),
+                ),
+                Gap(12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade700,
+                        highlightColor: Colors.grey.shade500,
+                        child: Container(
+                          height: 14.h,
+                          width: 100.w,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade700,
+                        highlightColor: Colors.grey.shade500,
+                        child: Container(
+                          height: 12.h,
+                          width: 60.w,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade700,
+                  highlightColor: Colors.grey.shade500,
+                  child: Container(
+                    height: 16.h,
+                    width: 50.w,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    // 🔹 Actual list
+    return ListView.builder(
+      itemCount: users.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, i) {
+        final user = users[i];
+        final isMe = user.id == currentUserId;
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 10.h),
+          padding: EdgeInsets.all(12.r),
+          decoration: BoxDecoration(
+            color: isMe
+                ? Colors.orange.withOpacity(0.15)
+                : Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12.r),
+            border: isMe ? Border.all(color: Colors.orange) : null,
+          ),
+          child: Row(
+            children: [
+              _RankBadge(rank: i + 2),
+              Gap(12.w),
+              CircleAvatar(
+                radius: 20.r,
+                backgroundImage: (user.profilePicture?.startsWith('http') == true)
+                    ? CachedNetworkImageProvider(user.profilePicture!)
+                    : null,
+                backgroundColor: Colors.grey.shade800,
+                child: user.profilePicture == null
+                    ? Shimmer.fromColors(
+                  baseColor: Colors.grey.shade700,
+                  highlightColor: Colors.grey.shade500,
+                  child: Container(
+                    width: 40.r,
+                    height: 40.r,
+                    decoration:
+                    BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                  ),
+                )
+                    : null,
+              ),
+              Gap(12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.name ?? 'Unknown',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      '${user.totalDeals ?? 0} deals',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                          color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16.sp,
+                    color: Colors.white),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

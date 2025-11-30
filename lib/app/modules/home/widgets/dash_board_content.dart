@@ -94,12 +94,16 @@ class _DashboardContentState extends State<DashboardContent> {
         return Colors.grey;
     }
   }
-
+  String _formatCurrency(dynamic value) {
+    if (value == null) return '0';
+    double v = value is String ? double.tryParse(value) ?? 0.0 : value.toDouble();
+    return NumberFormat.decimalPattern().format(v.truncate());
+  }
   @override
   void initState() {
     super.initState();
     // profileController.fetchMyProfile();
-    dealController.fetchMyProfile();
+    // dealController.fetchMyProfile();
   }
 
   @override
@@ -242,7 +246,7 @@ class _DashboardContentState extends State<DashboardContent> {
               Obx(() {
                 final AllDealController allDealController = Get.put(AllDealController());
 
-                // 🔹 Loading state - show shimmer
+                // 🔹 Show shimmer while loading
                 if (allDealController.isLoading.value) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -256,35 +260,32 @@ class _DashboardContentState extends State<DashboardContent> {
                         companyName: 'Loading...',
                         assignDate: 'Loading...',
                         offer: '0',
-                        commissionRate: '0%',
-                        onViewDetailsTap: null, // 🔹 Null here hides the button
+                        commissionRate: '0',
+                        onViewDetailsTap: null,
                       ),
                     ),
                   );
                 }
 
-                // 🔹 Get raw list from controller
-                final allDeals = allDealController.myClosedAllClientData.value?.data?.data ?? [];
+                // 🔹 List from API
+                final deals = allDealController.myClosedAllClientData.value?.data ?? [];
 
-                // 🔹 Filter only CLOSED deals (check last closer status)
-                final closedDeals = allDeals.where((deal) {
-                  final closers = deal.userClients.expand((u) => u.closers).toList();
-                  if (closers.isEmpty) return false;
-                  final lastStatus = closers.last.status?.toLowerCase();
-                  return lastStatus == 'closed';
+                // 🔹 Filter closed deals
+                final closedDeals = deals.where((d) {
+                  return (d.status ?? '').toLowerCase() == 'closed';
                 }).toList();
 
-                // 🔹 Sort by dealDate (most recent first)
+                // 🔹 Sort by dealDate (latest first)
                 closedDeals.sort((a, b) {
-                  final dateA = a.userClients.expand((u) => u.closers).last.dealDate ?? DateTime(1970);
-                  final dateB = b.userClients.expand((u) => u.closers).last.dealDate ?? DateTime(1970);
+                  final dateA = a.dealDate ?? DateTime(1970);
+                  final dateB = b.dealDate ?? DateTime(1970);
                   return dateB.compareTo(dateA);
                 });
 
-                // 🔹 Take only first 3
+                // 🔹 Pick only the latest 3
                 final latestThree = closedDeals.take(3).toList();
 
-                // 🔹 No closed deals found
+                // 🔹 No closed deals
                 if (latestThree.isEmpty) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 40.h),
@@ -297,7 +298,6 @@ class _DashboardContentState extends State<DashboardContent> {
                   );
                 }
 
-                // 🔹 Show the latest 3 closed deals (onViewDetailsTap null for All Deals)
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: ListView.builder(
@@ -306,19 +306,35 @@ class _DashboardContentState extends State<DashboardContent> {
                     itemCount: latestThree.length,
                     itemBuilder: (context, index) {
                       final deal = latestThree[index];
-                      final closers = deal.userClients.expand((u) => u.closers).toList();
-                      final lastCloser = closers.last;
+
+                      final companyName = deal.userClient?.client?.name;
+                      final offer =  deal.userClient?.client?.offer;
+                      final commissionPercent = deal.userClient?.client?.commissionRate ?? 0;
+                      final offerAmount = deal.amount ?? 0;
+
+                      final commissionAmount = (offerAmount * commissionPercent / 100);        final assignDate = deal.createdAt != null
+                          ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
+                          : null;
+                      final clientId = deal.id ?? '';
+
+                      final userName = deal.userClient?.client?.name;
+                      final profileImage = deal.user?.profilePicture;
+                      final cashCollected = deal.cashCollected != null ? _formatCurrency(deal.cashCollected) : null;
+                      final amount = deal.amount !=null ? _formatCurrency(deal.amount) : null;
+                      final commission = commissionAmount != null ? _formatCurrency(commissionAmount) : null;
 
                       return RecentDetails(
+                        onViewDetailsTap: null,
                         color: Colors.red,
                         tagLabel: "CLOSED",
-                        companyName: deal.name ?? 'Unknown Client',
-                        assignDate: lastCloser.dealDate != null
-                            ? DateFormat('yyyy-MM-dd hh:mm a').format(lastCloser.dealDate!)
-                            : 'N/A',
-                        offer: deal.offer ?? 'N/A',
-                        commissionRate: '${deal.commissionRate ?? 0}%',
-                        onViewDetailsTap: null, // 🔹 Null here hides the button for All Deals
+
+                        assignDate: assignDate,
+                        offer: offer,
+                        amount:amount ,
+                        commissionRate: commission,
+                        userName: userName,
+                        profileImage: profileImage,
+                        cashCollected: cashCollected,
                       );
                     },
                   ),

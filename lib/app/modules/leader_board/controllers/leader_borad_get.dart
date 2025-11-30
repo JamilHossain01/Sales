@@ -9,6 +9,12 @@ import '../modell/filter_leader_board_model.dart';
 
 
 
+import 'dart:convert';
+import 'package:get/get.dart';
+import '../../../uitilies/api/api_url.dart';
+import '../../../uitilies/api/base_client.dart';
+import '../modell/filter_leader_board_model.dart';
+
 class LeaderBoardGetController extends GetxController {
   var isLoading = false.obs;
   var rawData = <Datum>[].obs;
@@ -30,16 +36,27 @@ class LeaderBoardGetController extends GetxController {
     try {
       isLoading(true);
 
-      final response = await BaseClient.getRequest(
-        api: ApiUrl.leaderboardTop(
-          month: selectedMonth.value,
-          year: selectedYear.value,
-          quarter: selectedQuarter.value,
-        ),
+      final url = ApiUrl.leaderboardTop(
+        month: selectedMonth.value,
+        year: selectedYear.value,
+        quarter: selectedQuarter.value,
       );
+
+      // 🔍 Print API URL
+      print("📡 Fetching Leaderboard: $url");
+
+      final response = await BaseClient.getRequest(api: url);
+
+      // 🔍 Print raw response
+      print("📥 Raw Response Status: ${response.statusCode}");
+      print("📥 Raw Body: ${response.body}");
 
       if (response.statusCode == 200) {
         final data = await BaseClient.handleResponse(response);
+
+        // 🔍 Pretty JSON Print
+        print("📄 Pretty JSON:\n${const JsonEncoder.withIndent('  ').convert(data)}");
+
         final model = LeaderBoardModel.fromJson(data);
 
         // Ensure totalRevenue is not null
@@ -48,11 +65,17 @@ class LeaderBoardGetController extends GetxController {
         }
 
         rawData.value = model.data;
+
+        // 🔍 Debug print number of users
+        print("👥 Loaded Users: ${rawData.length}");
       } else {
-        throw "Failed to load leaderboard (${response.statusCode})";
+        print("❌ API Error: Status ${response.statusCode}");
+        print("❌ Body: ${response.body}");
       }
-    } catch (e) {
-      CustomSnackbar.showError(e.toString());
+    } catch (e, stack) {
+      // 🔥 Print errors only (NO snackbar)
+      print("❌ Exception Occurred: $e");
+      print("📍 Stacktrace:\n$stack");
     } finally {
       isLoading(false);
     }
@@ -73,14 +96,10 @@ class LeaderBoardGetController extends GetxController {
       sortedUsers.length > 1 ? sortedUsers.sublist(1) : [];
 
   /// Apply filters
-  void applyFilters() {
-    fetchLeaderBoard();
-  }
+  void applyFilters() => fetchLeaderBoard();
 
   /// Refresh data manually
-  void refresh() {
-    fetchLeaderBoard();
-  }
+  void refresh() => fetchLeaderBoard();
 
   /// Clear all filters
   void clearFilters() {

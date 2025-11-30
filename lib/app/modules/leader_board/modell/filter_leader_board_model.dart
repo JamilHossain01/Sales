@@ -27,15 +27,19 @@ class Datum {
     required this.totalDeals,
     required this.totalSales,
     required this.totalRevenue,
+    required this.totalAgencyAmount,
+    required this.totalSalesAfterMinusCommissionAmount,
     required this.myAchievements,
   });
 
   final String? id;
   final String? name;
-  final String? profilePicture;
+  final dynamic profilePicture;
   final dynamic totalDeals;
   final dynamic totalSales;
-   dynamic? totalRevenue;
+  late final dynamic totalRevenue;
+  final dynamic totalAgencyAmount;
+  final dynamic totalSalesAfterMinusCommissionAmount;
   final List<MyAchievement> myAchievements;
 
   factory Datum.fromJson(Map<String, dynamic> json){
@@ -46,6 +50,8 @@ class Datum {
       totalDeals: json["totalDeals"],
       totalSales: json["totalSales"],
       totalRevenue: json["totalRevenue"],
+      totalAgencyAmount: json["totalAgencyAmount"],
+      totalSalesAfterMinusCommissionAmount: json["totalSalesAfterMinusCommissionAmount"],
       myAchievements: json["myAchievements"] == null ? [] : List<MyAchievement>.from(json["myAchievements"]!.map((x) => MyAchievement.fromJson(x))),
     );
   }

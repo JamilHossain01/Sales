@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
-   static const String baseUrl = "http://10.10.10.3:4003/api/v1";
- // static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
+  //  static const String baseUrl = "http://10.10.10.3:4003/api/v1";
+ static const String baseUrl = "https://wolfpack.thewolfpackgroup.com/api/v1";
 
   // static const String baseUrl = "https://mu-prospects-wage-publicly.trycloudflare.com/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
@@ -19,6 +19,7 @@ class ApiUrl {
 
   // Client
   static String allDeals= "$baseUrl/client?status=CLOSED";
+  static String recentDeals= "$baseUrl/closer/recent-deals?status=CLOSED";
   static String myDeals= "$baseUrl/client/my-clients";
   static String myClients = "$baseUrl/client/my-clients?limit=3";
   // static String myAllClients = "$baseUrl/client/my-clients";
