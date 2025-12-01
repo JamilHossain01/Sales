@@ -73,7 +73,7 @@ class LeaderboardCard extends StatelessWidget {
           //   fontSize: 12.sp,
           //   color: Color(0xFF00D1FF),
           // ),
-          HeaderWidgets(title: 'Hall of Fame', subTitle: 'View All'),
+          // HeaderWidgets(title: 'Hall of Fame', subTitle: 'View All'),
           ...performers,
           Container(
             width: double.infinity,

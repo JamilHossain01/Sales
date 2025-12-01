@@ -120,6 +120,18 @@ class _DashboardContentState extends State<DashboardContent> {
       final quarterData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_quarter')?.value;
       final yearData = dataList.firstWhereOrNull((item) => item.label == 'Most_revenue_in_year')?.value;
 
+      // Extract top performers by label
+      final Map<String, dynamic> hallData = {};
+      if (dataList != null) {
+        for (var item in dataList) {
+          if (item.label != null && item.value != null) {
+            hallData[item.label!] = [item.value!]; // wrap in list
+          }
+        }
+      }
+
+
+
       return SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -170,35 +182,16 @@ class _DashboardContentState extends State<DashboardContent> {
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
-              Column(
-                children: [
-                  buildHallOfFameSection(
-                    timePeriod: 'THIS DAY',
-                    data: dayData,
-                    emptyText: 'No daily performer data found',
-                  ),
-                  buildHallOfFameSection(
-                    timePeriod: 'THIS WEEK',
-                    data: weekData,
-                    emptyText: 'No weekly performer data found',
-                  ),
-                  buildHallOfFameSection(
-                    timePeriod: 'THIS MONTH',
-                    data: monthData,
-                    emptyText: 'No monthly performer data found',
-                  ),
-                  buildHallOfFameSection(
-                    timePeriod: 'THIS QUARTER',
-                    data: quarterData,
-                    emptyText: 'No quarterly performer data found',
-                  ),
-                  buildHallOfFameSection(
-                    timePeriod: 'THIS YEAR',
-                    data: yearData,
-                    emptyText: 'No yearly performer data found',
-                  ),
-                ],
-              ),
+              ...hallData.entries.map((entry) {
+                return buildHallOfFameSection(
+                  timePeriod: entry.key.replaceAll('_', ' '),
+                  data: entry.value.first,
+                  emptyText: 'No ${entry.key.replaceAll('_', ' ').toLowerCase()} data found',
+                );
+              }).toList(),
+
+
+
               /// ---- your rank -----------
               SizedBox(height: 16.h),
               Obx(() {
@@ -341,41 +334,7 @@ class _DashboardContentState extends State<DashboardContent> {
                 );
               }),
               Gap(20.h),
-              /// ---------- LeaderBoard Section (Added Below) ----------
-              Gap(20.h),
-              // Row(
-              // children: [
-              // Expanded(
-              // child: CustomButton(
-              // isGradient: false,
-              // buttonColor: isLiveRankingActive.value
-              // ? const Color(0XFFFCB806).withOpacity(0.30)
-              // : const Color(0XFFFCB806).withOpacity(0.15),
-              // titleColor: isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-              // title: 'Live Ranking',
-              // onTap: () => isLiveRankingActive.value = true,
-              // ),
-              // ),
-              // SizedBox(width: 20),
-              // Expanded(
-              // child: CustomButton(
-              // isGradient: false,
-              // buttonColor: !isLiveRankingActive.value
-              // ? const Color(0XFFFCB806).withOpacity(0.30)
-              // : const Color(0XFFFCB806).withOpacity(0.15),
-              // titleColor: !isLiveRankingActive.value ? Colors.white : AppColors.textGray,
-              // title: 'Prize',
-              // onTap: () => isLiveRankingActive.value = false,
-              // ),
-              // ),
-              // ],
-              // ),
-              // Gap(20.h),
-              // Obx(() {
-              // return isLiveRankingActive.value
-              // ? _buildLiveRankingContent()
-              // : _buildPrizeContent();
-              // }),
+
             ],
           ),
         ),
@@ -383,38 +342,8 @@ class _DashboardContentState extends State<DashboardContent> {
     });
   }
 
-  Widget buildHallOfFameSection({
-    required String timePeriod,
-    required dynamic data,
-    required String emptyText,
-  }) {
-    return data != null
-        ? HallOfFameWidget(
-      timePeriod: timePeriod,
-      name: data.name ?? 'Unknown',
-      imageUrl: data.profilePicture ?? '',
-      commission: data.totalRevenue ?? 0,
-      dealAmount: data.totalAmount ?? 0,
-      dealsClosed: data.totalDealCount ?? 0,
-      isNotEmty: data != null,
-    )
-        : Center(
-      child: Container(
-        width: double.maxFinite,
-        alignment: Alignment.center,
-        margin: const EdgeInsets.only(top: 10.0),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          emptyText,
-          style: const TextStyle(color: Colors.white70, fontSize: 14),
-        ),
-      ),
-    );
-  }
+
+
 
   // ------------------ LIVE RANKING ------------------
   Widget _buildLiveRankingContent() {
@@ -691,4 +620,22 @@ class _DashboardContentState extends State<DashboardContent> {
       ),
     );
   }
+}
+Widget buildHallOfFameSection({
+  required String timePeriod,
+  required dynamic data,
+  required String emptyText,
+}) {
+  if (data == null) return const SizedBox.shrink();
+
+  return HallOfFameWidget(
+    timePeriod: timePeriod,
+    name: data.name ?? 'Unknown',
+    imageUrl: data.profilePicture ?? '',
+    commission: '${(data.totalRevenue ?? 0).toStringAsFixed(1)}',
+
+    dealAmount: data.totalAmount ?? 0,
+    dealsClosed: data.totalDealCount ?? 0,
+    isNotEmty: data != null,
+  );
 }

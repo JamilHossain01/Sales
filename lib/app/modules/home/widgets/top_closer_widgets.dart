@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolf_pack/app/common_widget/custom text/custom_text_widget.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../leader_board/modell/prizew_winner_model.dart';
 
 class TopClosersWidget extends StatefulWidget {
@@ -143,11 +144,13 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
             ),
             SizedBox(height: 20.h),
 
-            CustomText(
-              text: 'Top 3 Prize Winners',
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white70,
+            Center(
+              child: CustomText(
+                text: 'Top 3 Prize Winners',
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white70,
+              ),
             ),
             SizedBox(height: 16.h),
 
@@ -219,7 +222,7 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
                 children: [
                   CircleAvatar(
                     radius: isFirst ? 45.r : 38.r,
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.orangeColor,
                     child: isTBA
                         ? CircleAvatar(
                       radius: isFirst ? 41.r : 34.r,
@@ -234,9 +237,9 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
                     )
                         : CircleAvatar(
                       radius: isFirst ? 41.r : 34.r,
-                      backgroundColor: Colors.grey[200],
+                      backgroundColor: AppColors.orangeColor,
                       child: const Icon(Icons.person,
-                          color: Colors.grey),
+                          color: Colors.white,size: 35,),
                     ),
                   ),
                   if (isFirst)
@@ -322,27 +325,13 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ClipOval(
-                child: card.userImage.isNotEmpty
-                    ? Image.network(
-                  card.userImage,
-                  height: 70.h,
-                  width: 70.w,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.person, color: Colors.white70),
-                )
-                    : const Icon(Icons.person,
-                    size: 40, color: Colors.white70),
-              ),
-              SizedBox(width: 16.w),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
                 child: card.prizeIcon.isNotEmpty
                     ? Image.network(
                   card.prizeIcon,
-                  height: 70.h,
-                  width: 70.w,
+                  height: 100.h,
+                  width: 100.w,
                   fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) => const Icon(
                       Icons.card_giftcard,
@@ -352,7 +341,8 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
                     : const Icon(Icons.card_giftcard,
                     size: 40, color: Colors.amber),
               ),
-            ],
+
+            ]
           ),
           SizedBox(height: 12.h),
           CustomText(

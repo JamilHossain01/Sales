@@ -31,7 +31,7 @@ class _CommonSearchbarWithFilterState extends State<CommonSearchbarWithFilter> {
 
     switch (status) {
       case 'New':
-        Get.to(()=>NewDealView(clientId: '',));
+        Get.to(()=>NewDealView(clientId: '', clientName: '',));
 
 
         break;

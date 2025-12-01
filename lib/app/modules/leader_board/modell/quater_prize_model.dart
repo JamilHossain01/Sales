@@ -1,7 +1,7 @@
 class GetQuaterPrizeWinnerModel {
   GetQuaterPrizeWinnerModel({
-     this.success,
-     this.message,
+    this.success,
+    this.message,
     required this.data,
   });
 
@@ -99,65 +99,20 @@ class TopUser {
     required this.id,
     required this.name,
     required this.profilePicture,
-    required this.closer,
+    required this.totalAmount,
   });
 
   final String? id;
   final String? name;
   final dynamic profilePicture;
-  final List<Closer> closer;
+  final dynamic totalAmount;
 
   factory TopUser.fromJson(Map<String, dynamic> json){
     return TopUser(
       id: json["id"],
       name: json["name"],
       profilePicture: json["profilePicture"],
-      closer: json["closer"] == null ? [] : List<Closer>.from(json["closer"]!.map((x) => Closer.fromJson(x))),
-    );
-  }
-
-}
-
-class Closer {
-  Closer({
-    required this.id,
-    required this.clientId,
-    required this.userId,
-    required this.proposition,
-    required this.dealDate,
-    required this.status,
-    required this.amount,
-    required this.cashCollected,
-    required this.notes,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  final String? id;
-  final String? clientId;
-  final String? userId;
-  final String? proposition;
-  final DateTime? dealDate;
-  final String? status;
-  final dynamic amount;
-  final dynamic cashCollected;
-  final String? notes;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  factory Closer.fromJson(Map<String, dynamic> json){
-    return Closer(
-      id: json["id"],
-      clientId: json["clientId"],
-      userId: json["userId"],
-      proposition: json["proposition"],
-      dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
-      status: json["status"],
-      amount: json["amount"],
-      cashCollected: json["cashCollected"],
-      notes: json["notes"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      totalAmount: json["totalAmount"],
     );
   }
 

@@ -35,7 +35,7 @@ class _MonthWithLeagueMenuState extends State<MonthWithLeagueMenu> {
         Get.to(() => ViewDetailsView());
         break;
       case 'Championship':
-        Get.to(() => NewDealView(clientId: '',));
+        Get.to(() => NewDealView(clientId: '', clientName: '',));
         break;
       case 'National':
         Get.to(() => ClosedDealView(clientID: '',));

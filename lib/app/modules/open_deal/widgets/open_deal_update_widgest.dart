@@ -20,8 +20,10 @@ import '../../view_details/controllers/check_box_controler.dart';
 
 class OpenDealUpdateForm extends StatefulWidget {
   final String clientId;
+  final String clientName;
 
-  const OpenDealUpdateForm({super.key, required this.clientId});
+
+  const OpenDealUpdateForm({super.key, required this.clientId, required this.clientName});
 
   @override
   State<OpenDealUpdateForm> createState() => _OpenDealUpdateFormState();
@@ -44,7 +46,11 @@ class _OpenDealUpdateFormState extends State<OpenDealUpdateForm> {
     'CodeLab'
   ];
   final List<String> statusList = ['Pending', 'Approved', 'Rejected'];
-
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.clientName; // auto fill client name
+  }
   @override
   Widget build(BuildContext context) {
     final checkboxController = Get.find<CheckboxController>();
@@ -59,8 +65,12 @@ class _OpenDealUpdateFormState extends State<OpenDealUpdateForm> {
           fontWeight: FontWeight.w500,
         ),
         SizedBox(height: 8.h),
-        CustomTextField(hintText: 'Client Name', showObscure: false),
-
+        CustomTextField(
+          hintText: 'Client Name',
+          showObscure: false,
+          enabled: false,
+          controller: nameController,
+        ),
         SizedBox(height: 10.h),
         CustomText(
           text: 'Proposition',

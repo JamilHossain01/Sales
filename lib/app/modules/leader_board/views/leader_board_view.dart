@@ -111,89 +111,104 @@ class _FilterBar extends StatelessWidget {
     {"name": "Oct - Dec", "value": 4},
   ];
 
-  final List<int> years = [2022, 2023, 2024, 2025, 2026];
+  // Auto-generate years and include current year
+  late final List<int> years = List.generate(
+    10,
+        (index) => DateTime.now().year - 5 + index, // last 5, current, next 4
+  );
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<LeaderBoardGetController>();
 
+    // Set default year (current year) if null
+    controller.selectedYear.value ??= DateTime.now().year;
+
     return Row(
       children: [
         Flexible(
           child: Obx(() => DropdownButtonFormField<int?>(
-                value: controller.selectedMonth.value,
-                decoration: _dropdownDecoration("Month"),
-                dropdownColor: const Color(0xFF1E1E1E),
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white70,
-                  size: 12,
-                ),
-                items: List.generate(13, (index) {
-                  return DropdownMenuItem<int?>(
-                    value: index == 0 ? null : index,
-                    child: Text(_monthNames[index],
-                        overflow: TextOverflow.ellipsis),
-                  );
-                }),
-                onChanged: (val) {
-                  controller.selectedMonth.value = val;
-                  controller.selectedQuarter.value = null;
-                  controller.applyFilters();
-                },
-              )),
+            value: controller.selectedMonth.value,
+            decoration: _dropdownDecoration("Month"),
+            dropdownColor: const Color(0xFF1E1E1E),
+            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white70,
+              size: 12,
+            ),
+            items: List.generate(13, (index) {
+              return DropdownMenuItem<int?>(
+                value: index == 0 ? null : index,
+                child: Text(_monthNames[index],
+                    overflow: TextOverflow.ellipsis),
+              );
+            }),
+            onChanged: (val) {
+              controller.selectedMonth.value = val;
+              controller.selectedQuarter.value = null;
+              controller.applyFilters();
+            },
+          )),
         ),
         SizedBox(width: 10.w),
+
+        /// YEAR DROPDOWN
         Flexible(
           child: Obx(() => DropdownButtonFormField<int?>(
-                value: controller.selectedYear.value,
-                decoration: _dropdownDecoration("Year"),
-                dropdownColor: const Color(0xFF1E1E1E),
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white70,
-                  size: 12,
-                ),
-                items: years
-                    .map((year) => DropdownMenuItem<int?>(
-                          value: year,
-                          child: Text(year.toString(),
-                              overflow: TextOverflow.ellipsis),
-                        ))
-                    .toList(),
-                onChanged: (val) {
-                  controller.selectedYear.value = val;
-                  controller.applyFilters();
-                },
-              )),
+            value: controller.selectedYear.value,
+            decoration: _dropdownDecoration("Year"),
+            dropdownColor: const Color(0xFF1E1E1E),
+            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white70,
+              size: 12,
+            ),
+            items: years
+                .map((year) => DropdownMenuItem<int?>(
+              value: year,
+              child: Text(
+                year.toString(),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ))
+                .toList(),
+            onChanged: (val) {
+              controller.selectedYear.value = val;
+              controller.applyFilters();
+            },
+          )),
         ),
         SizedBox(width: 10.w),
+
+        /// QUARTER DROPDOWN
         Flexible(
           child: Obx(() => DropdownButtonFormField<int?>(
-                value: controller.selectedQuarter.value,
-                decoration: _dropdownDecoration("Quarter"),
-                dropdownColor: const Color(0xFF1E1E1E),
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white70,
-                  size: 12,
-                ),
-                items: quarters
-                    .map((q) => DropdownMenuItem<int?>(
-                          value: q["value"] as int?,
-                          child:
-                              Text(q["name"], overflow: TextOverflow.ellipsis),
-                        ))
-                    .toList(),
-                onChanged: (val) {
-                  controller.selectedQuarter.value = val;
-                  controller.selectedMonth.value = null;
-                  controller.applyFilters();
-                },
-              )),
+            value: controller.selectedQuarter.value,
+            decoration: _dropdownDecoration("Quarter"),
+            dropdownColor: const Color(0xFF1E1E1E),
+            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white70,
+              size: 12,
+            ),
+            items: quarters
+                .map((q) => DropdownMenuItem<int?>(
+              value: q["value"] as int?,
+              child: Text(
+                q["name"],
+                overflow: TextOverflow.ellipsis,
+              ),
+            ))
+                .toList(),
+            onChanged: (val) {
+              controller.selectedQuarter.value = val;
+              controller.selectedMonth.value = null;
+              controller.applyFilters();
+            },
+          )),
         ),
       ],
     );
@@ -269,13 +284,11 @@ class _TopCloserCard extends StatelessWidget {
                 backgroundImage: CachedNetworkImageProvider(user.profilePicture!),
                 backgroundColor: AppColors.orangeColor,
               )
-                  : Shimmer.fromColors(
-                baseColor: Colors.grey.shade700,
-                highlightColor: Colors.grey.shade500,
-                child: CircleAvatar(
-                  radius: 32.r,
-                  backgroundColor: Colors.grey.shade700,
-                ),
+                  : CircleAvatar(
+                radius: 32.r,
+                backgroundColor: AppColors.orangeColor,
+                child: Icon(Icons.person,
+                    color: Colors.white, size: 32.r),
               ),
               Gap(12.w),
               Column(
@@ -342,78 +355,6 @@ class _StatBox extends StatelessWidget {
   }
 }
 
-// Leaderboard List
-// class _LeaderBoardList extends StatelessWidget {
-//   final List<Datum> users;
-//   final String currentUserId;
-//
-//   const _LeaderBoardList({required this.users, required this.currentUserId});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//       itemCount: users.length,
-//       shrinkWrap: true,
-//       physics: const NeverScrollableScrollPhysics(),
-//       itemBuilder: (context, i) {
-//         final user = users[i];
-//         final isMe = user.id == currentUserId;
-//
-//         return Container(
-//           margin: EdgeInsets.only(bottom: 10.h),
-//           padding: EdgeInsets.all(12.r),
-//           decoration: BoxDecoration(
-//             color: isMe
-//                 ? AppColors.orangeColor.withOpacity(0.15)
-//                 : Colors.white.withOpacity(0.05),
-//             borderRadius: BorderRadius.circular(12.r),
-//             border: isMe ? Border.all(color: AppColors.orangeColor) : null,
-//           ),
-//           child: Row(
-//             children: [
-//               _RankBadge(rank: i + 2),
-//               Gap(12.w),
-//               CircleAvatar(
-//                 radius: 20.r,
-//                 backgroundImage:
-//                     (user.profilePicture?.startsWith('http') == true)
-//                         ? CachedNetworkImageProvider(user.profilePicture!)
-//                         : const AssetImage('assets/images/default_avatar.png')
-//                             as ImageProvider,
-//               ),
-//               Gap(12.w),
-//               Expanded(
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     CustomText(
-//                       // maxLines: 1,
-//                         overflow: TextOverflow.ellipsis,
-//
-//                         text: user.name ?? 'Unknown',
-//                         fontWeight: FontWeight.w600,
-//                         fontSize: 14.sp,
-//                         color: Colors.white),
-//                     CustomText(
-//                         text: '${user.totalDeals ?? 0} deals',
-//                         fontWeight: FontWeight.w400,
-//                         fontSize: 12.sp,
-//                         color: Colors.white70),
-//                   ],
-//                 ),
-//               ),
-//               CustomText(
-//                   text: '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
-//                   fontWeight: FontWeight.w700,
-//                   fontSize: 16.sp,
-//                   color: Colors.white),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
 
 class _RankBadge extends StatelessWidget {
   final int rank;
@@ -566,22 +507,16 @@ class _LeaderBoardList extends StatelessWidget {
               Gap(12.w),
               CircleAvatar(
                 radius: 20.r,
+
                 backgroundImage: (user.profilePicture?.startsWith('http') == true)
                     ? CachedNetworkImageProvider(user.profilePicture!)
                     : null,
-                backgroundColor: Colors.grey.shade800,
+                backgroundColor: AppColors.orangeColor,
                 child: user.profilePicture == null
-                    ? Shimmer.fromColors(
-                  baseColor: Colors.grey.shade700,
-                  highlightColor: Colors.grey.shade500,
-                  child: Container(
-                    width: 40.r,
-                    height: 40.r,
-                    decoration:
-                    BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                  ),
-                )
+                    ? Icon(Icons.person,
+                    color: Colors.white, size: 20.r)
                     : null,
+
               ),
               Gap(12.w),
               Expanded(

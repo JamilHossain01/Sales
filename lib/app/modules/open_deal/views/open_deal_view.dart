@@ -14,8 +14,11 @@ import '../widgets/closed_deal_widgets.dart';
 import '../widgets/open_deal_update_widgest.dart';
 
 class OpenDealView extends StatefulWidget {
-  const OpenDealView({super.key, required this.clientId});
+  const OpenDealView({super.key, required this.clientId, required this.clientName,required  this.clientNewDealCreateId});
   final String clientId;
+  final String clientNewDealCreateId;
+  final String clientName;
+
 
   @override
   State<OpenDealView> createState() => _OpenDealViewState();
@@ -88,7 +91,7 @@ class _OpenDealViewState extends State<OpenDealView> {
               ],
             ),
             const SizedBox(height: 20),
-            isAddDealActive ? OpenDealUpdateForm(clientId:widget.clientId,) :  ClosedDealClintDeatilsView(clientId: widget.clientId,),
+            isAddDealActive ? NewAddDealsForm(clientId:widget.clientId, clientName: widget.clientName, clientDealCreateId: widget.clientNewDealCreateId,) :  ClosedDealClintDeatilsView(clientId: widget.clientId,),
           ],
         ),
       ),

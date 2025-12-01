@@ -132,15 +132,13 @@ class RecentDetails extends StatelessWidget {
         backgroundColor: Colors.grey.shade800,
       );
     } else {
-      return Shimmer.fromColors(
-        baseColor: Colors.grey.shade700,
-        highlightColor: Colors.grey.shade500,
-        child: Container(
-          width: 60.r,
-          height: 60.r,
-          decoration:
-          BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-        ),
+      return Container(
+        width: 60.r,
+        height: 60.r,
+        decoration:
+        BoxDecoration(color: AppColors.orangeColor, shape: BoxShape.circle),
+        child: Icon(Icons.person,
+            color: Colors.white, size: 30.r),
       );
     }
   }

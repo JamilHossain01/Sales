@@ -96,7 +96,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OPEN_DEAL,
-      page: () => NewDealView(clientId: ''),
+      page: () => NewDealView(clientId: '', clientName: '',),
       binding: OpenDealBinding(),
     ),
     GetPage(

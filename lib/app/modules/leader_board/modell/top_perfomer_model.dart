@@ -49,7 +49,7 @@ class Value {
     required this.monthlyTarget,
     required this.startDate,
     required this.about,
-    required this.count,
+    required this.closer,
     required this.totalAmount,
     required this.totalRevenue,
     required this.totalDealCount,
@@ -57,15 +57,15 @@ class Value {
 
   final String? id;
   final String? name;
-  final String? profilePicture;
+  final dynamic profilePicture;
   final dynamic dealClosedCount;
   final dynamic salesCount;
   final dynamic revenue;
   final dynamic dealCount;
   final dynamic monthlyTarget;
   final DateTime? startDate;
-  final String? about;
-  final Count? count;
+  final dynamic about;
+  final List<Closer> closer;
   final dynamic totalAmount;
   final dynamic totalRevenue;
   final dynamic totalDealCount;
@@ -82,7 +82,7 @@ class Value {
       monthlyTarget: json["monthlyTarget"],
       startDate: DateTime.tryParse(json["startDate"] ?? ""),
       about: json["about"],
-      count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
+      closer: json["closer"] == null ? [] : List<Closer>.from(json["closer"]!.map((x) => Closer.fromJson(x))),
       totalAmount: json["totalAmount"],
       totalRevenue: json["totalRevenue"],
       totalDealCount: json["totalDealCount"],
@@ -91,16 +91,76 @@ class Value {
 
 }
 
-class Count {
-  Count({
-    required this.closer,
+class Closer {
+  Closer({
+    required this.id,
+    required this.userId,
+    required this.amount,
+    required this.createdAt,
+    required this.dealDate,
+    required this.userClient,
   });
 
-  final dynamic closer;
+  final String? id;
+  final String? userId;
+  final dynamic amount;
+  final DateTime? createdAt;
+  final DateTime? dealDate;
+  final UserClient? userClient;
 
-  factory Count.fromJson(Map<String, dynamic> json){
-    return Count(
-      closer: json["closer"],
+  factory Closer.fromJson(Map<String, dynamic> json){
+    return Closer(
+      id: json["id"],
+      userId: json["userId"],
+      amount: json["amount"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      dealDate: DateTime.tryParse(json["dealDate"] ?? ""),
+      userClient: json["userClient"] == null ? null : UserClient.fromJson(json["userClient"]),
+    );
+  }
+
+}
+
+class UserClient {
+  UserClient({
+    required this.id,
+    required this.userId,
+    required this.clientId,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.client,
+  });
+
+  final String? id;
+  final String? userId;
+  final String? clientId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final Client? client;
+
+  factory UserClient.fromJson(Map<String, dynamic> json){
+    return UserClient(
+      id: json["id"],
+      userId: json["userId"],
+      clientId: json["clientId"],
+      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      client: json["client"] == null ? null : Client.fromJson(json["client"]),
+    );
+  }
+
+}
+
+class Client {
+  Client({
+    required this.commissionRate,
+  });
+
+  final dynamic commissionRate;
+
+  factory Client.fromJson(Map<String, dynamic> json){
+    return Client(
+      commissionRate: json["commissionRate"],
     );
   }
 

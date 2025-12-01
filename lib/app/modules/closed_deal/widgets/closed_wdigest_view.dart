@@ -11,16 +11,28 @@ import '../../../uitilies/custom_loader.dart';
 import '../controllers/get_single_client.dart';
 import '../model/single_client_model.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:gap/gap.dart';
+import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../uitilies/custom_loader.dart';
+import '../../view_details/widgets/location_tile.dart';
+import '../controllers/get_single_client.dart';
+import '../model/single_client_model.dart';
+
+
 class ClosedViewWidgets extends StatelessWidget {
   ClosedViewWidgets({super.key});
 
-  final SingleSellerController closedClientsGetController = Get.put(SingleSellerController());
+  final SingleSellerController closedClientsGetController =
+  Get.put(SingleSellerController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       if (closedClientsGetController.isLoading.value) {
-        return CustomLoader();
+        return  CustomLoader();
       }
 
       final data = closedClientsGetController.myAllClientData.value.data;
@@ -28,8 +40,11 @@ class ClosedViewWidgets extends StatelessWidget {
         return const Center(child: Text("No data available"));
       }
 
-      final hasCloser = data.closer.isNotEmpty;
-      final closer = hasCloser ? data.closer.last : null;
+      // Fetch last closer from last userClient
+      final hasUserClients = data.userClients.isNotEmpty;
+      final lastUserClient = hasUserClients ? data.userClients.last : null;
+      final hasCloser = lastUserClient?.closers.isNotEmpty ?? false;
+      final closer = hasCloser ? lastUserClient!.closers.last : null;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +61,9 @@ class ClosedViewWidgets extends StatelessWidget {
           Gap(10.h),
           LocationTile(
             label: "Deal Date",
-            value: closer?.dealDate != null ? DateUtil.formatTimeAgo(closer!.dealDate!.toLocal()) : "N/A",
+            value: closer?.dealDate != null
+                ? DateUtil.formatTimeAgo(closer!.dealDate!.toLocal())
+                : "N/A",
           ),
           Gap(10.h),
           buildRow(

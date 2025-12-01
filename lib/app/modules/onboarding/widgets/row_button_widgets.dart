@@ -31,7 +31,7 @@ class RowButtonWidgets extends StatelessWidget {
         Expanded(
           child: CustomButton(
             isLoading: isLoading1,
-            title: buttonName1 ?? 'Cancel',
+            title: buttonName1 ?? 'Back',
             onTap: onTapCancel ?? () {},
             isGradient: false,
             buttonColor: AppColors.white.withOpacity(0.090),
@@ -42,7 +42,7 @@ class RowButtonWidgets extends StatelessWidget {
         Expanded(
           child: CustomButton(
             isLoading: isLoading2,
-            title: buttonName2 ?? 'Save Changes',
+            title: buttonName2 ?? 'Add Deal',
             onTap: onTapSave ?? () {},
             isGradient: false,
             buttonColor: AppColors.orangeColor,

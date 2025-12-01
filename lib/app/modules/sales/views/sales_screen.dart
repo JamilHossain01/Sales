@@ -14,6 +14,9 @@ import 'package:wolf_pack/app/modules/open_deal/views/new_deal_view.dart';
 import 'package:wolf_pack/app/modules/open_deal/views/open_deal_view.dart';
 import '../../home/model/all_my_cleints_model.dart' as myClients;
 import '../model/recentview_model.dart';
+import 'package:wolf_pack/app/common_widget/custom_app_bar_widget.dart';
+import '../../home/model/all_closed_model.dart' as allDeals;
+import '../../sales/model/recentview_model.dart';
 
 class SalesContent extends StatefulWidget {
   const SalesContent({super.key});
@@ -37,8 +40,8 @@ class _SalesContentState extends State<SalesContent> {
   @override
   void initState() {
     super.initState();
-    profileController.fetchMyProfile();
-    allDealController.fetchAllDeals();
+    // profileController.fetchMyProfile();
+    // allDealController.fetchAllDeals();
   }
 
   String _formatCurrency(dynamic value) {
@@ -48,44 +51,109 @@ class _SalesContentState extends State<SalesContent> {
     return NumberFormat.decimalPattern().format(v.truncate());
   }
 
+  // Flatten the list of deals for My Deals
   List<AllRecentDealDatum> _getActiveList() {
     if (isAllDeals.value) {
       return allDealController.myClosedAllClientData.value?.data ?? [];
     } else {
       final myData = myDealController.myAllClientData.value?.data;
-      if (myData == null) return [];
-      return List<AllRecentDealDatum>.from(myData.data ?? []);
+      if (myData == null || myData.data.isEmpty) return [];
+
+      List<AllRecentDealDatum> deals = [];
+      for (final client in myData.data) {
+        final clientObj = Client(
+          id: client.id,
+          name: client.name,
+          offer: client.offer,
+          accountNumber: client.accountNumber,
+          agencyRate: client.agencyRate,
+          commissionRate: client.commissionRate,
+          createdAt: client.createdAt,
+          updatedAt: client.updatedAt,
+        );
+
+        for (final uc in client.userClients) {
+          final allUserClient = UserClient(
+            id: uc.id,
+            userId: uc.userId,
+            clientId: uc.clientId,
+            createdAt: uc.createdAt,
+            updatedAt: uc.updatedAt,
+            client: clientObj,
+          );
+
+          if (uc.closers.isEmpty) {
+            // Add dummy NEW deal
+            deals.add(AllRecentDealDatum(
+              id: 'dummy-${uc.id}',
+              userId: uc.userId,
+              userClientId: uc.id,
+              proposition: '',
+              dealDate: null,
+              status: 'NEW',
+              amount: 0,
+              cashCollected: 0,
+              notes: '',
+              createdAt: uc.createdAt,
+              updatedAt: uc.updatedAt,
+              userClient: allUserClient,
+              closerDocuments: [],
+              user: null,
+            ));
+          } else {
+            for (final closer in uc.closers) {
+              deals.add(AllRecentDealDatum(
+                id: closer.id,
+                userId: closer.userId,
+                userClientId: closer.userClientId,
+                proposition: closer.proposition,
+                dealDate: closer.dealDate,
+                status: closer.status,
+                amount: closer.amount,
+                cashCollected: closer.cashCollected,
+                notes: closer.notes,
+                createdAt: closer.createdAt,
+                updatedAt: closer.updatedAt,
+                userClient: allUserClient,
+                closerDocuments: List<dynamic>.from(closer.closerDocuments),
+                user: null,
+              ));
+            }
+          }
+        }
+      }
+
+      return deals;
     }
   }
 
-  List<AllRecentDealDatum> _applyFilters(List<AllRecentDealDatum> clients) {
-    var filtered = clients;
+  List<AllRecentDealDatum> _applyFilters(List<AllRecentDealDatum> deals) {
+    var filtered = deals;
 
     // Search filter
     if (_searchQuery.value.isNotEmpty) {
-      filtered = filtered.where((client) {
-        final name = client.user?.name ?? '';
+      filtered = filtered.where((deal) {
+        final name = deal.userClient?.client?.name ?? '';
         return name.toLowerCase().contains(_searchQuery.value.toLowerCase());
       }).toList();
     }
 
     // Status filter
-    filtered = filtered.where((client) {
-      final status = client.status ?? 'NEW';
+    filtered = filtered.where((deal) {
+      final status = (deal.status ?? 'NEW').toUpperCase();
       if (isAllDeals.value) {
-        return status.toUpperCase() == 'CLOSED';
+        return status == 'CLOSED';
       } else {
         if (_selectedStatus.value == 'All') return true;
-        if (_selectedStatus.value == 'New')
-          return status.toUpperCase() == 'NEW';
-        return status.toUpperCase() == _selectedStatus.value.toUpperCase();
+        if (_selectedStatus.value == 'New') return status == 'NEW';
+        return status == _selectedStatus.value.toUpperCase();
       }
     }).toList();
 
     // Date filter
     if (_selectedDate.value != null) {
-      filtered = filtered.where((client) {
-        final dealDate = client.dealDate;
+      filtered = filtered.where((deal) {
+        final dealDate = deal.dealDate;
         if (dealDate == null) return false;
         return dealDate.year == _selectedDate.value!.year &&
             dealDate.month == _selectedDate.value!.month &&
@@ -135,38 +203,53 @@ class _SalesContentState extends State<SalesContent> {
       itemCount: filteredList.length,
       itemBuilder: (context, index) {
         final deal = filteredList[index];
-        final status = deal.status?.toUpperCase() ?? 'NEW';
+        final status = (deal.status ?? 'NEW').toUpperCase();
         final tagLabel = status;
 
         final companyName = deal.userClient?.client?.name;
-        final offer =  deal.userClient?.client?.offer;
+        final offer = deal.userClient?.client?.offer;
         final commissionPercent = deal.userClient?.client?.commissionRate ?? 0;
         final offerAmount = deal.amount ?? 0;
+        final commissionAmount = (offerAmount * commissionPercent / 100);
 
-        final commissionAmount = (offerAmount * commissionPercent / 100);        final assignDate = deal.createdAt != null
+        final assignDate = deal.createdAt != null
             ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
             : null;
-        final clientId = deal.id ?? '';
-
+        final clientDetailsViewId = deal.userClient?.clientId ?? '';
         final userName = deal.userClient?.client?.name;
         final profileImage = deal.user?.profilePicture;
-        final cashCollected = deal.cashCollected != null ? _formatCurrency(deal.cashCollected) : null;
-        final amount = deal.amount !=null ? _formatCurrency(deal.amount) : null;
-        final commission = commissionAmount != null ? _formatCurrency(commissionAmount) : null;
+        final clientId = deal.userClient?.id ?? '';
 
+        final cashCollected = deal.cashCollected != null
+            ? _formatCurrency(deal.cashCollected)
+            : null;
+        final amount =
+            deal.amount != null ? _formatCurrency(deal.amount) : null;
+        final commission =
+            commissionAmount != null ? _formatCurrency(commissionAmount) : null;
 
         // Only assign onTap for My Deals
         VoidCallback? onTap;
-        if (!isAllDeals.value) {
+        if (!isAllDeals.value && clientDetailsViewId.isNotEmpty) {
           switch (tagLabel) {
             case "NEW":
-              onTap = () => Get.to(() => NewDealView(clientId: clientId));
+              onTap = () => Get.to(() => NewDealView(
+                    clientId: clientDetailsViewId,
+                    clientName: userName ?? "N/A", clientDealCreateId: clientId,
+                  ));
               break;
             case "OPEN":
-              onTap = () => Get.to(() => OpenDealView(clientId: clientId));
+              onTap = () => Get.to(
+                    () => OpenDealView(
+                      clientId: clientDetailsViewId,
+                      clientName: userName ?? "N/A", clientNewDealCreateId: clientId,
+                    ),
+                  );
               break;
             case "CLOSED":
-              onTap = () => Get.to(() => ClosedDealView(clientID: clientId));
+              onTap = () => Get.to(
+                    () => ClosedDealView(clientID: clientDetailsViewId),
+                  );
               break;
           }
         }
@@ -174,11 +257,9 @@ class _SalesContentState extends State<SalesContent> {
         return RecentDetails(
           color: _getStatusColor(tagLabel),
           tagLabel: tagLabel,
-          // companyName: companyName,
           assignDate: assignDate,
           offer: offer,
           amount: amount,
-
           commissionRate: commission,
           userName: userName,
           profileImage: profileImage,

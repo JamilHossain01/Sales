@@ -20,15 +20,15 @@ class HTMLView extends StatelessWidget {
         ),
         // tables will have the below background color
         "table": Style(
-          backgroundColor: const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+          backgroundColor: const Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF),
         ),
         // some other granular customizations are also possible
         "tr": Style(
-          border: const Border(bottom: BorderSide(color: Colors.grey)),
+          border: const Border(bottom: BorderSide(color: Colors.white)),
         ),
         "th": Style(
           //  padding: const EdgeInsets.all(6),
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white,
         ),
         "td": Style(
           //   padding: const EdgeInsets.all(6),
@@ -36,42 +36,42 @@ class HTMLView extends StatelessWidget {
         ),
         // text that renders h1 elements will be red
         "h1": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.xxLarge,
           textAlign: TextAlign.justify,
         ),
         "h2": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.xLarge,
           textAlign: TextAlign.justify,
         ),
         "h3": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.large,
           textAlign: TextAlign.justify,
         ),
         "h4": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.medium,
           textAlign: TextAlign.justify,
         ),
         "h5": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.small,
           textAlign: TextAlign.justify,
         ),
         "h6": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.xSmall,
           textAlign: TextAlign.justify,
         ),
         "p": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.small,
           textAlign: TextAlign.justify,
         ),
         "span": Style(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: FontSize.medium,
           textAlign: TextAlign.justify,
         ),

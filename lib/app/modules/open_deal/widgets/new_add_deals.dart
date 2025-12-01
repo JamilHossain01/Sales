@@ -16,8 +16,10 @@ import '../../view_details/widgets/check_box.dart';
 import '../../view_details/widgets/xustom_filePicker.dart';
 
 class NewAddDealsForm extends StatefulWidget {
-  const NewAddDealsForm({super.key, required this.clientId});
+  const NewAddDealsForm({super.key, required this.clientId, required this.clientName, required this.clientDealCreateId});
   final String clientId;
+  final String clientDealCreateId;
+  final String clientName;
 
   @override
   State<NewAddDealsForm> createState() => _NewAddDealsFormState();
@@ -45,13 +47,17 @@ class _NewAddDealsFormState extends State<NewAddDealsForm> {
         proposition: _propositionController.text,
         dealDate: _dealDateController.text,
         amount: int.tryParse(_amountController.text) ?? 0,
-        clientId: widget.clientId,
+        clientId: widget.clientDealCreateId,
         notes: _noteController.text,
         filePath: selectedImagePath ?? '', cashCollected: int.tryParse(_cashCollectedController.text) ?? 0,
       );
     }
   }
-
+  @override
+  void initState() {
+    super.initState();
+    _clienNameController.text = widget.clientName; // auto fill client name
+  }
   @override
   Widget build(BuildContext context) {
     return Material( // ✅ FIX: Ensure Material ancestor is present
@@ -71,6 +77,7 @@ class _NewAddDealsFormState extends State<NewAddDealsForm> {
             CustomTextField(
               hintText: 'Client Name',
               showObscure: false,
+              enabled: false,
               controller: _clienNameController,
             ),
 
@@ -185,16 +192,19 @@ SizedBox(height: 10.h),
               controller: _noteController,
             ),
 
-            Gap(10.h),
-            CustomCheckboxWithText(
-              text: "Set Reminder",
-              isChecked: checkboxController.isChecked,
-              activeColor: const Color(0xFF00D1FF),
-            ),
+            // Gap(10.h),
+            // CustomCheckboxWithText(
+            //   text: "Set Reminder",
+            //   isChecked: checkboxController.isChecked,
+            //   activeColor: const Color(0xFF00D1FF),
+            // ),
 
             Gap(20.h),
             Obx(() {
               return RowButtonWidgets(
+                onTapCancel: (){
+                  Get.back();
+                },
                 isLoading2: dealController.isLoading.value,
                 onTapSave: _submitForm,
               );

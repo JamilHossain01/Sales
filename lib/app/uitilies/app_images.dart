@@ -19,6 +19,7 @@ class AppImages {
   static const String dashboard = "assets/images/Dashboard.png";
   static const String leaderboards = "assets/images/Leaderboards.png";
   static const String sales = "assets/images/Sales.png";
+  static const String allClient = "assets/images/user.png";
 
   // bottom
 

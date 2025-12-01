@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../controllers/quater_prize_controller.dart';
 
@@ -258,7 +259,7 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                     fontWeight: FontWeight.w600,
                     color: Colors.white70,
                   ),
-                  SizedBox(height: 16.h),
+                  // SizedBox(height: 16.h),
                   if (topUsers.isEmpty)
                     Center(
                       child: CustomText(
@@ -280,11 +281,8 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                         ),
                         itemBuilder: (context, index) {
                           final user = topUsers[index];
-                          final totalAmount = user.closer.fold<double>(
-                            0.0,
-                                (sum, closer) => sum + (closer.amount?.toDouble() ?? 0.0),
-                          );
-                          final totalDealsClosed = user.closer.length; // Assuming all closers are closed deals; filter by status if needed
+                          final totalAmount = (user.totalAmount ?? 0).toDouble();
+                          // final totalDealsClosed = user.closer.length; // Assuming all closers are closed deals; filter by status if needed
 
                           return ListTile(
                             contentPadding: EdgeInsets.symmetric(
@@ -298,9 +296,9 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                                   ? NetworkImage(user.profilePicture)
                                   : null,
                               child: user.profilePicture == null || user.profilePicture.isEmpty
-                                  ? const Icon(
+                                  ?  Icon(
                                 Icons.person,
-                                color: Colors.white70,
+                                color:AppColors.orangeColor,
                                 size: 24,
                               )
                                   : null,
@@ -319,13 +317,13 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 4.h),
+                                // CustomText(
+                                //   text: 'Deals Closed: $totalDealsClosed',
+                                //   fontSize: 12.sp,
+                                //   color: Colors.white70,
+                                // ),
                                 CustomText(
-                                  text: 'Deals Closed: $totalDealsClosed',
-                                  fontSize: 12.sp,
-                                  color: Colors.white70,
-                                ),
-                                CustomText(
-                                  text: 'Total Amount: \$${totalAmount.toStringAsFixed(0)}',
+                                  text: 'Total Amount: €${totalAmount.toStringAsFixed(0)}',
                                   fontSize: 12.sp,
                                   color: Colors.greenAccent,
                                 ),
@@ -535,7 +533,7 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.only(top: 8.h),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16.r),
@@ -560,25 +558,36 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
               //       : const Icon(Icons.person, size: 40, color: Colors.white70),
               // ),
               // SizedBox(width: 16.w),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: card.prizeIcon.isNotEmpty
-                    ? Image.network(
-                  card.prizeIcon,
-                  height: 100.h,
-                  width: 100.w,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => const Icon(
+
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.r),
+                  child: card.prizeIcon.isNotEmpty
+                      ? Image.network(
+                    card.prizeIcon,
+                    height: 150.h,
+                    width: 280.w,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
                       Icons.card_giftcard,
                       size: 40,
-                      color: Colors.amber),
-                )
-                    : const Icon(Icons.card_giftcard,
-                    size: 40, color: Colors.amber),
-              ),
+                      color: Colors.amber,
+                    ),
+                  )
+                      : const Icon(
+                    Icons.card_giftcard,
+                    size: 40,
+                    color: Colors.amber,
+                  ),
+                ),
+              )
+
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
           CustomText(
             text: '🏆 ${card.prizeName}',
             fontSize: 16.sp,
@@ -586,13 +595,13 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
             color: Colors.amberAccent,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: 4.h),
           CustomText(
             text: 'Rank: #${card.rank}',
             fontSize: 14.sp,
             color: Colors.white,
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: 4.h),
           CustomText(
             text: 'Winner: ${isTBA ? 'To Be Announced' : card.userName}',
             fontSize: 14.sp,

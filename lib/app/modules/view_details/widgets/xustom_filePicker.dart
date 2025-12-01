@@ -106,7 +106,7 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
                   child: CustomText(
                     text: 'Choose file',
                     fontSize: 14.sp,
-                    color: const Color(0xFF212529),
+                    color: AppColors.white.withOpacity(0.5) ,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -118,7 +118,7 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
                         : _selectedFile!.path.split('/').last,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xFF212529),
+                    color: AppColors.white.withOpacity(0.5) ,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

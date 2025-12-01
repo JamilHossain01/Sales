@@ -54,13 +54,16 @@ class HallOfFameWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+
                         CircleAvatar(
                           radius: 20.r,
                           backgroundColor: AppColors.orangeColor,
-                          backgroundImage:
-                          imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                          backgroundImage: imageUrl.isNotEmpty
+                              ? NetworkImage(imageUrl)
+                              : null,
                           child: imageUrl.isEmpty
-                              ? Icon(Icons.person, color: Colors.white, size: 20.r)
+                              ? Icon(Icons.person,
+                                  color: Colors.white, size: 20.r)
                               : null,
                         ),
                         SizedBox(width: 12.w),
@@ -72,15 +75,15 @@ class HallOfFameWidget extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 12.h),
-                    _buildStatRow('Commission', '€$commission'),
-                    _buildDivider(),
                     _buildStatRow('Deal Amount', '€$dealAmount'),
+                    _buildDivider(),
+                    _buildStatRow('Commission', '€$commission'),
                     _buildDivider(),
                     _buildStatRow('Deals Closed', '$dealsClosed'),
                   ],
                 )
               else
-              // 🔹 Empty State
+                // 🔹 Empty State
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.h),
                   child: Center(
@@ -100,10 +103,10 @@ class HallOfFameWidget extends StatelessWidget {
   }
 
   Widget _buildDivider() => Divider(
-    height: 1,
-    thickness: 0.3,
-    color: Colors.white10,
-  );
+        height: 1,
+        thickness: 0.3,
+        color: Colors.white10,
+      );
 
   Widget _buildStatRow(String label, String value) {
     return Padding(

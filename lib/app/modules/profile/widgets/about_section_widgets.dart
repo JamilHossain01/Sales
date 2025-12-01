@@ -14,6 +14,7 @@ class AboutUsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HTMLView(htmlData: content);
+    return HTMLView(
+      htmlData: content,  );
   }
 }
