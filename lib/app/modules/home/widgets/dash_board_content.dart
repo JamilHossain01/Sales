@@ -170,7 +170,7 @@ class _DashboardContentState extends State<DashboardContent> {
               TargetProgressCard(
                 title: "Monthly Target",
                 progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
-                achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+                achievedText: 'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
                 percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
               ),
               /// ---------- Leaderboard ----------

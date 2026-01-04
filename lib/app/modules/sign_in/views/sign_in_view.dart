@@ -122,7 +122,7 @@ class _SignInViewState extends State<SignInView> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(()=>ForgetPasswordView());
+                      Get.to(() => ForgetPasswordView());
                     },
                     child: CustomText(
                       text: 'Forgot Password?',
@@ -134,19 +134,21 @@ class _SignInViewState extends State<SignInView> {
               ),
               Gap(40.h),
               Obx(() => CustomButton(
-                title: signInController.isLoading.value ? 'Loading...' : 'Log In',
-                isGradient: false,
-                buttonColor: AppColors.orangeColor,
-                rightIcon: Icon(Icons.arrow_forward, color: Colors.white),
-                onTap: signInController.isLoading.value
-                    ? null
-                    : () {
-                  signInController.login(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
-                },
-              )),
+                    title: signInController.isLoading.value
+                        ? 'Loading...'
+                        : 'Log In',
+                    isGradient: false,
+                    buttonColor: AppColors.orangeColor,
+                    rightIcon: Icon(Icons.arrow_forward, color: Colors.white),
+                    onTap: signInController.isLoading.value
+                        ? null
+                        : () {
+                            signInController.login(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                          },
+                  )),
             ],
           ),
         ),

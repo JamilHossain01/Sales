@@ -73,24 +73,19 @@ class ProfileHeaderCard extends StatelessWidget {
               );
             } else if (imageUrl.isNotEmpty) {
               // Network image with cache
-              return GestureDetector(
-                onTap: () {
-                  Get.to(ProfilePage(),transition: Transition.noTransition);
-                },
-                child: CircleAvatar(
-                  radius: 54.r,
-                  backgroundColor: AppColors.orangeColor,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      width: 100.r,
-                      height: 100.r,
-                      fit: BoxFit.cover,
+              return CircleAvatar(
+                radius: 54.r,
+                backgroundColor: AppColors.orangeColor,
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: 100.r,
+                    height: 100.r,
+                    fit: BoxFit.cover,
 
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                        radius: 55,
-                        backgroundImage: AssetImage(AppImages.profile),
-                      ),
+                    errorWidget: (context, url, error) => const CircleAvatar(
+                      radius: 55,
+                      backgroundImage: AssetImage(AppImages.profile),
                     ),
                   ),
                 ),

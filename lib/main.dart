@@ -30,6 +30,7 @@ Future<void> main() async {
 
   // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Get.put(StorageService());
 
   // Initialize local storage
   final storage = Get.put(StorageService());

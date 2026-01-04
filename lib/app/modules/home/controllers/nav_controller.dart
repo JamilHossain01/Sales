@@ -2,10 +2,13 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:wolf_pack/app/uitilies/app_images.dart';
 
-import '../widgets/nav_item.dart'; // Make sure this file exists with NavItem class
+import '../widgets/nav_item.dart';
 
 class NavController extends GetxController {
   var activeTabIndex = 0.obs;
+
+  /// 🔹 Flag to indicate controller is fully initialized
+  var isReady = false.obs;
 
   // List of nav items with label, icon, and UI content
   final List<NavItem> navItems = [
@@ -42,6 +45,12 @@ class NavController extends GetxController {
       ),
     ),
   ];
+
+  @override
+  void onInit() {
+    super.onInit();
+    isReady.value = true;
+  }
 
   void changeTab(int index) {
     activeTabIndex.value = index;

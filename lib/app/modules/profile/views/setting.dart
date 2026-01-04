@@ -1,4 +1,4 @@
-
+// File: setting_view.dart
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,10 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wolf_pack/app/modules/profile/views/view.dart';
 
-
-import 'package:wolf_pack/app/modules/profile/views/chnage_password.dart';
-import 'package:wolf_pack/app/modules/profile/views/privacy_policy.dart';
 import 'package:wolf_pack/app/modules/setting/views/contact_support_view.dart';
 import 'package:wolf_pack/app/modules/setting/views/terms_of_use_view.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
@@ -19,23 +17,32 @@ import 'package:wolf_pack/app/uitilies/app_images.dart';
 import '../../../common_widget/custom_app_bar_widget.dart';
 import '../../../common_widget/menue_item.dart';
 import '../../../common_widget/show_alert_dialog.dart';
+import '../../../routes/app_pages.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/local_storage.dart';
 import '../../setting/views/privacy_policy_view.dart';
+import '../../sign_in/views/sign_in_view.dart';
 import '../controllers/get_myProfile_controller.dart';
 import '../controllers/porfile_image_controller.dart';
 import 'all_client_view.dart';
+import 'chnage_password.dart';
 
 class SettingView extends StatefulWidget {
-  const SettingView({super.key});
+  SettingView({super.key});
+
+  final GetMyProfileController profileController =
+      Get.put(GetMyProfileController());
 
   @override
   State<SettingView> createState() => _SettingViewState();
 }
 
 class _SettingViewState extends State<SettingView> {
-  static const String _staticUrl = 'https://wa.me/9715511750018@gmail.com';
-  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+  // Fixed WhatsApp URL (removed invalid @gmail.com)
+  static const String _staticUrl = 'https://wa.me/9715511750018';
+
+  final GetMyProfileController profileController =
+      Get.put(GetMyProfileController());
   final HomeImageController _imageController = Get.put(HomeImageController());
   final storage = Get.put(StorageService());
 
@@ -48,7 +55,8 @@ class _SettingViewState extends State<SettingView> {
 
   ImageProvider<Object> _getProfileImage() {
     final localImage = _imageController.selectedImagePath.value;
-    final networkImage = profileController.profileData.value.data?.profilePicture ?? '';
+    final networkImage =
+        profileController.profileData.value.data?.profilePicture ?? '';
 
     if (networkImage.isNotEmpty) {
       return CachedNetworkImageProvider(networkImage);
@@ -78,10 +86,15 @@ class _SettingViewState extends State<SettingView> {
             SizedBox(height: screenHeight * 0.1),
             Center(
               child: Obx(
-                    () => CircleAvatar(
-                  radius: 55.r,
-                  backgroundColor: AppColors.orangeColor,
-                  backgroundImage: _getProfileImage(),
+                () => GestureDetector(
+                  onTap: () {
+                    () => Get.to(ProfilePage());
+                  },
+                  child: CircleAvatar(
+                    radius: 55.r,
+                    backgroundColor: AppColors.orangeColor,
+                    backgroundImage: _getProfileImage(),
+                  ),
                 ),
               ),
             ),
@@ -89,8 +102,16 @@ class _SettingViewState extends State<SettingView> {
 
             // ----------------- Menu Items -----------------
             MenuItem(
+              icon: Icons.precision_manufacturing,
+              backgroundColor: Colors.black,
+              borderRadius: BorderRadius.circular(6.r),
+              title: 'Edit Profile',
+              textColor: AppColors.white,
+              onTap: () => Get.to(() => ProfilePage()),
+            ),
+            Gap(20.h),
+            MenuItem(
               icon: Icons.people_outline,
-              // assetImagePath: AppImages.Unlock,
               backgroundColor: Colors.black,
               borderRadius: BorderRadius.circular(6.r),
               title: 'All Client',
@@ -102,7 +123,8 @@ class _SettingViewState extends State<SettingView> {
               assetImagePath: AppImages.Unlock,
               backgroundColor: Colors.black,
               borderRadius: BorderRadius.circular(6.r),
-              title: 'Changed Password',
+              title: 'Change Password',
+              // Fixed title to match view
               textColor: AppColors.white,
               onTap: () => Get.to(() => ChangedPasswordView()),
             ),
@@ -140,15 +162,20 @@ class _SettingViewState extends State<SettingView> {
               borderRadius: BorderRadius.circular(6.r),
               title: 'Log Out',
               textColor: Colors.red,
-              iconColors: Colors.red,
               onTap: () {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
                   builder: (_) => SignOutDialog(
                     title: 'Do you want to Log Out?',
-                    onConfirm: () => profileController.logout(),
-                    onCancel: () => Navigator.pop(context),
+                    onConfirm: () async {
+                      // final storage = Get.find<StorageService>();
+
+                      await storage.clear();
+
+                      Get.deleteAll(force: true);
+                    },
+                    onCancel: () => Get.back(),
                   ),
                 );
               },

@@ -20,22 +20,9 @@ import '../../pet_profile/views/edit_pet_profile.dart';
 import '../../pet_profile/widgets/infow_row_widgets.dart';
 import '../controllers/get_myProfile_controller.dart';
 
-import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 
-import '../../../uitilies/app_colors.dart';
-import '../../../uitilies/app_images.dart';
-import '../../../uitilies/custom_loader.dart';
-import '../../edit_profile/controllers/edit_profile_controller.dart';
 import '../../home/controllers/image_controller.dart';
-import '../../pet_profile/widgets/infow_row_widgets.dart';
-import '../controllers/get_myProfile_controller.dart';
-import 'edite_profile.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});

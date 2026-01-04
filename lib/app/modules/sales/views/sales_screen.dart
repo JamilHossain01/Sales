@@ -286,7 +286,7 @@ class _SalesContentState extends State<SalesContent> {
                       100)
                   .toDouble(),
               achievedText:
-                  'Achieved: €${profileController.profileData.value.data?.salesCount ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
+                  'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
               percentageLabel:
                   '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "0"}%',
             ),

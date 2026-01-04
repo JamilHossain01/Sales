@@ -24,7 +24,8 @@ class HomeView extends GetView<HomeController> {
 
   final HomeImageController _imageController = Get.find();
   final NavController _navController = Get.put(NavController());
-  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+  final GetMyProfileController profileController =
+      Get.put(GetMyProfileController());
 
   final List<NavItem> navItems = [
     NavItem(
@@ -60,18 +61,19 @@ class HomeView extends GetView<HomeController> {
       extendBody: true,
       body: Obx(() {
         if (profileController.isLoading.value) {
-          return CustomLoader();  // Show loader while profile is loading
+          return CustomLoader();
         }
         return SingleChildScrollView(
           child: Column(
             children: [
               CustomGradientContainer(
                 child: ProfileHeaderCard(
-                  username: profileController.profileData.value.data?.name ?? "N/A",
-                  rankText: "${'Global Rank: '}${profileController.profileData.value.data?.rank.toString() ?? "N/A"}",
+                  username:
+                      profileController.profileData.value.data?.name ?? "N/A",
+                  rankText:
+                      "${'Global Rank: '}${profileController.profileData.value.data?.rank.toString() ?? "N/A"}",
                 ),
               ),
-              // Show the active content based on the activeTabIndex
               navItems[_navController.activeTabIndex.value].content,
             ],
           ),

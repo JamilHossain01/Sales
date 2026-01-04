@@ -37,34 +37,38 @@ class Data {
     required this.salesCount,
     required this.monthlyTarget,
     required this.dealClosedCount,
-    required this.myAchievements,
+    required this.count,
     required this.commission,
     required this.monthlyTargetPercentage,
     required this.avgDealAmount,
     required this.rank,
+    required this.myAchievements,
+    required this.thisMonthSales,
   });
 
   final String? id;
   final String? name;
   final String? email;
   final String? role;
-  final dynamic profilePicture;
+  final String? profilePicture;
   final bool? isDelete;
   final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final dynamic phoneNumber;
+  final String? phoneNumber;
   final dynamic loginCount;
-  final dynamic about;
+  final String? about;
   final dynamic dealCount;
   final dynamic salesCount;
   final dynamic monthlyTarget;
   final dynamic dealClosedCount;
-  final List<MyAchievement> myAchievements;
+  final Count? count;
   final dynamic commission;
   final dynamic monthlyTargetPercentage;
   final dynamic avgDealAmount;
   final dynamic rank;
+  final List<MyAchievement> myAchievements;
+  final dynamic thisMonthSales;
 
   factory Data.fromJson(Map<String, dynamic> json){
     return Data(
@@ -84,11 +88,28 @@ class Data {
       salesCount: json["salesCount"],
       monthlyTarget: json["monthlyTarget"],
       dealClosedCount: json["dealClosedCount"],
-      myAchievements: json["myAchievements"] == null ? [] : List<MyAchievement>.from(json["myAchievements"]!.map((x) => MyAchievement.fromJson(x))),
+      count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
       commission: json["commission"],
       monthlyTargetPercentage: json["monthlyTargetPercentage"],
       avgDealAmount: json["avgDealAmount"],
       rank: json["rank"],
+      myAchievements: json["myAchievements"] == null ? [] : List<MyAchievement>.from(json["myAchievements"]!.map((x) => MyAchievement.fromJson(x))),
+      thisMonthSales: json["thisMonthSales"],
+    );
+  }
+
+}
+
+class Count {
+  Count({
+    required this.notifications,
+  });
+
+  final dynamic notifications;
+
+  factory Count.fromJson(Map<String, dynamic> json){
+    return Count(
+      notifications: json["notifications"],
     );
   }
 
@@ -96,28 +117,13 @@ class Data {
 
 class MyAchievement {
   MyAchievement({
-    required this.id,
-    required this.userId,
-    required this.achievementId,
-    required this.createdAt,
-    required this.updatedAt,
     required this.achievement,
   });
 
-  final String? id;
-  final String? userId;
-  final String? achievementId;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
   final Achievement? achievement;
 
   factory MyAchievement.fromJson(Map<String, dynamic> json){
     return MyAchievement(
-      id: json["id"],
-      userId: json["userId"],
-      achievementId: json["achievementId"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       achievement: json["achievement"] == null ? null : Achievement.fromJson(json["achievement"]),
     );
   }

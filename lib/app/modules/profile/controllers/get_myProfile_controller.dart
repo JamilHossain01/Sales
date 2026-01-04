@@ -1,17 +1,15 @@
+// File: get_my_profile_controller.dart
+
 import 'package:get/get.dart';
+import 'package:wolf_pack/app/modules/profile/controllers/porfile_image_controller.dart';
 
 import '../../../common_widget/customSnackBar.dart';
 import '../../../uitilies/api/api_url.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/base_client.dart';
 import '../../../uitilies/api/local_storage.dart';
+import '../../dashboard/controllers/dashboard_controller.dart';
 import '../../sign_in/views/sign_in_view.dart';
-import '../model/profile_model.dart';
-
-import 'package:get/get.dart';
-import '../../../common_widget/customSnackBar.dart';
-import '../../../uitilies/api/api_url.dart';
-import '../../../uitilies/api/base_client.dart';
 import '../model/profile_model.dart';
 
 class GetMyProfileController extends GetxController {
@@ -35,9 +33,13 @@ class GetMyProfileController extends GetxController {
         profileData.value = ProfileModel.fromJson(data);
       } else {
         throw "Failed to load profile (${response.statusCode})";
+
+
       }
     } catch (e) {
       CustomSnackbar.showError(e.toString());
+      print(e.toString());
+
     } finally {
       isLoading(false);
     }
@@ -46,10 +48,22 @@ class GetMyProfileController extends GetxController {
   Future<void> refreshProfile() async {
     await fetchMyProfile();
   }
-  void logout(){
-    storage.remove(AppConstant.accessToken);
-    storage.remove(AppConstant.refreshToken);
-    storage.remove(AppConstant.role);
-    Get.offAll(()=> SignInView());
-  }
+
+  // void logout() {
+  //   storage.remove(AppConstant.accessToken);
+  //   storage.remove(AppConstant.refreshToken);
+  //   storage.remove(AppConstant.role);
+  //
+  //   Get.delete<GetMyProfileController>(force: true);
+  //   Get.delete<HomeImageController>(force: true);
+  //   Get.delete<NavController>(force: true); // ট্যাব সুইচিং রিসেট হবে (Dashboard-এ ফিরে যাবে)
+  //
+  //   Get.delete<LeaderBoardController>(force: true); // Leaderboard ট্যাব
+  //   Get.delete<SalesController>(force: true);       // Sales ট্যাব
+  //   Get.delete<BadgesController>(force: true);      // Achievements/Badges ট্যাব
+  //
+  //   Get.delete<DashboardController>(force: true);
+  //
+  //   Get.offAll(() => SignInView());
+  // }
 }

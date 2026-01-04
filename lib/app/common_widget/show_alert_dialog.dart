@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:wolf_pack/app/modules/sign_in/views/sign_in_view.dart';
+import 'package:wolf_pack/app/uitilies/api/local_storage.dart';
 import 'custom text/custom_text_widget.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 
@@ -12,12 +14,14 @@ class SignOutDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final String title;
 
-  const SignOutDialog({
+   SignOutDialog({
     super.key,
     required this.onConfirm,
     this.onCancel,
     this.title = 'Do you want to sign out your profile?',
   });
+
+  final storage = Get.put(StorageService());
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +77,15 @@ class SignOutDialog extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 12.sp,
                       title: 'Yes',
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        onConfirm();
+                      onTap: () async {
+
+                        await storage.clear();
+
+
+
+
+                        Get.offAll(()=> SignInView());
+
                       },
                     ),
                   ),
