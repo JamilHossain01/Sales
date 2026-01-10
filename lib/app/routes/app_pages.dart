@@ -107,7 +107,7 @@ class AppPages {
     GetPage(
       name: _Paths.LEADER_BOARD,
       page: () => LeaderBoardView(),
-      binding: LeaderBoardBinding(),
+      // binding: LeaderBoardBinding(),
     ),
     GetPage(
       name: _Paths.BADGES,

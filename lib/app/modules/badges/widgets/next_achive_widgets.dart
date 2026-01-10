@@ -21,8 +21,8 @@ class NextAchievementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.w,
-      height: 90.h,
+      width: 155.w,
+      height: 100.h,
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: bgColor,

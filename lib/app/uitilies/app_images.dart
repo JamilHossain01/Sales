@@ -23,8 +23,8 @@ class AppImages {
 
   // bottom
 
-  static const navHomeSelected = 'assets/images/Home.png';
-  static const navHomeUnselected = 'assets/images/h.png';
+  static const navHomeSelected = 'assets/images/Home!.png';
+  static const navHomeUnselected = 'assets/images/_home.png';
 
   static const navExploreSelected = 'assets/images/Profile1.png';
   static const navExploreUnselected = 'assets/images/Profile2.png';

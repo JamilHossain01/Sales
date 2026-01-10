@@ -9,7 +9,7 @@ import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/custom_loader.dart';
 import '../controllers/leader_borad_get.dart';
 import '../modell/filter_leader_board_model.dart';
-
+import 'package:intl/intl.dart';   // ← This line is missing in your file!
 class LeaderBoardView extends StatelessWidget {
   const LeaderBoardView({super.key});
 
@@ -65,18 +65,18 @@ class LeaderBoardView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _FilterBar(),
-            Gap(20.h),
+            Gap(12.h),
             if (topUser != null) _TopCloserCard(user: topUser),
-            Gap(20.h),
+            Gap(10.h),
             CustomText(
               text: 'Leaderboard',
               fontWeight: FontWeight.w600,
               fontSize: 18.sp,
               color: AppColors.white,
             ),
-            Gap(12.h),
+            // Gap(4.h),
             _LeaderBoardList(users: others, currentUserId: currentUserId),
-            Gap(30.h),
+            // Gap(30.h),
           ],
         ),
       );
@@ -236,8 +236,9 @@ class _TopCloserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalAmount = (user.totalRevenue ?? 0).toStringAsFixed(1);
-    final deals = (user.totalDeals ?? 0).toString();
+    final num totalAmount = user.totalSales ?? 0;
+    final num deals = user.totalDeals ?? 0;
+
 
     return Container(
       width: double.infinity,
@@ -309,15 +310,25 @@ class _TopCloserCard extends StatelessWidget {
             ],
           ),
           Gap(16.h),
+
           Row(
             children: [
               Expanded(
-                  child:
-                      _StatBox(label: 'Total Amount', value: '€$totalAmount')),
+                child: _StatBox(
+                  label: 'Total Amount',
+                  value: totalAmount, // ✅ num
+                ),
+              ),
               Gap(12.w),
-              Expanded(child: _StatBox(label: 'Deals Closed', value: deals)),
+              Expanded(
+                child: _StatBox(
+                  label: 'Deals Closed',
+                  value: deals, // ✅ num
+                ),
+              ),
             ],
           ),
+
         ],
       ),
     );
@@ -325,11 +336,25 @@ class _TopCloserCard extends StatelessWidget {
 }
 
 class _StatBox extends StatelessWidget {
-  final String label, value;
-  const _StatBox({required this.label, required this.value});
+  final String label;
+  final num value;
+
+  const _StatBox({
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bool isMoney = label.toLowerCase().contains('amount');
+
+    final String displayValue = isMoney
+        ? NumberFormat.currency(
+      symbol: '€',
+      decimalDigits: 0,
+    ).format(value)
+        : NumberFormat.decimalPattern().format(value);
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
       decoration: BoxDecoration(
@@ -339,16 +364,18 @@ class _StatBox extends StatelessWidget {
       child: Column(
         children: [
           CustomText(
-              text: label,
-              fontWeight: FontWeight.w500,
-              fontSize: 12.sp,
-              color: Colors.white70),
+            text: label,
+            fontWeight: FontWeight.w500,
+            fontSize: 12.sp,
+            color: Colors.white70,
+          ),
           Gap(4.h),
           CustomText(
-              text: value,
-              fontWeight: FontWeight.w700,
-              fontSize: 18.sp,
-              color: Colors.white),
+            text: displayValue,
+            fontWeight: FontWeight.w700,
+            fontSize: 18.sp,
+            color: value.isNegative ? Colors.red : Colors.white,
+          ),
         ],
       ),
     );
@@ -542,11 +569,12 @@ class _LeaderBoardList extends StatelessWidget {
                 ),
               ),
               Text(
-                '€${(user.totalRevenue ?? 0).toStringAsFixed(1)}',
+                '€${NumberFormat("#,##0", "en_US").format(user.totalSales ?? 0)}',
                 style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16.sp,
-                    color: Colors.white),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),

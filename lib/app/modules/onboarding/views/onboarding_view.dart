@@ -45,13 +45,13 @@ class OnboardingView extends GetView<OnboardingController> {
                       CustomText(
                         text: 'Rise',
                         color: AppColors.orangeColor,
-                        fontSize: 36.sp,
+                        fontSize: 32.sp,
                         fontWeight: FontWeight.w700,
                       ),
                       CustomText(
                         text: ' to the Top',
                         color: Colors.white,
-                        fontSize: 36.sp,
+                        fontSize: 32.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ],
@@ -62,13 +62,13 @@ class OnboardingView extends GetView<OnboardingController> {
                       CustomText(
                         text: 'with the',
                         color: Colors.white,
-                        fontSize: 36.sp,
+                        fontSize: 32.sp,
                         fontWeight: FontWeight.w700,
                       ),
                       CustomText(
                         text: ' Wolf Pack',
                         color: AppColors.orangeColor,
-                        fontSize: 36.sp,
+                        fontSize: 32.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ],

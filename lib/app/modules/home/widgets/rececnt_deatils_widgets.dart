@@ -107,7 +107,7 @@ class RecentDetails extends StatelessWidget {
             _rowText(text: 'Cash Collected', text1: '€$cashCollected'),
           if (commissionRate != null)
             _rowText(text: 'Commission', text1: '€$commissionRate'),
-          if (assignDate != null) _rowText(text: 'Assign Date', text1: assignDate!),
+          if (assignDate != null) _rowText(text: 'Deal Date', text1: assignDate!),
           if (onViewDetailsTap != null) ...[
             SizedBox(height: 12.h),
     CustomButton(

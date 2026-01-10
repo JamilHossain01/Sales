@@ -16,13 +16,53 @@ import '../../../uitilies/api/local_storage.dart';
 import '../../home/controllers/nav_controller.dart';
 import '../../profile/controllers/get_myProfile_controller.dart';
 
+
 class SignInController extends GetxController {
   final RxBool isLoading = false.obs;
-  final StorageService storage = Get.put(StorageService());
-  //
-  // final GetMyProfileController profileController =
-  //     Get.put(GetMyProfileController());
+  final RxBool rememberMe = false.obs; // Reactive "Remember Me" state
 
+  // Storage keys
+  static const String _rememberMeKey = 'remember_me_enabled';
+  static const String _savedEmailKey = 'saved_email';
+
+  final StorageService storage = Get.put(StorageService());
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loadRememberMe();
+  }
+
+  // Toggle Remember Me checkbox
+  void toggleRememberMe() {
+    rememberMe.value = !rememberMe.value;
+  }
+
+  // Load saved "Remember Me" state and email
+  void _loadRememberMe() {
+    final bool? saved = storage.read<bool>(_rememberMeKey);
+    if (saved == true) {
+      rememberMe.value = true;
+    }
+  }
+
+  // Get saved email (for auto-fill)
+  String? getSavedEmail() {
+    return storage.read<String>(_savedEmailKey);
+  }
+
+  // Handle saving email on login
+  Future<void> _handleRememberMe({required String email}) async {
+    if (rememberMe.value) {
+      await storage.write(_rememberMeKey, true);
+      await storage.write(_savedEmailKey, email);
+    } else {
+      await storage.remove(_rememberMeKey);
+      await storage.remove(_savedEmailKey);
+    }
+  }
+
+  // Login method
   Future<void> login({
     required String email,
     required String password,
@@ -35,7 +75,10 @@ class SignInController extends GetxController {
     isLoading.value = true;
 
     try {
-      /// 🔹 FCM token
+      // Handle Remember Me before login
+      await _handleRememberMe(email: email.trim());
+
+      // FCM Token
       String? fcmToken = storage.read<String>(AppConstant.fcmToken);
       fcmToken ??= await FirebaseMessaging.instance.getToken();
       if (fcmToken != null) {
@@ -52,8 +95,7 @@ class SignInController extends GetxController {
         }),
       );
 
-      final Map<String, dynamic> responseData =
-          jsonDecode(response.body ?? '{}');
+      final Map<String, dynamic> responseData = jsonDecode(response.body ?? '{}');
 
       if (response.statusCode == 200 && responseData['success'] == true) {
         final data = responseData['data'];
@@ -62,9 +104,7 @@ class SignInController extends GetxController {
         await storage.write(AppConstant.refreshToken, data['refreshToken']);
         await storage.write(AppConstant.role, data['role']);
 
-
         final navController = Get.put(NavController(), permanent: true);
-
 
         await Future.doWhile(() async {
           await Future.delayed(const Duration(milliseconds: 50));
@@ -79,9 +119,7 @@ class SignInController extends GetxController {
       }
     } catch (e) {
       debugPrint('Login error: $e');
-      CustomSnackbar.showError(
-        e.toString().replaceAll('Exception:', '').trim(),
-      );
+      CustomSnackbar.showError(e.toString().replaceAll('Exception:', '').trim());
     } finally {
       isLoading.value = false;
     }

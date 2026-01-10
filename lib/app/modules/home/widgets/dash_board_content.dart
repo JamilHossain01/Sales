@@ -29,6 +29,7 @@ import '../../../uitilies/app_colors.dart';
 import '../../../uitilies/app_images.dart';
 import '../../../uitilies/date_time_formate.dart';
 import '../../badges/widgets/next_achive_widgets.dart';
+import '../../leader_board/controllers/leader_borad_get.dart';
 import '../../leader_board/widgets/new_leader_board_card.dart';
 import '../../leader_board/widgets/price_tabs.dart';
 import '../../leader_board/widgets/quater_prize_widgets.dart';
@@ -57,7 +58,7 @@ class DashboardContent extends StatefulWidget {
 class _DashboardContentState extends State<DashboardContent> {
   final GetMyProfileController profileController = Get.put(GetMyProfileController());
   final MyClientGetController dealController = Get.put(MyClientGetController());
-  final LeaderBoardController controller = Get.put(LeaderBoardController());
+  // final LeaderBoardController controller = Get.put(LeaderBoardController());
   final BadgesController _badgesController = Get.put(BadgesController());
   final NextAchievementGetController nextController = Get.put(NextAchievementGetController());
   final AllPrizeWinnerController monthController = Get.put(AllPrizeWinnerController());
@@ -65,6 +66,7 @@ class _DashboardContentState extends State<DashboardContent> {
   final TopPerformersGetController topPerformersGetController = Get.put(TopPerformersGetController());
   final AllPrizeWinnersController allPrizeWinnersController = Get.put(AllPrizeWinnersController());
   final RxBool isLiveRankingActive = true.obs;
+  final leaderBoardController = Get.put(LeaderBoardGetController());
 
   // Format currency with proper decimals
   String _formatCurrencyDropDecimals(dynamic value) {
@@ -153,13 +155,13 @@ class _DashboardContentState extends State<DashboardContent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   StatCard(
-                    primaryValue: "€${profileController.profileData.value.data?.salesCount ?? 0}",
+                    primaryValue: "€${NumberFormat("#,##0").format(profileController.profileData.value.data?.thisMonthSales ?? 0)}",
                     label: "Total Sales",
                     color: AppColors.orangeColor,
                     subValue: "",
                   ),
                   StatCard(
-                    primaryValue: "€${profileController.profileData.value.data?.monthlyTarget ?? 0}",
+                    primaryValue: "€${NumberFormat("#,##0").format(profileController.profileData.value.data?.monthlyTarget ?? 0)}",
                     label: "Target",
                     color: AppColors.orangeColor,
                     subValue: "",
@@ -195,34 +197,64 @@ class _DashboardContentState extends State<DashboardContent> {
               /// ---- your rank -----------
               SizedBox(height: 16.h),
               Obx(() {
-                if (controller.isLoading.value) {
-                  return Center(child: CustomLoader());
+                // final controller = Get.find<LeaderBoardGetController>();
+
+                if (leaderBoardController.isLoading.value) {
+                  return  Center(child: CustomLoader());
                 }
 
-                final data = controller.leaderBoardData.value.data;
-                if (data == null || data.leaderBoard.isEmpty) {
-                  return const Center(child: Text("No leaderboard data found"));
+                if (leaderBoardController.rawData.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "No leaderboard data available",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  );
                 }
 
-                final top3 = data.leaderBoard.take(3).toList();
+                // Get top 3 sorted by totalRevenue
+                final top3 = leaderBoardController.sortedUsers.take(3).toList();
+
+                if (top3.isEmpty) {
+                  return const Center(child: Text("No top performers yet"));
+                }
+
+                // Your current user's rank (optional - if you have this info)
+                final myRank = "#${profileController.profileData.value.data?.rank ?? '—'}";
+
                 return LeaderboardCard(
-                  rank: '#${profileController.profileData.value.data?.rank ?? "N/A"}',
+                  rank: myRank,
                   performers: top3.asMap().entries.map((entry) {
                     final index = entry.key;
-                    final performer = entry.value;
+                    final user = entry.value;
+
+                    final bgColor = switch (index) {
+                      0 => Colors.blueAccent.withOpacity(0.18),
+                      1 => Colors.amber.withOpacity(0.18),
+                      2 => Colors.orangeAccent.withOpacity(0.18),
+                      _ => Colors.grey.withOpacity(0.12),
+                    };
+
+                    // ✅ Proper currency formatting
+                    final num revenue = user.totalRevenue ?? 0;
+                    final earnings = NumberFormat.currency(
+                      symbol: '€',
+                      decimalDigits: 0,
+                    ).format(revenue);
+
                     return PerformerCard(
-                      backroundColor: index == 0 ? Colors.blueAccent.withOpacity(0.15) : Colors.orangeAccent.withOpacity(0.15),
+                      backroundColor: bgColor,
                       rank: index + 1,
-                      name: performer.name ?? 'N/A',
-                      earnings: '€${performer.salesCount ?? '10'}',
+                      name: user.name ?? 'Unknown',
+                      earnings: earnings,
                       rankColor: AppColors.orangeColor,
                     );
                   }).toList(),
-                  motivationLine1: '',
-                  motivationLine2: '',
+                  motivationLine1: "You're doing great!",
+                  motivationLine2: "Keep pushing to reach the top! 🔥",
                 );
-              }),
-              SizedBox(height: 20.h),
+
+              }),              SizedBox(height: 20.h),
               /// ---------- Monthly & Quarter Tabs ----------
               PrizeTabsWidget(
                 monthController: monthController,
@@ -294,6 +326,7 @@ class _DashboardContentState extends State<DashboardContent> {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: latestThree.length,
@@ -628,14 +661,25 @@ Widget buildHallOfFameSection({
 }) {
   if (data == null) return const SizedBox.shrink();
 
+  final num totalRevenue = data.totalRevenue ?? 0;
+  final num dealAmount = data.totalAmount ?? 0;
+  final num dealsClosed = data.totalDealCount ?? 0;
+
+  final NumberFormat currencyFormat =
+  NumberFormat.currency(symbol: '', decimalDigits: 0);
+
   return HallOfFameWidget(
     timePeriod: timePeriod,
     name: data.name ?? 'Unknown',
     imageUrl: data.profilePicture ?? '',
-    commission: '${(data.totalRevenue ?? 0).toStringAsFixed(1)}',
 
-    dealAmount: data.totalAmount ?? 0,
-    dealsClosed: data.totalDealCount ?? 0,
-    isNotEmty: data != null,
+    /// ✅ formatted only at UI boundary
+    commission: currencyFormat.format(totalRevenue),
+
+    /// ✅ keep numeric
+    dealAmount: currencyFormat.format(dealAmount),
+    dealsClosed: dealsClosed,
+
+    isNotEmty: true,
   );
 }

@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../controllers/quater_prize_controller.dart';
+import 'package:intl/intl.dart';   // ← This line is missing in your file!
 
 class TopQuaterClosersWidget extends StatefulWidget {
   final AllQuaterPrizeWinnersController controller;
 
-  const TopQuaterClosersWidget({super.key, required this.controller});
+  const
+  TopQuaterClosersWidget({super.key, required this.controller});
 
   @override
   State<TopQuaterClosersWidget> createState() => _TopQuaterClosersWidgetState();
@@ -281,8 +283,14 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                         ),
                         itemBuilder: (context, index) {
                           final user = topUsers[index];
-                          final totalAmount = (user.totalAmount ?? 0).toDouble();
-                          // final totalDealsClosed = user.closer.length; // Assuming all closers are closed deals; filter by status if needed
+                          final num totalAmount = user.totalAmount ?? 0;
+
+                          final formattedAmount = NumberFormat.currency(
+                            symbol: '€',
+                            decimalDigits: 0,
+                          ).format(totalAmount);
+
+
 
                           return ListTile(
                             contentPadding: EdgeInsets.symmetric(
@@ -323,7 +331,7 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
                                 //   color: Colors.white70,
                                 // ),
                                 CustomText(
-                                  text: 'Total Amount: €${totalAmount.toStringAsFixed(0)}',
+                                  text: 'Total Amount: $formattedAmount',
                                   fontSize: 12.sp,
                                   color: Colors.greenAccent,
                                 ),

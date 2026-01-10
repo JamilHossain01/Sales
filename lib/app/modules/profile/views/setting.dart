@@ -39,7 +39,7 @@ class SettingView extends StatefulWidget {
 
 class _SettingViewState extends State<SettingView> {
   // Fixed WhatsApp URL (removed invalid @gmail.com)
-  static const String _staticUrl = 'https://wa.me/9715511750018';
+  static const String _staticUrl = 'https://wa.me/31637735272';
 
   final GetMyProfileController profileController =
       Get.put(GetMyProfileController());

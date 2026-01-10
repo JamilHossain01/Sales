@@ -34,8 +34,8 @@ class _DashboardViewState extends State<DashboardView> {
 
   final List<Map<String, String>> navItems = [
     {
-      'icon': AppImages.navHomeUnselected,
-      'selectedIcon': AppImages.navHomeSelected,
+      'icon': AppImages.navHomeSelected,
+      'selectedIcon': AppImages.navHomeUnselected,
       'label': 'Home',
     },
     // {
