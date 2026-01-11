@@ -25,7 +25,14 @@ class ApiUrl {
   // static String myAllClients = "$baseUrl/client/my-clients";
   static String closerCreate = "$baseUrl/closer/create";
   static String allPrizewinner = "$baseUrl/prize";
-  static String topPrizewinner = "$baseUrl/prize/winners";
+  // static String topPrizewinner = "$baseUrl/prize/winners";
+
+ static String getTopPrizeWinners({
+   required int year,
+   required int month,
+ }) {
+   return '$baseUrl/prize/winners?year=$year&month=$month';
+ }
   static String userPrizeWinner = "$baseUrl/user/prize-winner";
   // static String quaterPrizeWinner = "$baseUrl/quarter-prize/winners";
  static String quaterPrizeWinner({required int year}) => "$baseUrl/quarter-prize?year=$year";

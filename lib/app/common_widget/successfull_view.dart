@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wolf_pack/app/common_widget/custom%20text/custom_text_widget.dart';
 
 import '../uitilies/app_colors.dart';
 import 'custom_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wolf_pack/app/common_widget/custom text/custom_text_widget.dart';
+import '../uitilies/app_colors.dart';
+import 'custom_button.dart';
+
 class CustomSuccessScreen extends StatefulWidget {
   final String title;
   final String message;
+  final String? clientName; // Added for client-specific text
   final VoidCallback onContinue;
 
   const CustomSuccessScreen({
     super.key,
     required this.title,
     required this.message,
+    this.clientName, // Optional
     required this.onContinue,
   });
 
@@ -26,20 +36,21 @@ class _CustomSuccessScreenState extends State<CustomSuccessScreen>
   @override
   void initState() {
     super.initState();
-
     // Start animations
     Future.delayed(const Duration(milliseconds: 300), () {
-      setState(() {
-        _scale = 1.0;
-        _opacity = 1.0;
-      });
+      if (mounted) {
+        setState(() {
+          _scale = 1.0;
+          _opacity = 1.0;
+        });
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -61,6 +72,8 @@ class _CustomSuccessScreenState extends State<CustomSuccessScreen>
                 ),
               ),
               const SizedBox(height: 24),
+
+              // Title
               Text(
                 widget.title,
                 style: TextStyle(
@@ -70,17 +83,38 @@ class _CustomSuccessScreenState extends State<CustomSuccessScreen>
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
-              Text(
-                widget.message,
-                style: const TextStyle(fontSize: 16),
+
+              // Client Name (Deal-specific text)
+              if (widget.clientName != null) ...[
+                const SizedBox(height: 12),
+                CustomText(
+                  text: 'for ${widget.clientName}',
+                  fontSize: 22.sp,
+                  color: AppColors.mainColor,
+                  fontWeight: FontWeight.w600,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+
+              const SizedBox(height: 16),
+
+              // Message
+              CustomText(
+                text: widget.message,
                 textAlign: TextAlign.center,
+                fontSize: 16.sp,
+                color: Colors.white,
               ),
+
               const SizedBox(height: 40),
+
+              // Continue Button
               CustomButton(
+                isGradient: false,
+                buttonColor: AppColors.orangeColor,
                 title: "Back to Home",
                 onTap: widget.onContinue,
-              )
+              ),
             ],
           ),
         ),

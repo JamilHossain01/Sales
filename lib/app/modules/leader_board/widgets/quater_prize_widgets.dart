@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
+import '../../../uitilies/custom_loader.dart';
 import '../controllers/quater_prize_controller.dart';
 import 'package:intl/intl.dart';   // ← This line is missing in your file!
 
@@ -104,7 +105,7 @@ class _TopQuaterClosersWidgetState extends State<TopQuaterClosersWidget> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (widget.controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+        return  Center(child: CustomLoader());
       }
 
       final allData = widget.controller.userPrizeWinnerList.value.data ?? [];

@@ -4,7 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolf_pack/app/common_widget/custom text/custom_text_widget.dart';
 import 'package:wolf_pack/app/uitilies/app_colors.dart';
-import '../../leader_board/modell/prizew_winner_model.dart';
+import 'package:wolf_pack/app/uitilies/custom_loader.dart';
+import '../../leader_board/modell/all_winner_model.dart';
+import '../../leader_board/controllers/prizew_winner_model.dart';
+
 
 class TopClosersWidget extends StatefulWidget {
   final AllPrizeWinnerController controller;
@@ -18,179 +21,318 @@ class TopClosersWidget extends StatefulWidget {
 class _TopClosersWidgetState extends State<TopClosersWidget> {
   PrizeCardData? selectedCard;
 
+  late int selectedYear;
+  late int selectedMonth;
+
+  late List<int> availableYears;
+  final List<int> availableMonths = List.generate(12, (index) => index + 1);
+
   @override
   void initState() {
     super.initState();
-    // Default: First prize winner always shown
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.controller.allPrizeList.value.data.isNotEmpty) {
-        final activeData = widget.controller.allPrizeList.value.data
-            .where((d) => d.isActive == true)
-            .toList();
-        if (activeData.isNotEmpty && activeData.first.entries.isNotEmpty) {
-          final data = activeData.first;
-          final entries = data.entries;
-          final topUsers = data.topUsers;
 
-          final firstEntry = entries[0];
-          final firstUser = topUsers.isNotEmpty ? topUsers[0] : null;
+    final now = DateTime.now();
+    selectedYear = now.year;
+    selectedMonth = now.month;
 
-          setState(() {
-            selectedCard = PrizeCardData(
-              rank: firstEntry.rank.toInt(),
-              userName: firstUser?.name ?? 'TBA',
-              userImage: firstUser?.profilePicture ?? '',
-              prizeName: firstEntry.name ?? '',
-              prizeIcon: firstEntry.icon ?? '',
-            );
-          });
-        }
-      }
-    });
+    // Current year ± (2 before, 4 after) → 2024 to 2030, newest first
+    availableYears = [];
+    for (int i = -2; i <= 4; i++) {
+      availableYears.add(now.year + i);
+    }
+    availableYears.sort((a, b) => b.compareTo(a)); // Descending: 2030 → 2024
+  }
+
+  String _getMonthName(int month) {
+    return DateFormat('MMMM').format(DateTime(2026, month));
+  }
+
+  String _getFirstTwoWords(String text) {
+    if (text.isEmpty) return '';
+
+    final words = text.trim().split(' ');
+
+    if (words.length <= 2) {
+      return text.trim();
+    }
+
+    return '${words[0]} ${words[1]}';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (widget.controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildYearAndMonthDropdowns(),
+          SizedBox(height: 10.h),
+          Obx(() {
+            final isLoading = widget.controller.isLoading.value;
+            final Datum? data =
+                widget.controller.allPrizeList.value.data.firstOrNull;
 
-      if (widget.controller.allPrizeList.value.data.isEmpty) {
-        return const SizedBox.shrink();
-      }
+            if (isLoading) {
+              return SizedBox(
+                height: 300.h,
+                child:  Center(child: CustomLoader()),
+              );
+            }
 
-      final activeData = widget.controller.allPrizeList.value.data
-          .where((d) => d.isActive == true)
-          .toList()
-        ..sort((a, b) {
-          final yearDiff = (b.year as int).compareTo(a.year as int);
-          if (yearDiff != 0) return yearDiff;
-          return (b.month as int).compareTo(a.month as int);
-        });
+            if (data == null || data.entries.isEmpty) {
+              final period =
+                  '${_getMonthName(selectedMonth)} $selectedYear';
 
-      if (activeData.isEmpty) return const SizedBox.shrink();
+              // Reset selected card when no data
+              if (selectedCard != null) {
+                selectedCard = null;
+              }
 
-      final data = activeData.first;
-      final monthName =
-      DateFormat('MMMM yyyy').format(DateTime(data.year, data.month));
-
-      if (data.entries.length < 3) return const SizedBox.shrink();
-
-      final entries = data.entries;
-      final topUsers = data.topUsers;
-      final isTopUsersEmpty = topUsers.isEmpty;
-
-      List<PrizeCardData> prizeCards = [];
-      for (int i = 0; i < 3; i++) {
-        final entry = entries[i];
-        final topUser = i < topUsers.length ? topUsers[i] : null;
-        prizeCards.add(PrizeCardData(
-          rank: entry.rank.toInt(),
-          userName: topUser?.name ?? 'TBA',
-          userImage: topUser?.profilePicture ?? '',
-          prizeName: entry.name ?? '',
-          prizeIcon: entry.icon ?? '',
-        ));
-      }
-
-      return Container(
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFF8B7B4E).withOpacity(0.45),
-              const Color(0xFF5F4E2E).withOpacity(0.65),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ===== HEADER =====
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: const Icon(Icons.emoji_events, color: Colors.white),
+              return Container(
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(color: Colors.white24),
                 ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: 'Top Closers',
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                    CustomText(
-                      text: monthName,
-                      fontSize: 14.sp,
-                      color: Colors.white70,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 20.h),
-
-            Center(
-              child: CustomText(
-                text: 'Top 3 Prize Winners',
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white70,
-              ),
-            ),
-            SizedBox(height: 16.h),
-
-            // ===== TOP 3 WINNERS (avatars) =====
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildTopWinnerCard(prizeCards[1], false),
-                _buildTopWinnerCard(prizeCards[0], true),
-                _buildTopWinnerCard(prizeCards[2], false),
-              ],
-            ),
-
-            if (isTopUsersEmpty)
-              Padding(
-                padding: EdgeInsets.only(top: 10.h),
                 child: Center(
                   child: CustomText(
-                    text: 'Winners to be announced soon! 🎉',
-                    fontSize: 14.sp,
-                    color: Colors.white70,
+                    text: 'No data available for $period',
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
-              ),
+              );
+            }
 
-            /// ===== EXPANDED CARD (always first visible) =====
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: selectedCard != null
-                  ? Padding(
-                key: ValueKey(selectedCard!.rank),
-                padding: EdgeInsets.only(top: 20.h),
-                child: _buildPrizeInfoCard(selectedCard!),
-              )
-                  : const SizedBox.shrink(),
+            // Data present
+            final monthName = DateFormat('MMMM yyyy')
+                .format(DateTime(selectedYear, selectedMonth));
+
+            final entries = data.entries;
+            final topUsers = data.topUsers;
+
+            List<PrizeCardData> prizeCards = [];
+            final int displayCount = entries.length.clamp(0, 3);
+            for (int i = 0; i < displayCount; i++) {
+              final entry = entries[i];
+              final topUser = i < topUsers.length ? topUsers[i] : null;
+              prizeCards.add(PrizeCardData(
+                rank: (entry.rank as num).toInt(),
+                userName: topUser?.name ?? 'TBA',
+                userImage: topUser?.profilePicture ?? '',
+                prizeName: entry.name ?? '',
+                prizeIcon: entry.icon ?? '',
+              ));
+            }
+
+            // Auto-select first prize if nothing selected yet (after fresh load)
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted &&
+                  selectedCard == null &&
+                  prizeCards.isNotEmpty) {
+                setState(() {
+                  selectedCard = prizeCards[0];
+                });
+              }
+            });
+
+            return Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFF8B7B4E).withOpacity(0.45),
+                    const Color(0xFF5F4E2E).withOpacity(0.65),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // HEADER
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.r),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: const Icon(Icons.emoji_events,
+                            color: Colors.white),
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: 'Top Closers',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                          CustomText(
+                            text: monthName,
+                            fontSize: 14.sp,
+                            color: Colors.white70,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+
+                  Center(
+                    child: CustomText(
+                      text: 'Top Prize Winners',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+
+                  // PODIUM
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (prizeCards.length > 1)
+                        Expanded(
+                            child: _buildTopWinnerCard(prizeCards[1], false)),
+                      if (prizeCards.isNotEmpty)
+                        Expanded(
+                            child: _buildTopWinnerCard(prizeCards[0], true)),
+                      if (prizeCards.length > 2)
+                        Expanded(
+                            child: _buildTopWinnerCard(prizeCards[2], false)),
+                    ],
+                  ),
+
+                  if (topUsers.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Center(
+                        child: CustomText(
+                          text: 'Winners to be announced soon! 🎉',
+                          fontSize: 14.sp,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ),
+
+                  // DETAILED CARD
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: selectedCard != null
+                        ? Padding(
+                      key: ValueKey(selectedCard!.rank),
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: _buildPrizeInfoCard(selectedCard!),
+                    )
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYearAndMonthDropdowns() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: DropdownButton<int>(
+                isExpanded: true,
+                dropdownColor: Colors.black87,
+                value: selectedYear,
+                items: availableYears.map((year) {
+                  return DropdownMenuItem<int>(
+                    value: year,
+                    child: Text(
+                      year.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (int? value) {
+                  if (value != null && value != selectedYear) {
+                    setState(() {
+                      selectedYear = value;
+                      selectedCard = null; // Reset selection on period change
+                    });
+                    widget.controller.refreshWinners(
+                      year: selectedYear,
+                      month: selectedMonth,
+                    );
+                  }
+                },
+                underline: const SizedBox(),
+                iconEnabledColor: Colors.white,
+              ),
             ),
-          ],
-        ),
-      );
-    });
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: DropdownButton<int>(
+                isExpanded: true,
+                dropdownColor: Colors.black87,
+                value: selectedMonth,
+                items: availableMonths.map((month) {
+                  return DropdownMenuItem<int>(
+                    value: month,
+                    child: Text(
+                      _getMonthName(month),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (int? value) {
+                  if (value != null && value != selectedMonth) {
+                    setState(() {
+                      selectedMonth = value;
+                      selectedCard = null; // Reset selection on period change
+                    });
+                    widget.controller.refreshWinners(
+                      year: selectedYear,
+                      month: selectedMonth,
+                    );
+                  }
+                },
+                underline: const SizedBox(),
+                iconEnabledColor: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildTopWinnerCard(PrizeCardData card, bool isFirst) {
@@ -239,7 +381,7 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
                       radius: isFirst ? 41.r : 34.r,
                       backgroundColor: AppColors.orangeColor,
                       child: const Icon(Icons.person,
-                          color: Colors.white,size: 35,),
+                          color: Colors.white, size: 35),
                     ),
                   ),
                   if (isFirst)
@@ -268,19 +410,21 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
               ),
               SizedBox(height: 4.h),
               CustomText(
-                text: _getFirstTwoWords(card.prizeName ?? ''),
+                text: _getFirstTwoWords(card.prizeName),
                 fontSize: 10.sp,
                 color: Colors.white70,
                 textAlign: TextAlign.center,
                 maxLines: 2,
-                overflow: TextOverflow.ellipsis, // optional: adds ... if somehow still longer
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 4.h),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                padding:
+                EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color:
-                  isFirst ? Colors.amber : Colors.blueGrey.withOpacity(0.8),
+                  color: isFirst
+                      ? Colors.amber
+                      : Colors.blueGrey.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: CustomText(
@@ -296,19 +440,7 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
       ),
     );
   }
-  String _getFirstTwoWords(String text) {
-    if (text.isEmpty) return '';
 
-    // Split by space and take maximum 2 words
-    final words = text.trim().split(' ');
-
-    if (words.length <= 2) {
-      return text.trim(); // return as-is if 1 or 2 words
-    }
-
-    return '${words[0]} ${words[1]}';
-  }
-  /// ===== EXPANDED CARD =====
   Widget _buildPrizeInfoCard(PrizeCardData card) {
     final isTBA = card.userName == 'TBA';
     return Container(
@@ -322,27 +454,21 @@ class _TopClosersWidgetState extends State<TopClosersWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: card.prizeIcon.isNotEmpty
-                    ? Image.network(
-                  card.prizeIcon,
-                  height: 100.h,
-                  width: 100.w,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => const Icon(
-                      Icons.card_giftcard,
-                      size: 40,
-                      color: Colors.amber),
-                )
-                    : const Icon(Icons.card_giftcard,
-                    size: 40, color: Colors.amber),
-              ),
-
-            ]
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.r),
+            child: card.prizeIcon.isNotEmpty
+                ? Image.network(
+              card.prizeIcon,
+              height: 100.h,
+              width: 100.w,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => const Icon(
+                  Icons.card_giftcard,
+                  size: 40,
+                  color: Colors.amber),
+            )
+                : const Icon(Icons.card_giftcard,
+                size: 40, color: Colors.amber),
           ),
           SizedBox(height: 12.h),
           CustomText(

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:wolf_pack/app/routes/app_pages.dart';
 import 'package:wolf_pack/app/uitilies/api/api_url.dart';
 import '../../../common_widget/customSnackBar.dart';
+import '../../../common_widget/successfull_view.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../dashboard/views/dashboard_view.dart';
 
@@ -87,7 +88,16 @@ class DealController extends GetxController {
         final decoded = jsonDecode(responseData.body);
         print('Success: $decoded');
         CustomSnackbar.showSuccess(decoded['message'] ?? 'Deal created!');
-        Get.to(() => DashboardView());
+        Get.offAll(() => CustomSuccessScreen(
+          title: 'Deal Created Successfully!',
+          message: 'The new deal has been added to the system.',
+          onContinue: () {
+            // Example: Go back to dashboard or clients list
+            Get.offAll(() => DashboardView());
+            // Or Get.offAll(() => AllClientsScreen());
+          },
+        ));
+
       } else {
         final decoded = jsonDecode(responseData.body);
         print('Error: $decoded');

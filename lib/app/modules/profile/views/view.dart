@@ -37,7 +37,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CommonAppBar(title: 'Profile', showBackButton: false),
+      appBar: CommonAppBar(title: 'Profile', showBackButton: true),
       body: Obx(() {
         if (profileController.isLoading.value) {
           return  CustomLoader();

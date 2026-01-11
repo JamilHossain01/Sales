@@ -7,6 +7,8 @@ import 'package:wolf_pack/app/modules/home/controllers/ny_clients_controller.dar
 import 'package:wolf_pack/app/modules/home/widgets/target_widgets.dart';
 import 'package:wolf_pack/app/modules/closed_deal/views/closed_deal_view.dart';
 import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
+import 'package:wolf_pack/app/uitilies/api/app_constant.dart';
+import 'package:wolf_pack/app/uitilies/app_colors.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../common_widget/custom_calender.dart';
 import '../../home/widgets/rececnt_deatils_widgets.dart';
@@ -17,6 +19,7 @@ import '../model/recentview_model.dart';
 import 'package:wolf_pack/app/common_widget/custom_app_bar_widget.dart';
 import '../../home/model/all_closed_model.dart' as allDeals;
 import '../../sales/model/recentview_model.dart';
+import 'add_deals.dart';
 
 class SalesContent extends StatefulWidget {
   const SalesContent({super.key});
@@ -279,16 +282,10 @@ class _SalesContentState extends State<SalesContent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TargetProgressCard(
-              title: "Deals Closed",
-              progressValue: ((profileController.profileData.value.data
-                              ?.monthlyTargetPercentage ??
-                          0) /
-                      100)
-                  .toDouble(),
-              achievedText:
-                  'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
-              percentageLabel:
-                  '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "0"}%',
+              title: "Monthly Target",
+              progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
+              achievedText: 'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+              percentageLabel: '${(profileController.profileData.value.data?.monthlyTargetPercentage ?? 0).toStringAsFixed(2)}%',
             ),
             const Gap(20),
             CustomCalendarWidget(
@@ -331,6 +328,20 @@ class _SalesContentState extends State<SalesContent> {
                   ),
                 ),
               ],
+            ),
+            const Gap(20),
+
+            CustomButton(
+              leftIcon: Icon(Icons.add,color:isAllDeals.value ? Colors.black : Colors.white ,),
+              isGradient: false,
+              buttonColor:AppColors.orangeColor,
+              titleColor: isAllDeals.value ? Colors.black : Colors.white,
+              title: 'Add Deal',
+              onTap: () {
+                Get.to(() => AddDealView(
+                ));
+
+              },
             ),
             const Gap(20),
             _buildDealsList(),

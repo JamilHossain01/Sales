@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:wolf_pack/app/modules/leader_board/widgets/quater_prize_widgets.dart';
 import '../../home/widgets/top_closer_widgets.dart';
 import '../controllers/quater_prize_controller.dart';
-import '../modell/prizew_winner_model.dart';
+import '../controllers/prizew_winner_model.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 

@@ -31,7 +31,7 @@ class EditProfileView extends GetView<EditProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar:CommonAppBar(title: 'Edit Profile'),
+      appBar:CommonAppBar(title: 'Edit Profile',showBackButton: true,),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.w),

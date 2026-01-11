@@ -14,7 +14,7 @@ import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controll
 import 'package:wolf_pack/app/modules/badges/controllers/badges_controller.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/next_achevement_controller.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/quater_prize_controller.dart';
-import 'package:wolf_pack/app/modules/leader_board/modell/prizew_winner_model.dart';
+import 'package:wolf_pack/app/modules/leader_board/controllers/prizew_winner_model.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/top_perfomer_controller.dart';
 import 'package:wolf_pack/app/modules/leader_board/controllers/all_prize_winner.dart';
 import 'package:wolf_pack/app/modules/leader_board/widgets/prizw_badge.dart';
@@ -173,7 +173,7 @@ class _DashboardContentState extends State<DashboardContent> {
                 title: "Monthly Target",
                 progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
                 achievedText: 'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
-                percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "N/A"}%',
+                percentageLabel: '${(profileController.profileData.value.data?.monthlyTargetPercentage ?? 0).toStringAsFixed(2)}%',
               ),
               /// ---------- Leaderboard ----------
               LeaderBoardView(),
