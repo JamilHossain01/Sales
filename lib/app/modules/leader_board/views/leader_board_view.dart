@@ -126,12 +126,13 @@ class _FilterBar extends StatelessWidget {
 
     return Row(
       children: [
-        Flexible(
+        // MONTH DROPDOWN
+        Expanded(  // Using Expanded here to allow the dropdowns to take equal space.
           child: Obx(() => DropdownButtonFormField<int?>(
             value: controller.selectedMonth.value,
             decoration: _dropdownDecoration("Month"),
             dropdownColor: const Color(0xFF1E1E1E),
-            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             icon: const Icon(
               Icons.keyboard_arrow_down,
               color: Colors.white70,
@@ -140,8 +141,7 @@ class _FilterBar extends StatelessWidget {
             items: List.generate(13, (index) {
               return DropdownMenuItem<int?>(
                 value: index == 0 ? null : index,
-                child: Text(_monthNames[index],
-                    overflow: TextOverflow.ellipsis),
+                child: Text(_monthNames[index], overflow: TextOverflow.ellipsis),
               );
             }),
             onChanged: (val) {
@@ -153,13 +153,13 @@ class _FilterBar extends StatelessWidget {
         ),
         SizedBox(width: 10.w),
 
-        /// YEAR DROPDOWN
-        Flexible(
+        // YEAR DROPDOWN
+        Expanded(  // Added Expanded for equal distribution of space.
           child: Obx(() => DropdownButtonFormField<int?>(
             value: controller.selectedYear.value,
             decoration: _dropdownDecoration("Year"),
             dropdownColor: const Color(0xFF1E1E1E),
-            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             icon: const Icon(
               Icons.keyboard_arrow_down,
               color: Colors.white70,
@@ -182,13 +182,13 @@ class _FilterBar extends StatelessWidget {
         ),
         SizedBox(width: 10.w),
 
-        /// QUARTER DROPDOWN
-        Flexible(
+        // QUARTER DROPDOWN
+        Expanded(  // Using Expanded to distribute the space equally.
           child: Obx(() => DropdownButtonFormField<int?>(
             value: controller.selectedQuarter.value,
             decoration: _dropdownDecoration("Quarter"),
             dropdownColor: const Color(0xFF1E1E1E),
-            style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
             icon: const Icon(
               Icons.keyboard_arrow_down,
               color: Colors.white70,
@@ -211,7 +211,8 @@ class _FilterBar extends StatelessWidget {
           )),
         ),
       ],
-    );
+    )
+    ;
   }
 
   InputDecoration _dropdownDecoration(String label) {

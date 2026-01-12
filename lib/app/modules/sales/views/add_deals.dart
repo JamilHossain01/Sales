@@ -172,20 +172,6 @@ class _AddDealViewState extends State<AddDealView> {
               ),
               SizedBox(height: 10.h),
 
-              // ==================== CASH COLLECTED ====================
-              CustomText(
-                text: 'Cash Collected',
-                fontSize: 16.sp,
-                color: Colors.white.withOpacity(0.82),
-              ),
-              SizedBox(height: 10.h),
-              CustomTextField(
-                hintText: "Enter cash collected",
-                showObscure: false,
-                controller: _cashCollectedController,
-              ),
-              SizedBox(height: 10.h),
-
               // ==================== DEAL DATE ====================
               CustomText(
                 text: 'Deal Date',
@@ -250,6 +236,21 @@ class _AddDealViewState extends State<AddDealView> {
                 ),
               ),
               SizedBox(height: 16.h),
+
+              // ==================== CASH COLLECTED ====================
+              CustomText(
+                text: 'Cash Collected',
+                fontSize: 16.sp,
+                color: Colors.white.withOpacity(0.82),
+              ),
+              SizedBox(height: 10.h),
+              CustomTextField(
+                hintText: "Enter cash collected",
+                showObscure: false,
+                controller: _cashCollectedController,
+              ),
+              SizedBox(height: 10.h),
+
 
               // ==================== FILE PICKER ====================
               CustomFilePicker(

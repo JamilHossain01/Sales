@@ -20,6 +20,7 @@ class AppImages {
   static const String leaderboards = "assets/images/Leaderboards.png";
   static const String sales = "assets/images/Sales.png";
   static const String allClient = "assets/images/user.png";
+  static const String deal = "assets/images/handshake1.png";
 
   // bottom
 

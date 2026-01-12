@@ -22,7 +22,6 @@ import '../controllers/get_myProfile_controller.dart';
 
 
 
-import '../../home/controllers/image_controller.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});

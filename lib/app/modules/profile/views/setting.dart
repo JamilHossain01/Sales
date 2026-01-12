@@ -20,6 +20,7 @@ import '../../../common_widget/show_alert_dialog.dart';
 import '../../../routes/app_pages.dart';
 import '../../../uitilies/api/app_constant.dart';
 import '../../../uitilies/api/local_storage.dart';
+import '../../setting/views/all_deals_view.dart';
 import '../../setting/views/privacy_policy_view.dart';
 import '../../sign_in/views/sign_in_view.dart';
 import '../controllers/get_myProfile_controller.dart';
@@ -114,9 +115,20 @@ class _SettingViewState extends State<SettingView> {
               icon: Icons.people_outline,
               backgroundColor: Colors.black,
               borderRadius: BorderRadius.circular(6.r),
-              title: 'All Client',
+              title: 'My Client',
               textColor: AppColors.white,
               onTap: () => Get.to(() => AllClientsScreen()),
+            ),Gap(20.h),
+            MenuItem(
+              assetImagePath: AppImages.deal,
+
+
+              icon: Icons.people_outline,
+              backgroundColor: Colors.black,
+              borderRadius: BorderRadius.circular(6.r),
+              title: 'My Deal',
+              textColor: AppColors.white,
+              onTap: () => Get.to(() => MyAllDealsScreen()),
             ),
             Gap(20.h),
             MenuItem(

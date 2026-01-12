@@ -52,23 +52,25 @@ class RecentDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (tagLabel != null)
+          // Modified tagLabel to match the status badge style in MyAllDealsScreen
+          if (tagLabel != null && tagLabel!.trim().isNotEmpty)
             Container(
-              width: 90.w,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
               decoration: BoxDecoration(
+                color: (color ?? Colors.grey).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Text(
+                tagLabel!.trim().toUpperCase(),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
                   color: color ?? Colors.grey,
-                  borderRadius: BorderRadius.circular(50.r)),
-              child: Center(
-                child: Text(
-                  tagLabel ?? '',
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
+
           SizedBox(height: 8.h),
           if (userName != null || companyName != null || profileImage != null)
             Row(
@@ -110,14 +112,12 @@ class RecentDetails extends StatelessWidget {
           if (assignDate != null) _rowText(text: 'Deal Date', text1: assignDate!),
           if (onViewDetailsTap != null) ...[
             SizedBox(height: 12.h),
-    CustomButton(
-            leftIcon:Icon(Icons.remove_red_eye_outlined,color: AppColors.white,),
-            // buttonColor: AppColors.orangeColor.withOpacity(0.05),
-            border: Border.all(color: AppColors.white, width: 0.25),
-            title: 'View Details',
-            onTap: onViewDetailsTap,
-          ),
-
+            CustomButton(
+              leftIcon: Icon(Icons.remove_red_eye_outlined, color: AppColors.white),
+              border: Border.all(color: AppColors.white, width: 0.25),
+              title: 'View Details',
+              onTap: onViewDetailsTap,
+            ),
           ],
         ],
       ),
