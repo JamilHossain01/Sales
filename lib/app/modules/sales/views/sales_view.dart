@@ -12,36 +12,45 @@ import 'package:wolf_pack/app/modules/closed_deal/views/closed_deal_view.dart';
 import 'package:wolf_pack/app/modules/profile/controllers/get_myProfile_controller.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../common_widget/custom_calender.dart';
+import '../../../uitilies/app_colors.dart';
 import '../../home/model/all_closed_model.dart' as allDeals;
 import '../../home/model/all_my_cleints_model.dart' as myClients;
 import '../../home/widgets/rececnt_deatils_widgets.dart';
 import '../model/recentview_model.dart';
-
+import 'add_deals.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
+
   @override
   State<SalesScreen> createState() => _SalesScreenState();
 }
+
 class _SalesScreenState extends State<SalesScreen> {
   final AllDealController allDealController = Get.put(AllDealController());
-  final MyAllClientsGetController myDealController = Get.put(MyAllClientsGetController());
-  final GetMyProfileController profileController = Get.put(GetMyProfileController());
+  final MyAllClientsGetController myDealController =
+      Get.put(MyAllClientsGetController());
+  final GetMyProfileController profileController =
+      Get.put(GetMyProfileController());
   DateTime? _selectedDate;
   String _searchQuery = '';
   String _selectedStatus = 'All';
   var isAllDeals = true.obs;
+
   @override
   void initState() {
     super.initState();
     profileController.fetchMyProfile();
     allDealController.fetchAllDeals();
   }
+
   String _formatCurrency(dynamic value) {
     if (value == null) return '0';
-    double v = value is String ? double.tryParse(value) ?? 0.0 : value.toDouble();
+    double v =
+        value is String ? double.tryParse(value) ?? 0.0 : value.toDouble();
     return NumberFormat.decimalPattern().format(v.truncate());
   }
+
   List<AllRecentDealDatum> _getActiveList() {
     if (isAllDeals.value) {
       return allDealController.myClosedAllClientData.value?.data ?? [];
@@ -49,6 +58,7 @@ class _SalesScreenState extends State<SalesScreen> {
       return _getMyDealsFlattened();
     }
   }
+
   List<AllRecentDealDatum> _getMyDealsFlattened() {
     final myData = myDealController.myAllClientData.value?.data;
     if (myData == null || myData.data.isEmpty) return [];
@@ -120,7 +130,9 @@ class _SalesScreenState extends State<SalesScreen> {
     print("Flattened deals count: ${deals.length}");
     return deals;
   }
-  List<AllRecentDealDatum> _applyFilters(List<AllRecentDealDatum> deals, bool allDealsTab) {
+
+  List<AllRecentDealDatum> _applyFilters(
+      List<AllRecentDealDatum> deals, bool allDealsTab) {
     var filtered = deals;
     // Search filter
     if (_searchQuery.isNotEmpty) {
@@ -149,6 +161,7 @@ class _SalesScreenState extends State<SalesScreen> {
     }
     return filtered;
   }
+
   Color _getStatusColor(String status) {
     switch (status.toUpperCase()) {
       case 'NEW':
@@ -161,6 +174,7 @@ class _SalesScreenState extends State<SalesScreen> {
         return Colors.grey;
     }
   }
+
   Widget _buildLoadingList() {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
@@ -176,6 +190,7 @@ class _SalesScreenState extends State<SalesScreen> {
       ),
     );
   }
+
   Widget _buildDealsList(bool allDealsTab) {
     final list = _getActiveList();
     final filteredList = _applyFilters(list, allDealsTab);
@@ -184,7 +199,9 @@ class _SalesScreenState extends State<SalesScreen> {
         child: Padding(
           padding: const EdgeInsets.only(top: 50),
           child: Text(
-            _searchQuery.isNotEmpty || _selectedDate != null || _selectedStatus != 'All'
+            _searchQuery.isNotEmpty ||
+                    _selectedDate != null ||
+                    _selectedStatus != 'All'
                 ? "No matching results found"
                 : "No deals available",
             style: const TextStyle(color: Colors.white70, fontSize: 16),
@@ -197,7 +214,6 @@ class _SalesScreenState extends State<SalesScreen> {
       shrinkWrap: true,
       itemCount: filteredList.length,
       itemBuilder: (context, index) {
-
         final deal = filteredList[index];
         final status = deal.status?.toUpperCase() ?? 'NEW';
         final tagLabel = status;
@@ -210,25 +226,38 @@ class _SalesScreenState extends State<SalesScreen> {
             ? DateFormat('yyyy-MM-dd hh:mm a').format(deal.createdAt!)
             : null;
         final clientId = deal.userClient?.id ?? '';
-        final clientDetailsViewId = deal.userClient?.clientId?? '';
+        final clientDetailsViewId = deal.userClient?.clientId ?? '';
         final userName = deal.userClient?.client?.name;
         final profileImage = deal.user?.profilePicture;
-        final cashCollected = deal.cashCollected != null ? _formatCurrency(deal.cashCollected) : null;
-        final amount = deal.amount != null ? _formatCurrency(deal.amount) : null;
-        final commission = commissionAmount != null ? _formatCurrency(commissionAmount) : null;
+        final cashCollected = deal.cashCollected != null
+            ? _formatCurrency(deal.cashCollected)
+            : null;
+        final amount =
+            deal.amount != null ? _formatCurrency(deal.amount) : null;
+        final commission =
+            commissionAmount != null ? _formatCurrency(commissionAmount) : null;
         // Only assign onTap for My Deals
         VoidCallback? onTap;
         if (!allDealsTab) {
           switch (tagLabel) {
             case "NEW":
-              onTap = () => Get.to(() => NewDealView(clientId: clientDetailsViewId, clientName: userName ?? "N/A",));
+              onTap = () => Get.to(() => NewDealView(
+                    clientId: clientDetailsViewId,
+                    clientName: userName ?? "N/A",
+                  ));
               break;
             case "OPEN":
-              onTap = () => Get.to(() => OpenDealView( clientNewDealCreateId: clientId,
-                clientId: clientDetailsViewId, clientName:  userName ?? "N/A", ),);
+              onTap = () => Get.to(
+                    () => OpenDealView(
+                      clientNewDealCreateId: clientId,
+                      clientId: clientDetailsViewId,
+                      clientName: userName ?? "N/A",
+                    ),
+                  );
               break;
             case "CLOSED":
-              onTap = () => Get.to(() => ClosedDealView(clientID: clientDetailsViewId));
+              onTap = () =>
+                  Get.to(() => ClosedDealView(clientID: clientDetailsViewId));
               break;
           }
         }
@@ -248,6 +277,7 @@ class _SalesScreenState extends State<SalesScreen> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -259,10 +289,16 @@ class _SalesScreenState extends State<SalesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TargetProgressCard(
-              title: "Deals Closed",
-              progressValue: ((profileController.profileData.value.data?.monthlyTargetPercentage ?? 0) / 100).toDouble(),
-              achievedText: 'Achieved: €${profileController.profileData.value.data?.salesCount ?? "0"} of €${profileController.profileData.value.data?.monthlyTarget ?? "0"}',
-              percentageLabel: '${profileController.profileData.value.data?.monthlyTargetPercentage ?? "0"}%',
+              title: "Monthly Target",
+              progressValue: ((profileController.profileData.value.data
+                              ?.monthlyTargetPercentage ??
+                          0) /
+                      100)
+                  .toDouble(),
+              achievedText:
+                  'Achieved: €${profileController.profileData.value.data?.thisMonthSales ?? "N/A"} of €${profileController.profileData.value.data?.monthlyTarget ?? "N/A"}',
+              percentageLabel:
+                  '${(profileController.profileData.value.data?.monthlyTargetPercentage ?? 0).toStringAsFixed(2)}%',
             ),
             const Gap(20),
             CustomCalendarWidget(
@@ -313,14 +349,18 @@ class _SalesScreenState extends State<SalesScreen> {
                     child: DropdownButton<String>(
                       dropdownColor: const Color(0xFF6C4D0C),
                       value: _selectedStatus,
-                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
                       items: ['All', 'New', 'Open', 'Closed']
                           .map((s) => DropdownMenuItem(
-                        value: s,
-                        child: Text(s, style: const TextStyle(color: Colors.white)),
-                      ))
+                                value: s,
+                                child: Text(s,
+                                    style:
+                                        const TextStyle(color: Colors.white)),
+                              ))
                           .toList(),
-                      onChanged: (v) => setState(() => _selectedStatus = v ?? 'All'),
+                      onChanged: (v) =>
+                          setState(() => _selectedStatus = v ?? 'All'),
                     ),
                   ),
                 ),
@@ -331,34 +371,50 @@ class _SalesScreenState extends State<SalesScreen> {
               children: [
                 Expanded(
                   child: Obx(() => CustomButton(
-                    isGradient: false,
-                    buttonColor: isAllDeals.value ? Colors.amber : Colors.grey.shade900,
-                    titleColor: isAllDeals.value ? Colors.black : Colors.white,
-                    title: 'All Deals',
-                    onTap: () {
-                      if (!isAllDeals.value) {
-                        isAllDeals.value = true;
-                        allDealController.fetchAllDeals();
-                      }
-                    },
-                  )),
+                        isGradient: false,
+                        buttonColor: isAllDeals.value
+                            ? AppColors.orangeColor
+                            : Colors.grey.shade900,
+                        titleColor:
+                            isAllDeals.value ? Colors.black : Colors.white,
+                        title: 'All Deals',
+                        onTap: () {
+                          if (!isAllDeals.value) {
+                            isAllDeals.value = true;
+                            allDealController.fetchAllDeals();
+                          }
+                        },
+                      )),
                 ),
                 const Gap(12),
                 Expanded(
                   child: Obx(() => CustomButton(
-                    isGradient: false,
-                    buttonColor: !isAllDeals.value ? Colors.amber : Colors.grey.shade900,
-                    titleColor: !isAllDeals.value ? Colors.black : Colors.white,
-                    title: 'My Deals',
-                    onTap: () {
-                      if (isAllDeals.value) {
-                        isAllDeals.value = false;
-                        myDealController.fetchMyAllClients();
-                      }
-                    },
-                  )),
+                        isGradient: false,
+                        buttonColor: !isAllDeals.value
+                            ? Colors.amber
+                            : Colors.grey.shade900,
+                        titleColor:
+                            !isAllDeals.value ? Colors.black : Colors.white,
+                        title: 'My Deals',
+                        onTap: () {
+                          if (isAllDeals.value) {
+                            isAllDeals.value = false;
+                            myDealController.fetchMyAllClients();
+                          }
+                        },
+                      )),
                 ),
               ],
+            ),
+            const Gap(20),
+            CustomButton(
+              isGradient: false,
+              buttonColor: Color(0xFF3AE600),
+              titleColor: Colors.white,
+              title: 'ADD DEAL',
+              onTap: () {
+                Get.to(() => AddDealView());
+              },
             ),
             const Gap(20),
             Obx(() {
@@ -374,7 +430,3 @@ class _SalesScreenState extends State<SalesScreen> {
     );
   }
 }
-
-
-
-

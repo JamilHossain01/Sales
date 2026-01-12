@@ -87,7 +87,7 @@ class DealController extends GetxController {
       if (responseData.statusCode == 200 || responseData.statusCode == 201) {
         final decoded = jsonDecode(responseData.body);
         print('Success: $decoded');
-        CustomSnackbar.showSuccess(decoded['message'] ?? 'Deal created!');
+        // CustomSnackbar.showSuccess(decoded['message'] ?? 'Deal created!');
         Get.offAll(() => CustomSuccessScreen(
           title: 'Deal Created Successfully!',
           message: 'The new deal has been added to the system.',

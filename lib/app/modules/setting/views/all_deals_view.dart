@@ -9,25 +9,15 @@ import 'package:wolf_pack/app/uitilies/custom_loader.dart';
 import '../../../common_widget/custom text/custom_text_widget.dart';
 import '../../../common_widget/custom_app_bar_widget.dart';
 import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/nodata_wisgets.dart';
 import '../../../uitilies/app_colors.dart';
 import '../../home/controllers/ny_clients_controller.dart';
 import '../../home/model/all_my_cleints_model.dart';
 
 
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
-import 'package:wolf_pack/app/uitilies/custom_loader.dart';
 
-import '../../../common_widget/custom text/custom_text_widget.dart';
-import '../../../common_widget/custom_app_bar_widget.dart';
-import '../../../common_widget/custom_button.dart';
-import '../../../uitilies/app_colors.dart';
-import '../../home/controllers/ny_clients_controller.dart'; // Note: Likely typo, should be my_clients_controller or similar
-import '../../home/model/all_my_cleints_model.dart';
+// Note: Likely typo, should be my_clients_controller or similar
 import '../../sales/views/add_deals.dart';
 
 class MyAllDealsScreen extends StatefulWidget {
@@ -125,11 +115,28 @@ class _MyAllDealsScreenState extends State<MyAllDealsScreen> {
 
             if (allDeals.isEmpty) {
               return Center(
-                child: CustomText(
-                  text: 'No deals available',
-                  fontSize: 18.sp,
-                  color: Colors.white70,
-                  textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    NoDataWidget(text: "No deals available"),
+                    Gap(20.h),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CustomButton(
+                        leftIcon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        isGradient: false,
+                        buttonColor: AppColors.orangeColor,
+                        titleColor: Colors.white,
+                        title: 'Add Deal',
+                        onTap: () {
+                          Get.to(() => AddDealView());
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
@@ -153,6 +160,7 @@ class _MyAllDealsScreenState extends State<MyAllDealsScreen> {
                     },
                     color: Colors.amber,
                     child: ListView.separated(
+
                       physics: const AlwaysScrollableScrollPhysics(),
                       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
                       itemCount: paginatedDeals.length,

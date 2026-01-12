@@ -161,6 +161,7 @@ class _SalesContentState extends State<SalesContent> {
 
     return filtered;
   }
+
   Color _getStatusColor(String? status) {
     switch (status?.toUpperCase() ?? '') {
       case 'NEW':
@@ -195,6 +196,7 @@ class _SalesContentState extends State<SalesContent> {
     }
 
     return ListView.builder(
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: filteredList.length,
@@ -317,8 +319,9 @@ class _SalesContentState extends State<SalesContent> {
                 Expanded(
                   child: CustomButton(
                     isGradient: false,
-                    buttonColor:
-                        !isAllDeals.value ? Colors.amber : Colors.grey.shade900,
+                    buttonColor: !isAllDeals.value
+                        ? AppColors.orangeColor
+                        : Colors.grey.shade900,
                     titleColor: !isAllDeals.value ? Colors.black : Colors.white,
                     title: 'My Deals',
                     onTap: () {
@@ -333,14 +336,10 @@ class _SalesContentState extends State<SalesContent> {
             ),
             const Gap(20),
             CustomButton(
-              leftIcon: Icon(
-                Icons.add,
-                color: isAllDeals.value ? Colors.black : Colors.white,
-              ),
               isGradient: false,
-              buttonColor: AppColors.orangeColor,
-              titleColor: isAllDeals.value ? Colors.black : Colors.white,
-              title: 'Add Deal',
+              buttonColor: Color(0xFF3AE600),
+              titleColor: Colors.white,
+              title: 'ADD DEAL',
               onTap: () {
                 Get.to(() => AddDealView());
               },

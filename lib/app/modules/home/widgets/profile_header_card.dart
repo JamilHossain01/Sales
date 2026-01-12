@@ -58,7 +58,7 @@ class ProfileHeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.h),
+        // SizedBox(height: 10.h),
         Center(
           child: Obx(() {
             final imageUrl = profileController.profileData.value.data?.profilePicture?? '';

@@ -20,13 +20,13 @@ class LeagueContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 40.h, // Fixed height
-      width: 180.w, // Fixed width for consistency
+      width: 200.w, // Fixed width for consistency
       decoration: BoxDecoration(
         color: AppColors.white.withOpacity(0.09),
         borderRadius: BorderRadius.all(Radius.circular(8.r)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Center(
 
           child: Row(
@@ -36,7 +36,7 @@ class LeagueContainer extends StatelessWidget {
                 height: 15.h,
                 width: 15.w,
               ),
-              SizedBox(width: 4.w),
+              SizedBox(width: 2.w),
               Row(
                 children: [
                   CustomText(
